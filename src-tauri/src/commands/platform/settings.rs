@@ -8,7 +8,7 @@ const SCHEMA_VERSION: u32 = 1;
 /// User-facing settings, persisted to `%APPDATA%/The Ruination/settings.json`.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct FlintSettings {
+pub struct RuinationSettings {
     #[serde(default = "default_schema_version")]
     pub schema_version: u32,
 
@@ -60,7 +60,7 @@ pub struct FlintSettings {
     pub selected_theme: Option<String>,
 }
 
-impl FlintSettings {
+impl RuinationSettings {
     fn normalize_paths(&mut self) {
         for field in [
             &mut self.league_path,
@@ -89,9 +89,9 @@ fn default_schema_version() -> u32 { SCHEMA_VERSION }
 fn default_true() -> bool { true }
 fn default_bin_engine() -> String { "ltk".to_string() }
 
-impl Default for FlintSettings {
+impl Default for RuinationSettings {
     fn default() -> Self {
-        let default_projects = get_flint_home()
+        let default_projects = get_ruination_home()
             .map(|h| to_slash(&h.join("projects")))
             .ok();
         Self {
@@ -125,7 +125,7 @@ impl Default for FlintSettings {
 // =============================================================================
 
 /// Returns `%APPDATA%/The Ruination` — the canonical app home.
-pub fn get_flint_home() -> Result<PathBuf, String> {
+pub fn get_ruination_home() -> Result<PathBuf, String> {
     let appdata = std::env::var("APPDATA")
         .map_err(|_| "APPDATA environment variable not found".to_string())?;
     Ok(PathBuf::from(appdata).join("The Ruination"))
@@ -133,7 +133,7 @@ pub fn get_flint_home() -> Result<PathBuf, String> {
 
 /// Ensures the full folder scaffold exists under `%APPDATA%/The Ruination/`.
 pub fn ensure_folder_structure() -> Result<PathBuf, String> {
-    let home = get_flint_home()?;
+    let home = get_ruination_home()?;
 
     // Preserve existing user data when upgrading from the previous app identity.
     let appdata = std::env::var("APPDATA")
@@ -160,21 +160,21 @@ pub fn ensure_folder_structure() -> Result<PathBuf, String> {
 }
 
 fn settings_path() -> Result<PathBuf, String> {
-    Ok(get_flint_home()?.join("settings.json"))
+    Ok(get_ruination_home()?.join("settings.json"))
 }
 
 // =============================================================================
 // Read / Write
 // =============================================================================
 
-fn read_settings_from_disk() -> Result<FlintSettings, String> {
+fn read_settings_from_disk() -> Result<RuinationSettings, String> {
     let path = settings_path()?;
     if !path.exists() {
-        return Ok(FlintSettings::default());
+        return Ok(RuinationSettings::default());
     }
     let data = std::fs::read_to_string(&path)
         .map_err(|e| format!("Failed to read settings: {}", e))?;
-    let mut settings: FlintSettings = serde_json::from_str(&data)
+    let mut settings: RuinationSettings = serde_json::from_str(&data)
         .map_err(|e| format!("Failed to parse settings: {}", e))?;
     settings.normalize_paths();
     Ok(settings)
@@ -190,7 +190,7 @@ pub(crate) fn auto_update_enabled() -> bool {
         })
 }
 
-fn write_settings_to_disk(settings: &FlintSettings) -> Result<(), String> {
+fn write_settings_to_disk(settings: &RuinationSettings) -> Result<(), String> {
     let path = settings_path()?;
     if let Some(parent) = path.parent() {
         std::fs::create_dir_all(parent)
@@ -222,18 +222,18 @@ pub fn initialize_app_home() -> Result<PathBuf, String> {
 
 #[tauri::command]
 pub fn get_app_home() -> Result<String, String> {
-    get_flint_home().map(|p| to_slash(&p))
+    get_ruination_home().map(|p| to_slash(&p))
 }
 
 /// Load settings from disk. Returns defaults if file doesn't exist yet.
 #[tauri::command]
-pub fn get_settings() -> Result<FlintSettings, String> {
+pub fn get_settings() -> Result<RuinationSettings, String> {
     read_settings_from_disk()
 }
 
 /// Persist settings to disk.
 #[tauri::command]
-pub fn save_settings(settings: FlintSettings) -> Result<(), String> {
+pub fn save_settings(settings: RuinationSettings) -> Result<(), String> {
     write_settings_to_disk(&settings)
 }
 
@@ -245,7 +245,7 @@ pub fn migrate_projects() -> Result<MigrateProjectsResult, String> {
     let appdata = std::env::var("APPDATA")
         .map_err(|_| "APPDATA not found".to_string())?;
     let old_dir = PathBuf::from(&appdata).join("RitoShark").join("Flint").join("Projects");
-    let new_dir = get_flint_home()?.join("projects");
+    let new_dir = get_ruination_home()?.join("projects");
 
     let mut moved = 0u32;
     let mut skipped = 0u32;
@@ -361,7 +361,7 @@ pub struct ThemeInfo {
 
 #[tauri::command]
 pub fn list_themes() -> Result<Vec<ThemeInfo>, String> {
-    let themes_dir = get_flint_home()?.join("themes");
+    let themes_dir = get_ruination_home()?.join("themes");
     if !themes_dir.exists() {
         return Ok(vec![]);
     }
@@ -391,7 +391,7 @@ pub fn list_themes() -> Result<Vec<ThemeInfo>, String> {
 
 #[tauri::command]
 pub fn load_theme(theme_id: String) -> Result<serde_json::Value, String> {
-    let path = get_flint_home()?.join("themes").join(format!("{}.json", theme_id));
+    let path = get_ruination_home()?.join("themes").join(format!("{}.json", theme_id));
     if !path.exists() {
         return Err(format!("Theme '{}' not found", theme_id));
     }
@@ -408,7 +408,7 @@ pub fn load_theme(theme_id: String) -> Result<serde_json::Value, String> {
 /// JSON files to bind to instead of synthetic in-memory presets.
 #[tauri::command]
 pub fn seed_builtin_themes() -> Result<(), String> {
-    let themes_dir = get_flint_home()?.join("themes");
+    let themes_dir = get_ruination_home()?.join("themes");
     std::fs::create_dir_all(&themes_dir).map_err(|e| e.to_string())?;
 
     let lily = themes_dir.join("lilypad.json");
@@ -547,7 +547,7 @@ pub fn seed_builtin_themes() -> Result<(), String> {
 /// Write a default theme template to the themes directory for users to customize.
 #[tauri::command]
 pub fn create_default_theme() -> Result<String, String> {
-    let path = get_flint_home()?.join("themes").join("custom.json");
+    let path = get_ruination_home()?.join("themes").join("custom.json");
     if path.exists() {
         return Ok(to_slash(&path));
     }
@@ -601,7 +601,7 @@ pub fn migrate_from_localstorage(legacy_json: String) -> Result<(), String> {
 
     let state = blob.get("state").unwrap_or(&blob);
 
-    let settings = FlintSettings {
+    let settings = RuinationSettings {
         schema_version: SCHEMA_VERSION,
         league_path: state.get("leaguePath").and_then(|v| v.as_str()).map(String::from),
         league_path_pbe: state.get("leaguePathPbe").and_then(|v| v.as_str()).map(String::from),
@@ -625,7 +625,7 @@ pub fn migrate_from_localstorage(legacy_json: String) -> Result<(), String> {
         selected_theme: None,
     };
 
-    let backup_dir = get_flint_home()?.join("backups");
+    let backup_dir = get_ruination_home()?.join("backups");
     std::fs::create_dir_all(&backup_dir).ok();
     let backup_path = backup_dir.join("pre-migration-localstorage.json");
     std::fs::write(&backup_path, &legacy_json).ok();
