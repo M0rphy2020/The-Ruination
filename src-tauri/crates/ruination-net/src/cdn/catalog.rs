@@ -117,7 +117,7 @@ fn tree_cache_path(cache_dir: &Path, region: &str, platform: &str) -> PathBuf {
 async fn http_get_text(client: &reqwest::Client, url: &str) -> Result<String> {
     let resp = client
         .get(url)
-        .header(reqwest::header::USER_AGENT, "flint")
+        .header(reqwest::header::USER_AGENT, "The-Ruination")
         .send()
         .await
         .map_err(|e| Error::Cdn(format!("github request: {e}")))?;
