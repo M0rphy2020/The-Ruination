@@ -768,7 +768,7 @@ pub async fn aggregate_bin_schema(
     let mut output = String::with_capacity(4 * 1024 * 1024);
 
     use std::fmt::Write;
-    let _ = writeln!(output, "# Whole-Game BIN Schema Reference — Flint");
+    let _ = writeln!(output, "# Whole-Game BIN Schema Reference — The Ruination");
     let _ = writeln!(output, "# Generated: {}", chrono::Utc::now().to_rfc3339());
     let _ = writeln!(
         output,
