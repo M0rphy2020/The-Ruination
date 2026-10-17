@@ -1593,7 +1593,7 @@ name = "flint-bin"
 version = "0.1.0"
 dependencies = [
  "dashmap",
- "flint-hash",
+ "ruination-hash",
  "indexmap 2.13.0",
  "parking_lot",
  "rayon",
@@ -1620,7 +1620,7 @@ dependencies = [
  "flate2",
  "flint-bin",
  "flint-formats",
- "flint-hash",
+ "ruination-hash",
  "flint-net",
  "flint-wad",
  "futures",
@@ -1668,7 +1668,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "flint-hash"
+name = "ruination-hash"
 version = "0.1.0"
 dependencies = [
  "chrono",
@@ -1694,7 +1694,7 @@ dependencies = [
 name = "flint-net"
 version = "0.1.0"
 dependencies = [
- "flint-hash",
+ "ruination-hash",
  "futures-util",
  "reqwest",
  "ritoshark",
@@ -1737,7 +1737,7 @@ dependencies = [
  "dashmap",
  "flate2",
  "flint-bin",
- "flint-hash",
+ "ruination-hash",
  "heed",
  "memmap2",
  "parking_lot",
