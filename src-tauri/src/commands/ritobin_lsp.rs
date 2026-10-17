@@ -298,14 +298,14 @@ pub async fn ritobin_lsp_start(
                         // Closing stderr alone does not terminate a healthy protocol session.
                         return std::future::pending::<Result<(), String>>().await;
                     }
-                    messages.send(json!({"method":"flint/stderr", "params": {"message":String::from_utf8_lossy(&line).trim_end()}})).map_err(|e| e.to_string())?;
+                    messages.send(json!({"method":"ruination/stderr", "params": {"message":String::from_utf8_lossy(&line).trim_end()}})).map_err(|e| e.to_string())?;
                 }
             };
             let result = tokio::select! { r = reader => r, r = writer => r, r = server_logs => r, _ = cancelled => Ok(()) };
             let _ = child.kill().await;
             let _ = child.wait().await;
             handle.state::<LspState>().sessions.lock().remove(&id);
-            let _ = messages.send(json!({"method":"flint/exited", "params": {"message":result.err().unwrap_or_else(|| "Language server stopped".into())}}));
+            let _ = messages.send(json!({"method":"ruination/exited", "params": {"message":result.err().unwrap_or_else(|| "Language server stopped".into())}}));
         });
         Ok(())
     }.await;
