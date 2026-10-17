@@ -8,10 +8,10 @@
 //!   2. same directory + same extension + same leading stem token,
 //!      ranked by how many leading dot-separated tokens both filenames share.
 
-use flint_core::path_slash::to_slash;
-use flint_core::overlay::HashResolver;
-use flint_core::hash::ResolvedHashes;
-use flint_core::wad::adapter::WadHandle as WadReader;
+use ruination_core::path_slash::to_slash;
+use ruination_core::overlay::HashResolver;
+use ruination_core::hash::ResolvedHashes;
+use ruination_core::wad::adapter::WadHandle as WadReader;
 use crate::state::{HashOverlayState, WadCacheState};
 use serde::{Deserialize, Serialize};
 use std::path::{Path, PathBuf};
@@ -229,7 +229,7 @@ pub async fn find_original_file(
     // `resolve_wad_bulk` is the rayon-parallel bulk path and omits misses
     // natively, so no hex-filter is needed to strip unresolved entries back
     // out.
-    let hash_dir = flint_core::hash::get_hash_dir()
+    let hash_dir = ruination_core::hash::get_hash_dir()
         .map(|p| p.to_string_lossy().into_owned())
         .unwrap_or_default();
     let overlay = hash_overlay_state.get();
@@ -333,7 +333,7 @@ pub async fn create_file_backup(
         return Err(format!("File not found: {}", src.display()));
     }
     let dst = backup_path_for(&project_path, &file_rel_path)?;
-    flint_core::project_storage::ensure_metadata_dir(Path::new(&project_path))
+    ruination_core::project_storage::ensure_metadata_dir(Path::new(&project_path))
         .map_err(|e| format!("Failed to initialize metadata dir: {}", e))?;
     if let Some(parent) = dst.parent() {
         std::fs::create_dir_all(parent)
