@@ -116,7 +116,7 @@ export const AddLayerModal: React.FC = () => {
             .catch((err) => {
                 if (cancelled) return;
                 setTree(null);
-                setLoadError((err as api.FlintError)?.getUserMessage?.() || String(err));
+                setLoadError((err as api.RuinationError)?.getUserMessage?.() || String(err));
             })
             .finally(() => {
                 if (!cancelled) setLoading(false);
@@ -248,7 +248,7 @@ export const AddLayerModal: React.FC = () => {
             if (activeTab) setFileTree(activeTab.id, await api.listProjectFiles(activeTab.projectPath));
             closeModal();
         } catch (err) {
-            showToast('error', (err as api.FlintError)?.getUserMessage?.() || t('addLayer.failed'));
+            showToast('error', (err as api.RuinationError)?.getUserMessage?.() || t('addLayer.failed'));
         } finally {
             setBusy(false);
         }
