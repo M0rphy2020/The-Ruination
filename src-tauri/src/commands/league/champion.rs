@@ -1,4 +1,4 @@
-use flint_core::champion::{
+use ruination_core::champion::{
     discover_champions as core_discover_champions,
     get_champion_skins as core_get_champion_skins,
     ChampionInfo, SkinInfo,

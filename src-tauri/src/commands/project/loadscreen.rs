@@ -1,7 +1,7 @@
 //! Loading-screen project creation and its BIN/spritesheet plumbing.
 
-use flint_core::path_slash::to_slash;
-use flint_core::project::{
+use ruination_core::path_slash::to_slash;
+use ruination_core::project::{
     create_project as core_create_project,
     open_project as core_open_project,
     register_in_index as core_register_in_index,
@@ -9,7 +9,7 @@ use flint_core::project::{
     Project,
 };
 use crate::core::ipc_trace;
-use flint_core::loadscreen::{encode_spritesheet_to_tex, extract_animation_params_from_bin, extract_uibase_from_game, inject_animation_block, AnimationParams};
+use ruination_core::loadscreen::{encode_spritesheet_to_tex, extract_animation_params_from_bin, extract_uibase_from_game, inject_animation_block, AnimationParams};
 use std::path::PathBuf;
 use tauri::Emitter;
 #[tauri::command]

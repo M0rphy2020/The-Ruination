@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">The Ruination</title>
+  <desc id="desc">A dark fantasy crown with a luminous teal jewel.</desc>
+  <defs>
+    <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f0eadc"/><stop offset=".48" stop-color="#a7a08f"/><stop offset="1" stop-color="#555e64"/>
+    </linearGradient>
+    <linearGradient id="gem" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#b8fff3"/><stop offset="1" stop-color="#318b8e"/>
+    </linearGradient>
+  </defs>
+  <circle cx="256" cy="256" r="226" fill="#0c1116" stroke="#29373c" stroke-width="5"/>
+  <circle cx="256" cy="256" r="207" fill="none" stroke="#58767a" stroke-width="2" opacity=".55"/>
+  <path d="M105 166 168 220 224 112 281 220 354 145 387 300 126 300Z" fill="#111d22" stroke="url(#metal)" stroke-width="13" stroke-linejoin="round"/>
+  <path d="M126 300H387L360 351H153Z" fill="url(#metal)" stroke="#38454a" stroke-width="7" stroke-linejoin="round"/>
+  <path d="M168 220 206 286 224 112 243 286 281 220 272 300H180Z" fill="#1b3a3e" stroke="#6fc9c4" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M256 227 286 258 256 290 226 258Z" fill="url(#gem)" stroke="#d8fff5" stroke-width="4"/>
+  <path d="M153 371H360" stroke="#70c4bf" stroke-width="5" stroke-linecap="round" opacity=".8"/>
+</svg>

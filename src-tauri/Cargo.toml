@@ -1,5 +1,5 @@
 [workspace]
-members = [".", "crates/flint-core", "crates/flint-formats", "crates/flint-hash", "crates/flint-net", "crates/flint-bin", "crates/flint-wad", "crates/hematite-flint", "crates/flint-shaderforge"]
+members = [".", "crates/ruination-core", "crates/ruination-formats", "crates/ruination-hash", "crates/ruination-net", "crates/ruination-bin", "crates/ruination-wad", "crates/hematite-ruination", "crates/ruination-shaderforge"]
 
 # Single source of truth for deps shared across the workspace crates. Before
 # this, bumping `ritoshark` meant editing seven manifests and silently getting
@@ -16,18 +16,18 @@ rayon = "1.10"
 walkdir = "2.4"
 
 [package]
-name = "flint"
+name = "the-ruination"
 version = "3.0.5"
 edition = "2021"
 license = "AGPL-3.0-only"
-default-run = "flint"
+default-run = "the-ruination"
 
 [lib]
-name = "flint"
+name = "the_ruination"
 path = "src/lib.rs"
 
 [[bin]]
-name = "flint"
+name = "the-ruination"
 path = "src/main.rs"
 
 
@@ -36,17 +36,17 @@ tauri-build = { version = "2", features = [] }
 
 [dependencies]
 # Core library (all format/domain deps live here)
-flint-core = { path = "crates/flint-core" }
+ruination-core = { path = "crates/ruination-core" }
 # Skin-fixer engine (wraps Hematite's hematite-orchestrate). Its hematite deps
 # pin rs_* at their own rev. Cargo unifies them with ritoshark below into ONE
 # copy of rs_* — verified in Cargo.lock, which holds a single rs_file entry.
-hematite-flint = { path = "crates/hematite-flint" }
+hematite-ruination = { path = "crates/hematite-ruination" }
 # Shader-preview module boundary — stub by default; the `shaderforge`
 # feature compiles the private overlay when present (see the crate's docs).
-flint-shaderforge = { path = "crates/flint-shaderforge" }
+ruination-shaderforge = { path = "crates/ruination-shaderforge" }
 # RST: MIGRATED to ritoshark::rst (Phase 4) — the standalone dep was removed.
 # RitoShark crates — migration target. Binary-crate commands use ritoshark types directly;
-# same git rev as flint-core's dep, so cargo compiles ONE shared copy (identical types across crates).
+# same git rev as ruination-core's dep, so cargo compiles ONE shared copy (identical types across crates).
 ritoshark.workspace = true
 # 0.4 matches image_dds's pin so only ONE copy of the ISPC kernels compiles
 # (0.4 and 0.5 have identical Surface/bc1 APIs).
@@ -69,7 +69,7 @@ serde_json.workspace = true
 # Async runtime
 tokio.workspace = true
 # Same major as tauri-plugin-updater's reqwest so ONE HTTP stack compiles.
-# `rustls-no-provider` + the explicit ring pin in flint-core avoids compiling the
+# `rustls-no-provider` + the explicit ring pin in ruination-core avoids compiling the
 # heavy aws-lc-sys default provider (mirrors tauri-plugin-updater's TLS setup).
 reqwest = { version = "0.13", default-features = false, features = ["json", "stream", "rustls-no-provider"] }
 futures = { version = "0.3", default-features = false, features = ["std", "async-await"] }
@@ -88,7 +88,7 @@ dashmap = "6"
 # are xxh64 outputs; SipHash-1-3 on top of them is 5-10× slower than FxHash.
 rustc-hash = "2"
 
-# Hashing (matches flint-core's version — used by extract_hashes)
+# Hashing (matches ruination-core's version — used by extract_hashes)
 xxhash-rust = { version = "0.8", features = ["xxh64"] }
 
 # Logging
@@ -138,8 +138,8 @@ tempfile = "3"
 [features]
 custom-protocol = ["tauri/custom-protocol"]
 # Compiles the private shader-preview overlay when present
-# (crates/flint-shaderforge). Default off — public builds use the stub.
-shaderforge = ["flint-shaderforge/real"]
+# (crates/ruination-shaderforge). Default off — public builds use the stub.
+shaderforge = ["ruination-shaderforge/real"]
 
 # =============================================================================
 # BUILD PROFILES - Optimized for fast incremental compilation

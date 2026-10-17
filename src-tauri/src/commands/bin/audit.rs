@@ -1,7 +1,7 @@
 use std::collections::BTreeMap;
 use std::path::{Path, PathBuf};
 
-use flint_core::bin::{AuditReport, CheckIssue};
+use ruination_core::bin::{AuditReport, CheckIssue};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize)]
@@ -28,7 +28,7 @@ runs on a blocking thread. */
 pub async fn audit_wad_folder(app: tauri::AppHandle, folder_path: String) -> Result<AuditReport, String> {
     super::meta_schema::refresh(&app).await;
     tokio::task::spawn_blocking(move || {
-        flint_core::bin::audit_wad_folder(std::path::Path::new(&folder_path))
+        ruination_core::bin::audit_wad_folder(std::path::Path::new(&folder_path))
     })
     .await
     .map_err(|e| format!("Audit task failed: {}", e))?
@@ -42,7 +42,7 @@ pub async fn audit_project_missing_refs(app: tauri::AppHandle, project_path: Str
     super::meta_schema::refresh(&app).await;
     tokio::task::spawn_blocking(move || {
         let folders =
-            flint_core::export::project_wad_folders(std::path::Path::new(&project_path))?;
+            ruination_core::export::project_wad_folders(std::path::Path::new(&project_path))?;
 
         use rayon::prelude::*;
         let audits: Vec<(String, Result<AuditReport, String>)> = folders
@@ -53,7 +53,7 @@ pub async fn audit_project_missing_refs(app: tauri::AppHandle, project_path: Str
                     .unwrap_or_default()
                     .to_string_lossy()
                     .to_string();
-                (wad, flint_core::bin::audit_wad_folder(folder))
+                (wad, ruination_core::bin::audit_wad_folder(folder))
             })
             .collect();
 
@@ -85,7 +85,7 @@ pub async fn audit_project_missing_refs(app: tauri::AppHandle, project_path: Str
         report.total_critical = report
             .issues
             .iter()
-            .filter(|i| i.severity == flint_core::bin::Severity::Critical)
+            .filter(|i| i.severity == ruination_core::bin::Severity::Critical)
             .count();
 
         Ok(report)
@@ -118,7 +118,7 @@ pub async fn recheck_project_file(
         if !folder.is_dir() {
             return Ok(Vec::new());
         }
-        let mut issues = flint_core::bin::check_one_file(&folder, inner)?;
+        let mut issues = ruination_core::bin::check_one_file(&folder, inner)?;
         for issue in &mut issues {
             issue.file = format!("{wad}/{}", issue.file);
         }
@@ -136,7 +136,7 @@ pub async fn recheck_standalone_file(
 ) -> Result<Vec<CheckIssue>, String> {
     super::meta_schema::refresh(&app).await;
     tokio::task::spawn_blocking(move || {
-        flint_core::bin::check_file_path(Path::new(&file_path))
+        ruination_core::bin::check_file_path(Path::new(&file_path))
     })
     .await
     .map_err(|e| format!("Recheck task failed: {e}"))?
@@ -225,13 +225,13 @@ struct RetypeOutcome {
 
 fn retype_one_bin(path: &Path, fixes: &[RetypeRequest]) -> Result<RetypeOutcome, String> {
     let data = std::fs::read(path).map_err(|e| format!("Failed to read: {e}"))?;
-    let bin = flint_core::bin::read_bin(&data).map_err(|e| format!("{e}"))?;
-    let mut text = flint_core::bin::render_bin_text(&bin, path).map_err(|e| format!("{e}"))?;
+    let bin = ruination_core::bin::read_bin(&data).map_err(|e| format!("{e}"))?;
+    let mut text = ruination_core::bin::render_bin_text(&bin, path).map_err(|e| format!("{e}"))?;
 
     let mut changed = 0usize;
     let mut stale = Vec::new();
     for fix in fixes {
-        let result = flint_core::bin::apply_type_fix(&text, &fix.field, &fix.from, &fix.to, &fix.lines);
+        let result = ruination_core::bin::apply_type_fix(&text, &fix.field, &fix.from, &fix.to, &fix.lines);
         changed += result.changed.len();
         stale.extend(result.stale);
         text = result.text;
@@ -244,7 +244,7 @@ fn retype_one_bin(path: &Path, fixes: &[RetypeRequest]) -> Result<RetypeOutcome,
     crate::core::write_echo::mark(path);
     std::fs::write(path, &bytes).map_err(|e| format!("Failed to write: {e}"))?;
     super::bin::merge_into_files_txt(path, &trailer);
-    flint_core::bin::forget_mod_root(path);
+    ruination_core::bin::forget_mod_root(path);
 
     Ok(RetypeOutcome { changed, stale })
 }
@@ -252,7 +252,7 @@ fn retype_one_bin(path: &Path, fixes: &[RetypeRequest]) -> Result<RetypeOutcome,
 /// One restore point before the batch. A folder outside a Flint project has nowhere to
 /// put one, which is reported rather than treated as a failure.
 async fn restore_point(app: &tauri::AppHandle, folder: &Path, count: usize) -> Option<String> {
-    let project = flint_core::mesh::discovery::find_project_root(folder)?;
+    let project = ruination_core::mesh::discovery::find_project_root(folder)?;
     let message = format!(
         "Before fixing {count} declaration{}",
         if count == 1 { "" } else { "s" }

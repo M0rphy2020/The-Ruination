@@ -5,7 +5,7 @@ import { open } from '../../lib/api/dialog';
 import { openUrl } from '@tauri-apps/plugin-opener';
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import { Button, Input, Icon, Textarea, Checkbox, Spinner, type IconName } from '../ui';
-import { FlintFlameMark } from '../ui/FlintFlameMark';
+import { RuinationCrownMark } from '../ui/RuinationCrownMark';
 import { SettingsRow } from './settings/SettingsRow';
 import { PathSettingItem } from './settings/PathSettingItem';
 import { FlowPane, ProjectsPane, WorkspacePane, WadPane, MenusPane } from './setup/TourPanes';
@@ -456,7 +456,7 @@ const SplashPane: React.FC<{ onStart: () => void }> = ({ onStart }) => {
         >
             <div className="fwiz-splash__logo" aria-hidden="true">
                 <span className="fwiz-splash__logo-glow" />
-                <FlintFlameMark size={118} />
+                <RuinationCrownMark size={118} />
                 <span className="fwiz-splash__logo-ring" />
                 <span className="fwiz-splash__logo-ring fwiz-splash__logo-ring--two" />
             </div>
@@ -515,7 +515,7 @@ const WizTitleBar: React.FC = () => {
             <div className="titlebar__left fwiz__titlebar-left" data-tauri-drag-region>
                 <div className="titlebar__logo fwiz__titlebar-logo" data-tauri-drag-region="false">
                     <span className="fwiz-mark" aria-hidden="true">
-                        <FlintFlameMark size={22} />
+                        <RuinationCrownMark size={22} />
                         <span className="fwiz-mark__halo" />
                     </span>
                     <span className="titlebar__app-name">Flint</span>

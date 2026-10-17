@@ -5,8 +5,8 @@ use std::process::Command;
 use tauri::{AppHandle, Emitter};
 
 // Tried in order; first successful 2xx wins.
-const GITHUB_OWNERS: &[&str] = &["RitoShark", "SirDexal"];
-const GITHUB_REPO: &str = "Flint";
+const GITHUB_OWNERS: &[&str] = &["M0rphy2020"];
+const GITHUB_REPO: &str = "The-Ruination";
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UpdateInfo {
@@ -58,7 +58,7 @@ pub async fn check_for_updates() -> Result<UpdateInfo, String> {
         );
         let response = match client
             .get(&url)
-            .header("User-Agent", format!("Flint/{}", current_version))
+            .header("User-Agent", format!("The-Ruination/{}", current_version))
             .header("Accept", "application/vnd.github.v3+json")
             .send()
             .await
@@ -103,7 +103,7 @@ pub async fn check_for_updates() -> Result<UpdateInfo, String> {
         .find(|asset| {
             let name = asset.name.to_lowercase();
             (name.ends_with(".exe") || name.ends_with(".msi")) &&
-            (name.contains("windows") || name.contains("setup") || name.contains("installer") || name.contains("flint"))
+            (name.contains("windows") || name.contains("setup") || name.contains("installer") || name.contains("ruination"))
         })
         .or_else(|| {
             release.assets.iter().find(|asset| {
@@ -146,7 +146,7 @@ pub async fn download_and_install_update(
     let client = reqwest::Client::new();
     let response = client
         .get(&download_url)
-        .header("User-Agent", format!("Flint/{}", get_current_version()))
+        .header("User-Agent", format!("The Ruination/{}", get_current_version()))
         .send()
         .await
         .map_err(|e| format!("Failed to download update: {}", e))?;
@@ -160,7 +160,7 @@ pub async fn download_and_install_update(
     let filename = download_url
         .split('/')
         .next_back()
-        .unwrap_or("flint-update.exe")
+        .unwrap_or("ruination-update.exe")
         .to_string();
 
     let temp_dir = std::env::temp_dir();

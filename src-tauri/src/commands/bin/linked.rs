@@ -1,5 +1,5 @@
-use flint_core::bin::read_bin;
-use flint_core::mesh::ritobin::{render_bin, resolve_linked_bin_path};
+use ruination_core::bin::read_bin;
+use ruination_core::mesh::ritobin::{render_bin, resolve_linked_bin_path};
 use serde::Serialize;
 use std::path::{Path, PathBuf};
 
@@ -24,7 +24,7 @@ pub async fn list_linked_bin_texts(bin_path: String) -> Result<Vec<LinkedBinText
     let bytes = std::fs::read(&path).map_err(|e| format!("Failed to read {bin_path}: {e}"))?;
     let tree = read_bin(&bytes).map_err(|e| format!("Failed to parse {bin_path}: {e}"))?;
 
-    let project_root = flint_core::mesh::discovery::find_project_root(&path);
+    let project_root = ruination_core::mesh::discovery::find_project_root(&path);
     let mut out = Vec::new();
 
     for linked in &tree.linked {

@@ -125,7 +125,7 @@ fn replace_reference_tail(text: &str, tail: &str, new_name: &str) -> String {
 /// path, because BIN text carries mixed-case game paths (`ASSETS/Characters/...`)
 /// whose prefix has nothing to do with the project's on-disk layout.
 fn update_bin_references(project_root: &Path, old_rel: &str, new_rel: &str) -> u32 {
-    use flint_core::bin::{read_bin, write_bin, tree_to_text_cached, text_to_tree};
+    use ruination_core::bin::{read_bin, write_bin, tree_to_text_cached, text_to_tree};
 
     // Match by filename only — BIN text paths have different casing/prefixes.
     let old_name = match Path::new(old_rel).file_name().and_then(|n| n.to_str()) {

@@ -15,7 +15,7 @@ use std::collections::{BTreeMap, BTreeSet};
 use std::io::{BufReader, Read};
 use std::path::Path;
 
-use flint_core::project::Project;
+use ruination_core::project::Project;
 use ritoshark::hash::fnv1a;
 
 const CATEGORY_SPECS: &[(&str, &str, u64)] = &[
@@ -101,7 +101,7 @@ pub fn collect_project_tables(project_path: &Path) -> ProjectTables {
         }
     }
 
-    let Ok(folders) = flint_core::export::project_wad_folders(project_path) else {
+    let Ok(folders) = ruination_core::export::project_wad_folders(project_path) else {
         return out;
     };
     for wad_dir in folders {
@@ -145,12 +145,12 @@ pub fn collect_project_tables(project_path: &Path) -> ProjectTables {
                             continue;
                         }
                         let Ok(bytes) = std::fs::read(&path) else { continue };
-                        let Ok(bin) = flint_core::bin::read_bin(&bytes) else { continue };
+                        let Ok(bin) = ruination_core::bin::read_bin(&bytes) else { continue };
                         // A flat side table doesn't say which keyspace a name came
                         // from; an entry's own path hash does.
                         let entries: std::collections::HashSet<u32> =
                             bin.entries.iter().map(|e| e.path_hash).collect();
-                        let trailer = flint_core::bin::read_trailer(&bin.trailing);
+                        let trailer = ruination_core::bin::read_trailer(&bin.trailing);
                         out.game
                             .extend(trailer.files.values().filter(|n| is_valid_name(n)).cloned());
                         for (hash, name) in &trailer.names {
@@ -338,7 +338,7 @@ pub fn register_names(hash_dir: &Path, imported: &ImportedHashtables) {
     let game: BTreeMap<u64, String> = imported
         .game
         .iter()
-        .map(|n| (flint_core::hash::wad_chunk_hash(n), n.clone()))
+        .map(|n| (ruination_core::hash::wad_chunk_hash(n), n.clone()))
         .collect();
     let bin: BTreeMap<u32, String> = imported.bin.iter().map(|n| (fnv1a(n), n.clone())).collect();
     if game.is_empty() && bin.is_empty() {
@@ -354,10 +354,10 @@ pub fn register_names(hash_dir: &Path, imported: &ImportedHashtables) {
     {
         tracing::warn!("Failed to merge embedded hashtable names: {e}");
     }
-    if let Err(e) = flint_core::hash::bin_dict::save_custom_file_hashes(&game) {
+    if let Err(e) = ruination_core::hash::bin_dict::save_custom_file_hashes(&game) {
         tracing::warn!("Failed to save custom file hashes: {e}");
     }
-    if let Err(e) = flint_core::hash::bin_dict::save_custom_bin_hashes(&bin) {
+    if let Err(e) = ruination_core::hash::bin_dict::save_custom_bin_hashes(&bin) {
         tracing::warn!("Failed to save custom bin hashes: {e}");
     }
 }

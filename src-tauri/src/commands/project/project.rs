@@ -1,6 +1,6 @@
 //! Tauri commands for project management.
 
-use flint_core::project::{
+use ruination_core::project::{
     create_project as core_create_project,
     read_game_version,
     open_project as core_open_project,
@@ -8,12 +8,12 @@ use flint_core::project::{
     save_project as core_save_project,
     Project,
 };
-use flint_core::repath::{organize_project, rename_project_asset_prefix, OrganizerConfig, RenameResult};
-use flint_core::wad::extractor::{
+use ruination_core::repath::{organize_project, rename_project_asset_prefix, OrganizerConfig, RenameResult};
+use ruination_core::wad::extractor::{
     find_champion_wad, find_voiceover_wads, extract_skin_assets, extract_skin_assets_selective,
     wad_contains_skin_bin, AudioExtraction,
 };
-use flint_core::hash::{resolve_hashes_lmdb_bulk, ResolvedHashes};
+use ruination_core::hash::{resolve_hashes_lmdb_bulk, ResolvedHashes};
 use crate::state::LmdbCacheState;
 use crate::core::ipc_trace;
 use super::tree::purge_from_index;
@@ -60,7 +60,7 @@ fn write_project_files_txt(assets_root: &Path) -> Result<usize, String> {
 
     let mut per_wad: BTreeMap<PathBuf, BTreeMap<String, String>> = BTreeMap::new();
 
-    for wad_dir in flint_core::export::project_wad_folders(
+    for wad_dir in ruination_core::export::project_wad_folders(
         assets_root.parent().unwrap_or(assets_root),
     )
     .unwrap_or_default()
@@ -78,8 +78,8 @@ fn write_project_files_txt(assets_root: &Path) -> Result<usize, String> {
                             continue;
                         }
                         let Ok(bytes) = std::fs::read(&path) else { continue };
-                        let Ok(bin) = flint_core::bin::read_bin(&bytes) else { continue };
-                        let trailer = flint_core::bin::embedded_names(&bin);
+                        let Ok(bin) = ruination_core::bin::read_bin(&bytes) else { continue };
+                        let trailer = ruination_core::bin::embedded_names(&bin);
                         for (hash, name) in &trailer.names {
                             entries.entry(name.clone()).or_insert_with(|| format!("{hash:08x}"));
                         }
@@ -154,7 +154,7 @@ pub async fn create_project(
         "message": "Initializing..."
     }));
 
-    let hash_dir = flint_core::hash::get_hash_dir()
+    let hash_dir = ruination_core::hash::get_hash_dir()
         .map(|p| p.to_string_lossy().into_owned())
         .unwrap_or_default();
     let t = Instant::now();
@@ -484,7 +484,7 @@ pub async fn create_project(
         }
     }
 
-    // flint.json is written before the repath runs, so the prefix and the
+    // legacy flint.json metadata is written before the repath runs, so the prefix and the
     // finished timestamps only land on this second save.
     if let Err(e) = core_save_project(&project) {
         tracing::warn!("Failed to record project provenance: {}", e);
@@ -525,7 +525,7 @@ pub async fn open_project(path: String) -> Result<Project, String> {
         let project_clone = project.clone();
         let parent = parent.to_path_buf();
         let _ = tokio::task::spawn_blocking(move || {
-            flint_core::project::register_in_index(&parent, &project_clone)
+            ruination_core::project::register_in_index(&parent, &project_clone)
         })
         .await;
     }
@@ -533,14 +533,14 @@ pub async fn open_project(path: String) -> Result<Project, String> {
     Ok(project)
 }
 
-/// Walk a projects root directory, return every Flint project found there
+/// Walk a projects root directory, return every Ruination project found there
 /// merged with the on-disk `projects.json` index.
 #[tauri::command]
 pub async fn discover_projects(
     projects_root: String,
-) -> Result<Vec<flint_core::project::ProjectListing>, String> {
+) -> Result<Vec<ruination_core::project::ProjectListing>, String> {
     let root = PathBuf::from(projects_root);
-    tokio::task::spawn_blocking(move || flint_core::project::discover_projects(&root))
+    tokio::task::spawn_blocking(move || ruination_core::project::discover_projects(&root))
         .await
         .map_err(|e| format!("Task failed: {}", e))?
         .map_err(|e| e.to_string())
@@ -554,7 +554,7 @@ pub async fn forget_project(
     pid: String,
 ) -> Result<bool, String> {
     let root = PathBuf::from(projects_root);
-    tokio::task::spawn_blocking(move || flint_core::project::remove_from_index(&root, &pid))
+    tokio::task::spawn_blocking(move || ruination_core::project::remove_from_index(&root, &pid))
         .await
         .map_err(|e| format!("Task failed: {}", e))?
         .map_err(|e| e.to_string())
@@ -585,7 +585,7 @@ pub struct HardRenameResult {
 
 /// Hard-rename a project everywhere: rewrite the asset prefix
 /// (`ASSETS/{creator}/{old}` → `…/{new}`) inside every BIN, rename the matching
-/// on-disk asset folders, update `mod.config.json` + `flint.json`, and finally
+/// on-disk asset folders, update `mod.config.json` + `legacy `flint.json`, and finally
 /// rename the project directory itself. Returns the new path + updated project.
 ///
 /// Irreversible — the frontend warns before calling.
@@ -769,7 +769,7 @@ pub async fn delete_project(
 #[cfg(test)]
 mod delete_project_tests {
     use super::*;
-    use flint_core::project::{read_index, save_project as core_save_project, Project};
+    use ruination_core::project::{read_index, save_project as core_save_project, Project};
 
     /// Write a real project (mod.config.json + flint.json) and index it.
     fn scaffold(root: &Path, dir_name: &str) -> (PathBuf, String) {

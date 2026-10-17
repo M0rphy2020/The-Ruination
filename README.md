@@ -1,11 +1,11 @@
 <div align="center">
 
-<img src="docs/media/flint-logo.gif" alt="Flint" width="500">
+<img src="docs/media/the-ruination-logo.svg" alt="The Ruination" width="500">
 
 [![Rust](https://img.shields.io/badge/Rust-stable-orange?style=flat-square&logo=rust)](https://www.rust-lang.org/)
 [![Tauri](https://img.shields.io/badge/Tauri-2.0-24C8D8?style=flat-square&logo=tauri)](https://tauri.app/)
 [![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react)](https://react.dev/)
-[![Release](https://img.shields.io/github/v/release/RitoShark/Flint?style=flat-square&color=f5a422)](https://github.com/RitoShark/Flint/releases/latest)
+[![Release](https://img.shields.io/github/v/release/M0rphy2020/The-Ruination?style=flat-square&color=f5a422)](https://github.com/M0rphy2020/The-Ruination/releases/latest)
 [![License](https://img.shields.io/badge/License-AGPL--3.0-22c55e?style=flat-square)](LICENSE)
 
 [Download](#download) · [Features](#features) · [Documentation](docs/README.md) · [License](#license)
@@ -14,7 +14,7 @@
 
 ---
 
-Point Flint at your League install, pick a skin, and you get a real project. Files on disk, previews that render properly, editors for the formats League actually uses, and an export that produces something installable.
+Point The Ruination at your League install, pick a skin, and you get a real project. Files on disk, previews that render properly, editors for the formats League actually uses, and an export that produces something installable.
 
 ---
 
@@ -25,13 +25,13 @@ Point Flint at your League install, pick a skin, and you get a real project. Fil
 
 <br>
 
-<img align="right" width="420" src="docs/shots/model-preview.png" alt="A skin project open in Flint">
+<img align="right" width="420" src="docs/shots/model-preview.png" alt="A skin project open in The Ruination">
 
-Pick a champion and a skin. Flint extracts it, repaths it onto your own asset folder, and lays it out as a project instead of a heap of files named after hashes.
+Pick a champion and a skin. The Ruination extracts it, repaths it onto your own asset folder, and lays it out as a project instead of a heap of files named after hashes.
 
 - Chromas and sub-characters come along with it.
 - Checkpoints snapshot the whole project before a risky change, and roll it back when the change turns out to be a mistake. They survive restarts.
-- Importing works the other way. Drop in a `.fantome` or `.modpkg` and Flint recovers the shared BINs Riot moved between patches, re-resolves the hashes, and pulls anything still missing back out of your install.
+- Importing works the other way. Drop in a `.fantome` or `.modpkg` and The Ruination recovers the shared BINs Riot moved between patches, re-resolves the hashes, and pulls anything still missing back out of your install.
 - Port a skin to League Classic, strip it down for NoSkinLite, or push a base skin's edits across all of its chromas.
 
 <br clear="all">
@@ -62,7 +62,7 @@ Every WAD in the game, in a tree that expands instantly instead of making you wa
 
 <img align="right" width="420" src="docs/shots/cdn.png" alt="Load from CDN">
 
-Pick a platform, a kind and a region, and Flint lists every manifest Riot is serving, by patch and build number.
+Pick a platform, a kind and a region, and The Ruination lists every manifest Riot is serving, by patch and build number.
 
 Load one and it browses exactly like a local WAD, so you can pull an asset from a patch you don't have installed, or compare something against a build you've already moved past. Manifests you've already downloaded are marked.
 
@@ -115,7 +115,7 @@ Monaco with a proper ritobin language behind it: highlighting, folding, a minima
 
 - Cut a skin's textures into Photoshop layers along their UV islands, so you paint on the parts instead of on one flat atlas.
 - Toggle submeshes on and off in the preview to see what a piece of the model actually is.
-- Convert PNGs to TEX or DDS on the way in. DDS export is deliberately limited to the formats League's loader can read, because a BC7 DDS crashes the client, so Flint won't write one.
+- Convert PNGs to TEX or DDS on the way in. DDS export is deliberately limited to the formats League's loader can read, because a BC7 DDS crashes the client, so The Ruination won't write one.
 
 </details>
 
@@ -146,7 +146,7 @@ Findings open where they really are. The file gets selected in the tree, and a B
 </details>
 
 <details>
-<summary><b>Shipping</b> · get it out of Flint</summary>
+<summary><b>Shipping</b> · get it out of The Ruination</summary>
 
 <br>
 
@@ -163,7 +163,7 @@ You can also hand a BIN off to Jade or a texture to Quartz without moving files 
 
 ## Download
 
-Grab the latest build from the [releases page](https://github.com/RitoShark/Flint/releases/latest), run the installer, and you're done. It updates itself after that.
+Grab the latest build from the [releases page](https://github.com/M0rphy2020/The-Ruination/releases/latest), run the installer, and you're done. It updates itself after that.
 
 > [!NOTE]
 > Creating a skin project from installed game assets and recovering missing game files on import need a League install. Editing existing project files and [downloading assets through the CDN browser](docs/cdn.md) work without one. Previews need the relevant assets and dependencies available from their source.
@@ -176,14 +176,14 @@ Grab the latest build from the [releases page](https://github.com/RitoShark/Flin
 Needs Rust (stable), Node 20, and Windows 10 or 11.
 
 ```bash
-git clone https://github.com/RitoShark/Flint
-cd Flint
+git clone https://github.com/M0rphy2020/The-Ruination
+cd The-Ruination
 npm install
 npm run tauri dev
 ```
 
 `npm run tauri build` produces an installer at
-`src-tauri/target/release/bundle/nsis/Flint_<version>_x64-setup.exe`.
+`src-tauri/target/release/bundle/nsis/The Ruination_<version>_x64-setup.exe`.
 
 </details>
 
@@ -203,7 +203,7 @@ npm run tauri dev
 - **[Frog](https://github.com/FrogCsLoL)** for the map project creation, and **[DAKA](https://github.com/sxrmss)** for help on the repo.
 - **[LtMAO](https://github.com/tarngaina/LtMAO)** by
   [tarngaina](https://github.com/tarngaina). Its `animask_viewer` and `sborf` were the reference
-  for Flint's animation mask editor, and confirmed that `mWeightList` is indexed by SKL joint
+  for The Ruination's animation mask editor, and confirmed that `mWeightList` is indexed by SKL joint
   order.
 
 ## License

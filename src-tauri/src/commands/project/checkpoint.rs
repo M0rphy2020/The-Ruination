@@ -1,4 +1,4 @@
-use flint_core::checkpoint::{Checkpoint, CheckpointDiff, CheckpointFileContent, CheckpointManager, CheckpointProgress};
+use ruination_core::checkpoint::{Checkpoint, CheckpointDiff, CheckpointFileContent, CheckpointManager, CheckpointProgress};
 use rayon::prelude::*;
 use serde::Serialize;
 use std::collections::HashMap;

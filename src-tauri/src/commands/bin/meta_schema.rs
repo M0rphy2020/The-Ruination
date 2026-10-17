@@ -1,5 +1,5 @@
 //! Cached metadata refresh shared by default editor checks and project audits.
-use flint_core::bin::meta_schema::{self, Schema};
+use ruination_core::bin::meta_schema::{self, Schema};
 use std::{
     sync::OnceLock,
     time::{Duration, Instant},

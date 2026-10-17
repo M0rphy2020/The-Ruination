@@ -14,7 +14,7 @@ import * as api from '../../lib/api';
 import { projectFilePath, rubyBinCandidates } from '../../lib/rubyTargets';
 import { sendToRuby } from '../../lib/sendToRuby';
 import { sanitizeChampionName } from '../../lib/util/utils';
-import { FlintFlameMark } from '../ui/FlintFlameMark';
+import { RuinationCrownMark } from '../ui/RuinationCrownMark';
 import { useTranslation } from '../../lib/i18n';
 import type { ProjectTab, ExtractSession, FileEditorKind } from '../../lib/types';
 
@@ -60,7 +60,7 @@ const SettingsIcon: React.FC = () => (
     </svg>
 );
 
-const FlintLogo: React.FC = () => <FlintFlameMark size={20} />;
+const RuinationLogo: React.FC = () => <RuinationCrownMark size={20} />;
 
 
 interface TabProps {
@@ -598,8 +598,8 @@ export const TitleBar: React.FC = () => {
                     title="Go to Home"
                     data-tauri-drag-region="false"
                 >
-                    <FlintLogo />
-                    <span className="titlebar__app-name">Flint</span>
+                    <RuinationLogo />
+                    <span className="titlebar__app-name">The Ruination</span>
                 </div>
             </div>
 

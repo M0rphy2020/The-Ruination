@@ -10,7 +10,7 @@
 //! sheet. Each PSD carries the untouched texture as a bottom layer so the artist
 //! can see what the shells sit on.
 
-use flint_core::path_slash::to_slash;
+use ruination_core::path_slash::to_slash;
 use std::collections::BTreeMap;
 use std::path::{Path, PathBuf};
 
@@ -20,9 +20,9 @@ use serde::{Deserialize, Serialize};
 
 use crate::core::ipc_trace;
 use crate::core::psd_write::{write_psd, PsdDoc, PsdGroup, PsdLayer};
-use flint_core::mesh::animation::resolve_animation_path;
-use flint_core::mesh::materials::{extract_texture_mapping, BinIndex};
-use flint_core::mesh::ritobin::mesh_bins;
+use ruination_core::mesh::animation::resolve_animation_path;
+use ruination_core::mesh::materials::{extract_texture_mapping, BinIndex};
+use ruination_core::mesh::ritobin::mesh_bins;
 
 use super::texture_convert::decode_full_rgba;
 

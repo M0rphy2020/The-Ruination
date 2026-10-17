@@ -1534,7 +1534,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "flint"
+name = "the-ruination"
 version = "3.0.5"
 dependencies = [
  "anyhow",
@@ -1543,10 +1543,10 @@ dependencies = [
  "dashmap",
  "ddsfile",
  "flate2",
- "flint-core",
- "flint-shaderforge",
+ "ruination-core",
+ "ruination-shaderforge",
  "futures",
- "hematite-flint",
+ "hematite-ruination",
  "image",
  "image_dds",
  "indexmap 2.13.0",
@@ -1589,11 +1589,11 @@ dependencies = [
 ]
 
 [[package]]
-name = "flint-bin"
+name = "ruination-bin"
 version = "0.1.0"
 dependencies = [
  "dashmap",
- "flint-hash",
+ "ruination-hash",
  "indexmap 2.13.0",
  "parking_lot",
  "rayon",
@@ -1606,7 +1606,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "flint-core"
+name = "ruination-core"
 version = "0.1.0"
 dependencies = [
  "anyhow",
@@ -1618,11 +1618,11 @@ dependencies = [
  "ddsfile",
  "directories",
  "flate2",
- "flint-bin",
- "flint-formats",
- "flint-hash",
- "flint-net",
- "flint-wad",
+ "ruination-bin",
+ "ruination-formats",
+ "ruination-hash",
+ "ruination-net",
+ "ruination-wad",
  "futures",
  "heed",
  "image",
@@ -1656,7 +1656,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "flint-formats"
+name = "ruination-formats"
 version = "0.1.0"
 dependencies = [
  "anyhow",
@@ -1668,7 +1668,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "flint-hash"
+name = "ruination-hash"
 version = "0.1.0"
 dependencies = [
  "chrono",
@@ -1691,10 +1691,10 @@ dependencies = [
 ]
 
 [[package]]
-name = "flint-net"
+name = "ruination-net"
 version = "0.1.0"
 dependencies = [
- "flint-hash",
+ "ruination-hash",
  "futures-util",
  "reqwest",
  "ritoshark",
@@ -1708,7 +1708,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "flint-shaderforge"
+name = "ruination-shaderforge"
 version = "0.1.0"
 dependencies = [
  "byteorder",
@@ -1729,15 +1729,15 @@ dependencies = [
 ]
 
 [[package]]
-name = "flint-wad"
+name = "ruination-wad"
 version = "0.1.0"
 dependencies = [
  "byteorder",
  "chrono",
  "dashmap",
  "flate2",
- "flint-bin",
- "flint-hash",
+ "ruination-bin",
+ "ruination-hash",
  "heed",
  "memmap2",
  "parking_lot",
@@ -2392,7 +2392,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "hematite-flint"
+name = "hematite-ruination"
 version = "0.1.0"
 dependencies = [
  "anyhow",
