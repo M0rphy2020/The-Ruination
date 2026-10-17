@@ -78,7 +78,7 @@ export const WorkspaceSearch: React.FC<WorkspaceSearchProps> = ({ projectPath, s
             setResult(await api.searchProjectBins(projectPath, query, options, seedBin));
             setCollapsed(new Set());
         } catch (e) {
-            const fe = e as api.FlintError;
+            const fe = e as api.RuinationError;
             setError(fe.getUserMessage?.() || (e instanceof Error ? e.message : String(e)));
             setResult(null);
         } finally {
@@ -129,7 +129,7 @@ export const WorkspaceSearch: React.FC<WorkspaceSearchProps> = ({ projectPath, s
                         }
                         await runSearch();
                     } catch (e) {
-                        const fe = e as api.FlintError;
+                        const fe = e as api.RuinationError;
                         showToast('error', fe.getUserMessage?.() || `Replace failed: ${e}`);
                     } finally {
                         setBusy(false);
