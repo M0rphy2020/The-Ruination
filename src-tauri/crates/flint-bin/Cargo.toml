@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-flint-hash = { path = "../flint-hash" }
+ruination-hash = { path = "../ruination-hash" }
 
 tracing.workspace = true
 walkdir.workspace = true
