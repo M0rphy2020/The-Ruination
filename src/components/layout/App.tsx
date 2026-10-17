@@ -63,6 +63,7 @@ const WadAuditModal = lazyWarm(() => import('../modals/WadAuditModal').then(modu
 const CreateProjectFromWadModal = lazyWarm(() => import('../modals/CreateProjectFromWadModal').then(module => ({ default: module.CreateProjectFromWadModal })));
 const LoadManifestModal = lazyWarm(() => import('../modals/LoadManifestModal').then(module => ({ default: module.LoadManifestModal })));
 const SendToRubyModal = lazyWarm(() => import('../modals/SendToRubyModal').then(module => ({ default: module.SendToRubyModal })));
+const CreatorCopilotModal = lazyWarm(() => import('../modals/CreatorCopilotModal').then(module => ({ default: module.CreatorCopilotModal })));
 
 function getActiveTab(state: { activeTabId: string | null; openTabs: Array<{ id: string; project: any; projectPath: string; selectedFile: string | null }> }) {
     if (!state.activeTabId) return null;
@@ -110,6 +111,7 @@ const ActiveModal: React.FC<{ activeModal: string | null }> = React.memo(({ acti
         case 'wadAudit':         return <WadAuditModal />;
         case 'createProjectFromWad': return <CreateProjectFromWadModal />;
         case 'sendToRuby':       return <SendToRubyModal />;
+        case 'creatorCopilot':   return <CreatorCopilotModal />;
         default:                 return null;
     }
 });
