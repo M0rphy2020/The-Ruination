@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="docs/media/flint-logo.gif" alt="The Ruination" width="500">
+<img src="docs/media/the-ruination-logo.svg" alt="The Ruination" width="500">
 
 [![Rust](https://img.shields.io/badge/Rust-stable-orange?style=flat-square&logo=rust)](https://www.rust-lang.org/)
 [![Tauri](https://img.shields.io/badge/Tauri-2.0-24C8D8?style=flat-square&logo=tauri)](https://tauri.app/)
