@@ -5,7 +5,7 @@
 //!      group. Includes description, `FriendlyTypeName`, `DefaultIcon`,
 //!      and the `shell\open\command` (`"<exe>" "%1"`).
 //!   2. `HKCU\Software\Classes\<ext>` — sets the default handler to our ProgID
-//!      so double-clicking files opens them in Flint.
+//!      so double-clicking files opens them in The Ruination.
 //!   3. `HKCU\Software\Classes\<ext>\OpenWithProgids` — adds our ProgID as an
 //!      additive option as well.
 //!   4. `HKCU\Software\Classes\Applications\<exe>` — standard registration.
@@ -27,15 +27,15 @@ struct AssocSpec {
 }
 
 const ASSOCS: &[AssocSpec] = &[
-    AssocSpec { ext: ".wad",        prog_id: "Flint.WadFile",        description: "League WAD Archive" },
-    AssocSpec { ext: ".wad.client", prog_id: "Flint.WadClientFile",  description: "League WAD Client Archive" },
-    AssocSpec { ext: ".bin",        prog_id: "Flint.BinFile",        description: "League BIN File" },
-    AssocSpec { ext: ".luabin64",   prog_id: "Flint.LuaBin64File",   description: "League Lua Bytecode (64-bit)" },
-    AssocSpec { ext: ".luabin",     prog_id: "Flint.LuaBinFile",     description: "League Lua Bytecode" },
-    AssocSpec { ext: ".troybin",    prog_id: "Flint.TroyBinFile",    description: "League Troy Effect" },
-    AssocSpec { ext: ".tex",        prog_id: "Flint.TexFile",        description: "League TEX Texture" },
-    AssocSpec { ext: ".modpkg",     prog_id: "Flint.ModPkgFile",     description: "Flint Mod Package" },
-    AssocSpec { ext: ".fantome",    prog_id: "Flint.FantomeFile",    description: "Fantome Mod Package" },
+    AssocSpec { ext: ".wad",        prog_id: "TheRuination.WadFile",        description: "League WAD Archive" },
+    AssocSpec { ext: ".wad.client", prog_id: "TheRuination.WadClientFile",  description: "League WAD Client Archive" },
+    AssocSpec { ext: ".bin",        prog_id: "TheRuination.BinFile",        description: "League BIN File" },
+    AssocSpec { ext: ".luabin64",   prog_id: "TheRuination.LuaBin64File",   description: "League Lua Bytecode (64-bit)" },
+    AssocSpec { ext: ".luabin",     prog_id: "TheRuination.LuaBinFile",     description: "League Lua Bytecode" },
+    AssocSpec { ext: ".troybin",    prog_id: "TheRuination.TroyBinFile",    description: "League Troy Effect" },
+    AssocSpec { ext: ".tex",        prog_id: "TheRuination.TexFile",        description: "League TEX Texture" },
+    AssocSpec { ext: ".modpkg",     prog_id: "TheRuination.ModPkgFile",     description: "The Ruination Mod Package" },
+    AssocSpec { ext: ".fantome",    prog_id: "TheRuination.FantomeFile",    description: "Fantome Mod Package" },
 ];
 
 /// One context-menu verb. `verb_key` is the registry subkey under
@@ -52,28 +52,28 @@ struct VerbSpec {
 /// Verbs attached to our file ProgIDs.
 const FILE_VERBS: &[VerbSpec] = &[
     VerbSpec {
-        verb_key: "Flint.ExtractWad",
+        verb_key: "TheRuination.ExtractWad",
         mui_verb: "Extract WAD here",
         arg: "--extract-wad",
-        prog_id: "Flint.WadFile",
+        prog_id: "TheRuination.WadFile",
     },
     VerbSpec {
-        verb_key: "Flint.ExtractWad",
+        verb_key: "TheRuination.ExtractWad",
         mui_verb: "Extract WAD here",
         arg: "--extract-wad",
-        prog_id: "Flint.WadClientFile",
+        prog_id: "TheRuination.WadClientFile",
     },
     VerbSpec {
-        verb_key: "Flint.ImportMod",
-        mui_verb: "Import mod into Flint",
+        verb_key: "TheRuination.ImportMod",
+        mui_verb: "Import mod into The Ruination",
         arg: "--import-mod",
-        prog_id: "Flint.FantomeFile",
+        prog_id: "TheRuination.FantomeFile",
     },
     VerbSpec {
-        verb_key: "Flint.ImportMod",
-        mui_verb: "Import mod into Flint",
+        verb_key: "TheRuination.ImportMod",
+        mui_verb: "Import mod into The Ruination",
         arg: "--import-mod",
-        prog_id: "Flint.ModPkgFile",
+        prog_id: "TheRuination.ModPkgFile",
     },
 ];
 
@@ -83,14 +83,14 @@ const FILE_VERBS: &[VerbSpec] = &[
 /// deliberately not taken on.
 const DIRECTORY_VERBS: &[VerbSpec] = &[
     VerbSpec {
-        verb_key: "Flint.PackWad",
+        verb_key: "TheRuination.PackWad",
         mui_verb: "Pack folder to WAD",
         arg: "--pack-wad",
         prog_id: "",
     },
     VerbSpec {
-        verb_key: "Flint.OpenProject",
-        mui_verb: "Open folder as Flint project",
+        verb_key: "TheRuination.OpenProject",
+        mui_verb: "Open folder as The Ruination project",
         arg: "--open-project",
         prog_id: "",
     },
@@ -127,7 +127,7 @@ fn notify_shell_change() {
     }
 }
 
-/// Register Flint as the default handler for every extension in `ASSOCS`.
+/// Register The Ruination as the default handler for every extension in `ASSOCS`.
 #[tauri::command]
 pub async fn register_file_associations() -> Result<AssocResult, String> {
     let _t = ipc_trace::enter("register_file_associations");
