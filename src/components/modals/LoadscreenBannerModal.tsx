@@ -385,7 +385,7 @@ export const LoadscreenBannerModal: React.FC = () => {
             setDirty(false);
             closeModal();
         } catch (e) {
-            const fe = e as api.FlintError;
+            const fe = e as api.RuinationError;
             showToast('error', fe.getUserMessage?.() || (e instanceof Error ? e.message : 'Save failed'));
         } finally {
             setSaving(false);
@@ -413,7 +413,7 @@ export const LoadscreenBannerModal: React.FC = () => {
             }
             showToast('info', 'Loadscreen banner cancelled');
         } catch (e) {
-            const fe = e as api.FlintError;
+            const fe = e as api.RuinationError;
             showToast('error', fe.getUserMessage?.() || (e instanceof Error ? e.message : 'Failed to cancel the banner'));
         } finally {
             setReverting(false);
