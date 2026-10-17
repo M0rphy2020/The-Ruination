@@ -1,9 +1,9 @@
 # Default BIN schema checks
 
-Flint's default saved-file checks and **Check files** audits now compare declared
+The Ruination's default saved-file checks and **Check files** audits now compare declared
 BIN property types with the JSON release dump from
 [LeagueToolkit/lol-meta-classes](https://github.com/LeagueToolkit/lol-meta-classes/releases).
-This is the same metadata source used by ritobin-lsp's `meta_wiki` service; Flint
+This is the same metadata source used by ritobin-lsp's `meta_wiki` service; The Ruination
 does not scrape rendered wiki pages or require the optional LSP for these checks.
 
 The command layer downloads and validates the dump before audits, stores it in
@@ -65,7 +65,7 @@ the user to change `TexturePath: string =` to `TexturePath: file =` and keep the
 The optional LSP's equivalent warning explains this correction as well; the LSP path has
 no fix buttons of its own.
 
-Validation: `cargo test -p flint-bin --lib --offline` exercises inheritance,
+Validation: `cargo test -p ruination-bin --lib --offline` exercises inheritance,
 hashed IDs, nested objects, empty containers, valid strings, and migration overlap.
-To verify an actual downloaded release dump, set `FLINT_META_DUMP` to its path and
-run `cargo test -p flint-bin published_dump --offline -- --ignored`.
+To verify an actual downloaded release dump, set `RUINATION_META_DUMP` to its path and
+run `cargo test -p ruination-bin published_dump --offline -- --ignored`.
