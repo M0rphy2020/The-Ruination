@@ -378,11 +378,6 @@ impl Project {
         self.project_path.join(RUINATION_FILE)
     }
 
-    /// Compatibility accessor retained for internal callers during the rename.
-    pub fn ruination_path(&self) -> PathBuf {
-        self.ruination_path()
-    }
-
     pub fn content_path(&self, layer: &str) -> PathBuf {
         self.project_path.join("content").join(layer)
     }
@@ -529,23 +524,23 @@ pub fn open_project(path: &Path) -> Result<Project> {
     if metadata_path.exists() {
         if let Ok(file) = File::open(&metadata_path) {
             let reader = BufReader::new(file);
-            if let Ok(flint) = serde_json::from_reader::<_, ProjectMetadata>(reader) {
-                let flint = flint.normalized();
-                project.pid = flint.pid;
-                project.kind = flint.kind;
-                project.champion = flint.source.champion;
-                project.skin_id = flint.source.skin_id;
-                project.map_id = flint.source.map_id;
-                project.variant = flint.source.variant;
-                project.game_version = flint.source.game_version;
-                project.source_branch = flint.source.branch;
-                project.repath_prefix = flint.repath_prefix;
-                project.extract_sfx = flint.extract.sfx;
-                project.extract_vo = flint.extract.vo;
-                project.league_path = flint.league_path;
-                project.created_at = flint.created_at;
-                project.modified_at = flint.modified_at;
-                needs_resave |= flint.schema < RUINATION_SCHEMA;
+            if let Ok(metadata) = serde_json::from_reader::<_, ProjectMetadata>(reader) {
+                let metadata = metadata.normalized();
+                project.pid = metadata.pid;
+                project.kind = metadata.kind;
+                project.champion = metadata.source.champion;
+                project.skin_id = metadata.source.skin_id;
+                project.map_id = metadata.source.map_id;
+                project.variant = metadata.source.variant;
+                project.game_version = metadata.source.game_version;
+                project.source_branch = metadata.source.branch;
+                project.repath_prefix = metadata.repath_prefix;
+                project.extract_sfx = metadata.extract.sfx;
+                project.extract_vo = metadata.extract.vo;
+                project.league_path = metadata.league_path;
+                project.created_at = metadata.created_at;
+                project.modified_at = metadata.modified_at;
+                needs_resave |= metadata.schema < RUINATION_SCHEMA;
             }
         }
     }
@@ -776,11 +771,11 @@ mod tests {
             "modified_at": "2026-09-02T20:24:20.394350400Z"
         }"#;
 
-        let flint: ProjectMetadata = serde_json::from_str(raw).unwrap();
-        assert_eq!(flint.schema, 0);
-        let flint = flint.normalized();
-        assert_eq!(flint.source.champion, "Irelia");
-        assert_eq!(flint.source.skin_id, 18);
+        let metadata: ProjectMetadata = serde_json::from_str(raw).unwrap();
+        assert_eq!(metadata.schema, 0);
+        let metadata = metadata.normalized();
+        assert_eq!(metadata.source.champion, "Irelia");
+        assert_eq!(metadata.source.skin_id, 18);
     }
 
     #[test]
@@ -798,14 +793,14 @@ mod tests {
     }
 
     #[test]
-    fn test_flint_metadata() {
+    fn test_ruination_metadata() {
         let project = Project::new("Test", "Ahri", 5, "C:\\League", "C:\\test", None);
-        let flint = project.to_ruination_metadata();
+        let metadata = project.to_ruination_metadata();
         
-        assert_eq!(flint.schema, RUINATION_SCHEMA);
-        assert_eq!(flint.source.champion, "Ahri");
-        assert_eq!(flint.source.skin_id, 5);
-        assert!(flint.league_path.is_none());
+        assert_eq!(metadata.schema, RUINATION_SCHEMA);
+        assert_eq!(metadata.source.champion, "Ahri");
+        assert_eq!(metadata.source.skin_id, 5);
+        assert!(metadata.league_path.is_none());
     }
 
     #[test]
