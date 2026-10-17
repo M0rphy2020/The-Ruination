@@ -18,7 +18,7 @@ use crate::checks::{
     MigrationTally,
 };
 use crate::codec::{read_bin, MAX_BIN_SIZE};
-use flint_hash::hash::HashMapper;
+use ruination_hash::hash::HashMapper;
 use rayon::prelude::*;
 use ritoshark::bin::{Bin, BinValue};
 
@@ -72,7 +72,7 @@ fn unified_hash(rel: &str) -> u64 {
             return h;
         }
     }
-    flint_hash::hash::wad_chunk_hash(rel)
+    ruination_hash::hash::wad_chunk_hash(rel)
 }
 
 /// Only game asset paths are worth tracking; BIN text is full of class and field names.
@@ -366,7 +366,7 @@ pub fn check_one_file(dir: &Path, rel: &str) -> Result<Vec<CheckIssue>, String> 
         .map(|(rel, _)| unified_hash(rel))
         .collect();
 
-    let bin_names = flint_hash::hash::bin_dict::get_cached_bin_hashes().read();
+    let bin_names = ruination_hash::hash::bin_dict::get_cached_bin_hashes().read();
     let (mut issues, mentions, tally) = scan_bin(&bin, &rel, &bin_names, &present);
     drop(bin_names);
     issues.extend(tally.into_issues());
@@ -440,7 +440,7 @@ pub fn audit_wad_folder(dir: &Path) -> Result<AuditReport, String> {
         BinFailed,
     }
 
-    let bin_names = flint_hash::hash::bin_dict::get_cached_bin_hashes().read();
+    let bin_names = ruination_hash::hash::bin_dict::get_cached_bin_hashes().read();
     let names_ref = &*bin_names;
     let scans: Vec<(usize, FileScan)> = files
         .par_iter()
@@ -680,7 +680,7 @@ mod tests {
     fn ordinary_paths_use_the_wad_chunk_hash() {
         assert_eq!(
             unified_hash("assets/characters/foo.tex"),
-            flint_hash::hash::wad_chunk_hash("assets/characters/foo.tex")
+            ruination_hash::hash::wad_chunk_hash("assets/characters/foo.tex")
         );
     }
 
