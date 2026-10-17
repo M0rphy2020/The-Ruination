@@ -1,6 +1,6 @@
 use serde::Deserialize;
 
-use flint_hash::error::{Error, Result};
+use ruination_hash::error::{Error, Result};
 
 /// Target OS for the sieve `q[platform]` query.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
