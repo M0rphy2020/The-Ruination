@@ -8,7 +8,7 @@
  *
  * Each module owns a single domain. If you're adding a new Tauri command,
  * pick the matching file (or create a new one and re-export it here).
- *   - core           — FlintError (legacy internal name), invokeCommand/invokeRaw, IPC tracing
+ *   - core           — RuinationError, invokeCommand/invokeRaw, IPC tracing
  *   - logging        — log-level toggle
  *   - hash           — WAD path hash DB
  *   - league         — League install detection
