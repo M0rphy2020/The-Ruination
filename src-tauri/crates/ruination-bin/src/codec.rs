@@ -5,7 +5,7 @@
 //! application. Hash-name resolution for the text form goes through a globally
 //! cached `HashMapper` populated from the `hashes-bin.lmdb` dictionary.
 
-use flint_hash::hash::bin_dict::get_cached_bin_hashes;
+use ruination_hash::hash::bin_dict::get_cached_bin_hashes;
 use ritoshark::bin::{Bin, BinValue, Trailer};
 use ritoshark::hash::HashMapper;
 use ritoshark::prelude::{Parse as _, Serialize as _};
@@ -259,7 +259,7 @@ fn walk_value(value: &BinValue, field: u32, used: &mut HashUses) {
 fn custom_names(tree: &Bin, candidates: Vec<String>) -> Trailer {
     let used = hash_uses(tree);
     let known = get_cached_bin_hashes().read();
-    let local = flint_hash::hash::local_custom_hashes().read();
+    let local = ruination_hash::hash::local_custom_hashes().read();
     // A name this machine invented earlier is in the cache but in no dictionary
     // anyone else has, so it still counts as custom — otherwise the second bin to
     // use a repath would record nothing and lose it the moment the file travels.
@@ -333,9 +333,9 @@ pub fn apply_names(text: String, lookup: &Trailer) -> String {
 pub fn remember_custom_hash_names(text: &str, tree: &Bin) -> Result<usize> {
     let lookup = custom_names(tree, text_name_candidates(text));
     let (names, files) = (lookup.names, lookup.files);
-    let saved_names = flint_hash::hash::save_custom_bin_hashes(&names)
+    let saved_names = ruination_hash::hash::save_custom_bin_hashes(&names)
         .map_err(|e| BinError(format!("Failed to save custom hashes: {e}")))?;
-    let saved_files = flint_hash::hash::save_custom_file_hashes(&files)
+    let saved_files = ruination_hash::hash::save_custom_file_hashes(&files)
         .map_err(|e| BinError(format!("Failed to save custom file hashes: {e}")))?;
     Ok(saved_names + saved_files)
 }
@@ -476,7 +476,7 @@ mod custom_hash_tests {
         );
 
         get_cached_bin_hashes().write().insert(hash, path.to_string());
-        flint_hash::hash::local_custom_hashes().write().insert(hash);
+        ruination_hash::hash::local_custom_hashes().write().insert(hash);
 
         let recorded = capture_names(&tree, &text);
         assert_eq!(recorded.files.get(&hash), Some(&path.to_string()));
