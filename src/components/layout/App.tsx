@@ -330,9 +330,9 @@ export const App: React.FC = () => {
                     status.loaded_count > 0,
                     status.loaded_count,
                 );
-                console.log(`[Flint] Hashes loaded: ${status.loaded_count.toLocaleString()}`);
+                console.log(`[The Ruination] Hashes loaded: ${status.loaded_count.toLocaleString()}`);
             } catch (err) {
-                console.error('[Flint] Failed to read hash status after ready event:', err);
+                console.error('[The Ruination] Failed to read hash status after ready event:', err);
             }
         });
 
@@ -566,15 +566,15 @@ export const App: React.FC = () => {
                     const leagueResult = await api.detectLeague();
                     if (leagueResult.path) {
                         useConfigStore.getState().setLeaguePath(leagueResult.path);
-                        console.log('[Flint] Auto-detected League path:', leagueResult.path);
+                        console.log('[The Ruination] Auto-detected League path:', leagueResult.path);
                     }
                 } catch {
-                    console.log('[Flint] League auto-detection failed');
+                    console.log('[The Ruination] League auto-detection failed');
                 }
             }
 
         } catch (error) {
-            console.error('[Flint] Failed to load initial data:', error);
+            console.error('[The Ruination] Failed to load initial data:', error);
         }
     };
 
@@ -591,7 +591,7 @@ export const App: React.FC = () => {
                 useConfigStore.getState().setRecentProjects(validProjects);
             }
         } catch (error) {
-            console.error('[Flint] Failed to clean stale projects:', error);
+            console.error('[The Ruination] Failed to clean stale projects:', error);
         }
     };
 
