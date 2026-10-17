@@ -1,5 +1,5 @@
 name: Feature request
-description: Ask for something Flint does not do yet
+description: Ask for something The Ruination does not do yet
 labels: ["enhancement"]
 body:
   - type: textarea
