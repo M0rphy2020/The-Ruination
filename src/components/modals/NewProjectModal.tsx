@@ -784,8 +784,8 @@ export const NewProjectModal: React.FC = () => {
 
             await finishProjectCreation(project, selectedChampion.name, effectiveSkinNum);
         } catch (err) {
-            const flintError = err as api.FlintError;
-            const userMsg = flintError.getUserMessage?.() || 'Failed to create project';
+            const ruinationError = err as api.RuinationError;
+            const userMsg = ruinationError.getUserMessage?.() || 'Failed to create project';
             showToast('error', `${userMsg} — see log panel for full error`);
         } finally {
             setIsCreating(false);
@@ -849,8 +849,8 @@ export const NewProjectModal: React.FC = () => {
 
             await finishProjectCreation(project, 'Loading Screen', 0);
         } catch (err) {
-            const flintError = err as api.FlintError;
-            const userMsg = flintError.getUserMessage?.() || 'Failed to create loading screen project';
+            const ruinationError = err as api.RuinationError;
+            const userMsg = ruinationError.getUserMessage?.() || 'Failed to create loading screen project';
             showToast('error', `${userMsg} — see log panel for full error`);
         } finally {
             setIsCreating(false);
@@ -893,8 +893,8 @@ export const NewProjectModal: React.FC = () => {
             const mapEntry = availableMaps.find(m => m.id === selectedMapId);
             await finishProjectCreation(project, mapEntry?.displayName || selectedMapId, 0);
         } catch (err) {
-            const flintError = err as api.FlintError;
-            const userMsg = flintError.getUserMessage?.() || 'Failed to create map project';
+            const ruinationError = err as api.RuinationError;
+            const userMsg = ruinationError.getUserMessage?.() || 'Failed to create map project';
             showToast('error', `${userMsg} — see log panel for full error`);
         } finally {
             setIsCreating(false);
