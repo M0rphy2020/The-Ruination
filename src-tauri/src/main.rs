@@ -174,7 +174,7 @@ fn main() {
             // Shader-preview module env: cache root + the shared hash dir.
             // No-op in stub builds.
             if let Ok(config_dir) = app.path().app_data_dir() {
-                flint_shaderforge::init_host_env(config_dir, Some(hash_dir.clone()));
+                ruination_shaderforge::init_host_env(config_dir, Some(hash_dir.clone()));
             }
 
             let hash_dir_str = hash_dir.to_string_lossy().into_owned();
@@ -517,7 +517,7 @@ fn main() {
             commands::skin_fixer::hematite_list_fixes,
             commands::skin_fixer::hematite_scan_projects,
             commands::skin_fixer::hematite_run_fixes,
-            // Shader preview (flint-shaderforge boundary; stub answers when
+            // Shader preview (ruination-shaderforge boundary; stub answers when
             // the private overlay isn't compiled in)
             commands::shaderforge::translate_material_shader,
             commands::shaderforge::shader_preview_available,
