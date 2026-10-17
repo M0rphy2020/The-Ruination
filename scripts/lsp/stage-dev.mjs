@@ -19,7 +19,7 @@ const binary = resolve(process.argv[2]);
 execFileSync(process.execPath, [join(scripts, 'smoke-test.mjs'), binary], {
     stdio: 'inherit', windowsHide: true,
 });
-const flintVersion = JSON.parse(readFileSync(join(root, 'src-tauri/tauri.conf.json'), 'utf8')).version;
+const appVersion = JSON.parse(readFileSync(join(root, 'src-tauri/tauri.conf.json'), 'utf8')).version;
 const sha256 = createHash('sha256').update(readFileSync(binary)).digest('hex');
 const version = `dev-${sha256.slice(0, 16)}`;
 const asset = `ritobin-lsp-${version}-windows-x86_64.exe`;
@@ -35,7 +35,7 @@ try {
     copyFileSync(binary, stagedBinary);
 }
 const staging = join(output, 'manifest.json.tmp');
-writeFileSync(staging, JSON.stringify({ version, flintVersion, asset, sha256, noHashes: 1 }, null, 2));
+writeFileSync(staging, JSON.stringify({ version, appVersion, asset, sha256, noHashes: 1 }, null, 2));
 renameSync(staging, join(output, 'manifest.json'));
-console.log(`Staged verified development LSP for Flint ${flintVersion}: ${stagedBinary}`);
-console.log('Restart the Flint Rust backend, then enable LSP or press Retry LSP. No release upload is needed.');
+console.log(`Staged verified development LSP for The Ruination ${appVersion}: ${stagedBinary}`);
+console.log('Restart the The Ruination Rust backend, then enable LSP or press Retry LSP. No release upload is needed.');
