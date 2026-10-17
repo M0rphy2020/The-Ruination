@@ -1,4 +1,4 @@
-use flint_core::league::{detect_league_installation, validate_league_path, LeagueInstallation};
+use ruination_core::league::{detect_league_installation, validate_league_path, LeagueInstallation};
 
 #[tauri::command]
 pub async fn detect_league() -> Result<LeagueInstallation, String> {
