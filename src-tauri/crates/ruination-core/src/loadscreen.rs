@@ -365,7 +365,7 @@ pub fn extract_animation_params_from_bin(uibase_bytes: &[u8]) -> Result<Animatio
                     _ => false,
                 })
         })
-        .ok_or_else(|| "No Flint animated-loadscreen entry found in project uibase. \
+        .ok_or_else(|| "No The Ruination animated-loadscreen entry found in project uibase. \
                          Is this a loading-screen project?".to_string())?;
 
     // Extract creator name from the "name" field
