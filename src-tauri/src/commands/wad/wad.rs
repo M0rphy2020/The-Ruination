@@ -1,7 +1,7 @@
-use flint_core::path_slash::to_slash;
-use flint_core::overlay::HashResolver;
-use flint_core::hash::ResolvedHashes;
-use flint_core::wad::adapter::WadHandle as WadReader;
+use ruination_core::path_slash::to_slash;
+use ruination_core::overlay::HashResolver;
+use ruination_core::hash::ResolvedHashes;
+use ruination_core::wad::adapter::WadHandle as WadReader;
 use crate::state::{HashOverlayState, WadCacheState};
 use crate::core::ipc_trace;
 use rayon::prelude::*;
@@ -74,12 +74,12 @@ pub async fn load_all_wad_chunks(
 
 fn load_all_wad_chunks_blocking(
     paths: Vec<String>,
-    cache: Arc<flint_core::wad::cache::WadCache>,
-    overlay: Option<Arc<flint_core::overlay::ProjectHashOverlay>>,
+    cache: Arc<ruination_core::wad::cache::WadCache>,
+    overlay: Option<Arc<ruination_core::overlay::ProjectHashOverlay>>,
 ) -> Result<tauri::ipc::Response, String> {
     let total_start = Instant::now();
 
-    let hash_dir = flint_core::hash::get_hash_dir()
+    let hash_dir = ruination_core::hash::get_hash_dir()
         .map(|p| p.to_string_lossy().into_owned())
         .unwrap_or_default();
     let resolver = HashResolver::new(&hash_dir, overlay.as_ref());
@@ -169,7 +169,7 @@ trait WadChunkMeta {
     fn uncompressed_size_u32(&self) -> u32;
 }
 
-impl WadChunkMeta for flint_core::wad::format::WadChunk {
+impl WadChunkMeta for ruination_core::wad::format::WadChunk {
     fn path_hash_le(&self) -> u64 { self.path_hash }
     fn uncompressed_size_u32(&self) -> u32 { self.uncompressed_size as u32 }
 }
@@ -263,7 +263,7 @@ pub async fn extract_wad(
 
     // Build the resolver before spawn_blocking so the move doesn't borrow the
     // Tauri State guard across an await.
-    let hash_dir = flint_core::hash::get_hash_dir()
+    let hash_dir = ruination_core::hash::get_hash_dir()
         .map(|p| p.to_string_lossy().into_owned())
         .unwrap_or_default();
     let overlay = overlay_state.get();
@@ -285,7 +285,7 @@ pub async fn extract_wad(
     let output_dir_clone = output_dir.clone();
     let result: Result<(usize, usize, std::collections::HashMap<String, String>), String> = tokio::task::spawn_blocking(move || {
         let resolver = |hashes: &[u64]| -> ResolvedHashes { hash_resolver.resolve_wad_bulk(hashes) };
-        flint_core::wad::adapter::extract_chunks_parallel(
+        ruination_core::wad::adapter::extract_chunks_parallel(
             &wad_path,
             &output_dir,
             want_hashes.as_ref(),
@@ -351,7 +351,7 @@ pub async fn extract_wad_model_preview(
     };
 
     let hash_u64s: Vec<u64> = chunks.iter().map(|c| c.path_hash).collect();
-    let hash_dir = flint_core::hash::get_hash_dir()
+    let hash_dir = ruination_core::hash::get_hash_dir()
         .map(|p| p.to_string_lossy().into_owned())
         .unwrap_or_default();
     let overlay = overlay_state.get();
@@ -416,7 +416,7 @@ pub async fn extract_wad_model_preview(
                 let _ = std::fs::create_dir_all(parent);
             }
             let chunk_copy = *chunk;
-            if let Err(e) = flint_core::wad::adapter::extract_chunk(
+            if let Err(e) = ruination_core::wad::adapter::extract_chunk(
                 &mut reader.wad_mut(), &chunk_copy, &output_path, None,
             ) {
                 tracing::warn!("Failed to extract {}: {}", rel_path, e);
@@ -548,12 +548,12 @@ pub async fn concat_wad_skin_bin(
             .wad_mut()
             .load_chunk_decompressed(&skin_chunk)
             .map_err(|e| format!("Failed to read skin bin: {}", e))?;
-        let mut main_bin = flint_core::bin::read_bin(&skin_bytes)
+        let mut main_bin = ruination_core::bin::read_bin(&skin_bytes)
             .map_err(|e| format!("Failed to parse skin bin: {}", e))?;
 
         // Read each linked bin from the WAD by its xxh64(lowercased path) hash.
         let (concat_bin, source_count) =
-            flint_core::bin::concat_linked_bins_with(&main_bin, |linked_path| {
+            ruination_core::bin::concat_linked_bins_with(&main_bin, |linked_path| {
                 let h = xxh64(linked_path.to_lowercase().as_bytes(), 0);
                 let chunk = *reader.get_chunk(h)?;
                 reader.wad_mut().load_chunk_decompressed(&chunk).ok()
@@ -595,13 +595,13 @@ pub async fn concat_wad_skin_bin(
             std::fs::create_dir_all(parent)
                 .map_err(|e| format!("Failed to create {}: {}", parent.display(), e))?;
         }
-        let concat_data = flint_core::bin::write_bin(&concat_bin)
+        let concat_data = ruination_core::bin::write_bin(&concat_bin)
             .map_err(|e| format!("Failed to write concat bin: {}", e))?;
         std::fs::write(&concat_out, &concat_data)
             .map_err(|e| format!("Failed to write {}: {}", concat_out.display(), e))?;
 
         // 2) Repoint the skin bin's links: concat first, then keep root + animation.
-        flint_core::bin::update_main_bin_links(&mut main_bin, concat_linked_path)
+        ruination_core::bin::update_main_bin_links(&mut main_bin, concat_linked_path)
             .map_err(|e| e.to_string())?;
 
         // 3) Write the skin bin at its real resolved path (create the structure).
@@ -615,7 +615,7 @@ pub async fn concat_wad_skin_bin(
             std::fs::create_dir_all(parent)
                 .map_err(|e| format!("Failed to create {}: {}", parent.display(), e))?;
         }
-        let skin_data = flint_core::bin::write_bin(&main_bin)
+        let skin_data = ruination_core::bin::write_bin(&main_bin)
             .map_err(|e| format!("Failed to write skin bin: {}", e))?;
         std::fs::write(&skin_out, &skin_data)
             .map_err(|e| format!("Failed to write {}: {}", skin_out.display(), e))?;
@@ -644,7 +644,7 @@ pub(crate) fn warm_wad_lmdb_once() {
     static WARMED: std::sync::Once = std::sync::Once::new();
     WARMED.call_once(|| {
         std::thread::spawn(|| {
-            let Ok(dir) = flint_core::hash::get_hash_dir() else { return };
+            let Ok(dir) = ruination_core::hash::get_hash_dir() else { return };
             let Ok(mut f) = std::fs::File::open(dir.join("hashes-wad.lmdb").join("data.mdb")) else { return };
             let t = Instant::now();
             let mut buf = vec![0u8; 4 << 20];
