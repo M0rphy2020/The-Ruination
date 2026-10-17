@@ -129,7 +129,7 @@ export default defineConfig({
             'zustand',
             'zustand/react/shallow',
             // (react-window was listed here but is not actually imported by
-            //  the app — Flint uses its own `VirtualizedList` in WadExplorer.
+            //  the app — The Ruination uses its own `VirtualizedList` in WadExplorer.
             //  Pre-bundling unused deps just slows cold start.)
         ],
     },
