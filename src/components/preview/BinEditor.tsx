@@ -984,8 +984,8 @@ export const BinEditor: React.FC<BinEditorProps> = ({ filePath, hideFilename }) 
             }
         } catch (err) {
             console.error('[BinEditor] Save error:', err);
-            const flintError = err as api.FlintError;
-            const msg = flintError.getUserMessage?.() || String(err) || 'Failed to save';
+            const ruinationError = err as api.RuinationError;
+            const msg = ruinationError.getUserMessage?.() || String(err) || 'Failed to save';
 
             const lineMatch = /line\s+(\d+)/i.exec(msg);
             if (lineMatch && editorRef.current) {
