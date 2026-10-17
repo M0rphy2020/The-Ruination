@@ -75,7 +75,7 @@ function checkEditorBrackets(text: string): BracketCheckResult {
 }
 
 /** Marker owner for the audit findings, kept apart from any other producer. */
-const AUDIT_MARKER_OWNER = 'flint-audit';
+const AUDIT_MARKER_OWNER = 'ruination-audit';
 
 const PREVIEWABLE_EXTENSIONS = ['tex', 'dds', 'scb', 'sco', 'skn'];
 
