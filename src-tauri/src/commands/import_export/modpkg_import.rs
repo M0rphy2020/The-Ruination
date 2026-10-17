@@ -6,13 +6,13 @@ use std::path::{Path, PathBuf};
 use std::sync::Arc;
 use tauri::{AppHandle, Emitter, State};
 
-use flint_core::export::Modpkg;
+use ruination_core::export::Modpkg;
 
 use crate::commands::import_export::fantome_import::{
     extract_champion_from_paths, extract_skin_id_from_path, is_unresolved_hash, ImportOptions,
 };
-use flint_core::overlay::{HashResolver, ProjectHashOverlay};
-use flint_core::project::Project;
+use ruination_core::overlay::{HashResolver, ProjectHashOverlay};
+use ruination_core::project::Project;
 use crate::state::HashOverlayState;
 
 // =============================================================================
@@ -139,7 +139,7 @@ fn import_modpkg_internal(
     options: &ImportOptions,
     overlay: Option<Arc<ProjectHashOverlay>>,
 ) -> Result<Project, String> {
-    use flint_core::project::save_project as core_save_project;
+    use ruination_core::project::save_project as core_save_project;
 
     let _ = app.emit(
         "modpkg-import-progress",
@@ -196,12 +196,12 @@ fn import_modpkg_internal(
             if path.starts_with("_meta_/") {
                 return None;
             }
-            let (prefix_wad, relative) = flint_core::export::split_wad_prefix(path);
+            let (prefix_wad, relative) = ruination_core::export::split_wad_prefix(path);
             Some(ModpkgChunkEntry {
                 path_hash: *path_hash,
                 layer_hash: *layer_hash,
                 path: relative,
-                wad: flint_core::export::chunk_wad_name(&modpkg, chunk.wad_index).or(prefix_wad),
+                wad: ruination_core::export::chunk_wad_name(&modpkg, chunk.wad_index).or(prefix_wad),
                 layer: modpkg
                     .layers
                     .get(layer_hash)
@@ -212,7 +212,7 @@ fn import_modpkg_internal(
         .collect();
 
     // We will extract files and scan them for hashes in a single pass later.
-    let hash_dir = flint_core::hash::get_hash_dir()
+    let hash_dir = ruination_core::hash::get_hash_dir()
         .map(|p| p.to_string_lossy().into_owned())
         .map_err(|e| format!("Hash directory not found: {}", e))?;
 
@@ -399,7 +399,7 @@ fn import_modpkg_internal(
         }
     }
 
-    flint_core::hash::lmdb_cache::drop_lmdb_cache();
+    ruination_core::hash::lmdb_cache::drop_lmdb_cache();
 
     // Re-resolve unresolved paths and rename files on disk
     if !unresolved_files.is_empty() {
@@ -497,13 +497,13 @@ fn import_modpkg_internal(
                 }),
             );
 
-            let hash_dir = flint_core::hash::get_hash_dir()
+            let hash_dir = ruination_core::hash::get_hash_dir()
                 .map(|p| p.to_string_lossy().into_owned())
                 .map_err(|e| format!("Hash directory not found: {}", e))?;
 
             let existing_hashes: HashSet<u64> = chunk_entries
                 .iter()
-                .map(|c| flint_core::hash::wad_chunk_hash(&c.path))
+                .map(|c| ruination_core::hash::wad_chunk_hash(&c.path))
                 .collect();
 
             let report = super::missing_files::recover_missing_files_from_league(
@@ -598,7 +598,7 @@ fn import_modpkg_internal(
             }),
         );
 
-        use flint_core::repath::organizer::{organize_project, OrganizerConfig};
+        use ruination_core::repath::organizer::{organize_project, OrganizerConfig};
 
         let config = OrganizerConfig {
             enable_concat: true,
@@ -637,7 +637,7 @@ fn import_modpkg_internal(
     if !package_layers.is_empty() {
         project.layers = package_layers
             .iter()
-            .map(|(name, priority)| flint_core::project::ModProjectLayer {
+            .map(|(name, priority)| ruination_core::project::ModProjectLayer {
                 name: name.clone(),
                 priority: *priority,
                 description: metadata
