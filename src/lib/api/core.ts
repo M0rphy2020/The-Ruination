@@ -5,7 +5,7 @@
 
 import { invoke, type InvokeArgs, type InvokeOptions } from '@tauri-apps/api/core';
 
-export class FlintError extends Error {
+export class RuinationError extends Error {
     command: string;
     originalError: unknown;
 
@@ -14,7 +14,7 @@ export class FlintError extends Error {
             ? originalError
             : (originalError as Error)?.message || 'Unknown error';
         super(message);
-        this.name = 'FlintError';
+        this.name = 'RuinationError';
         this.command = command;
         this.originalError = originalError;
     }
@@ -217,7 +217,7 @@ export async function invokeCommand<T>(
         if (!opts.silent) {
             console.error(`[The Ruination] Command "${command}" failed:`, error);
         }
-        throw new FlintError(command, error);
+        throw new RuinationError(command, error);
     }
 }
 
@@ -272,7 +272,7 @@ export async function invokeRaw<T>(
         if (!opts.silent) {
             console.error(`[The Ruination] Command "${command}" failed:`, error);
         }
-        throw new FlintError(command, error);
+        throw new RuinationError(command, error);
     }
 }
 
