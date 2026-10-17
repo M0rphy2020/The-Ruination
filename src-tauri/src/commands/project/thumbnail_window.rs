@@ -45,7 +45,7 @@ pub async fn open_thumbnail_window(
     let _ = std::fs::create_dir_all(&data_dir);
 
     WebviewWindowBuilder::new(&app, LABEL, WebviewUrl::App(url.into()))
-        .title("Flint — Thumbnail Creator")
+        .title("The Ruination — Thumbnail Creator")
         .inner_size(1280.0, 800.0)
         .resizable(true)
         .additional_browser_args(MAIN_BROWSER_ARGS)
