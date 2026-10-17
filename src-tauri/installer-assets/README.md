@@ -38,7 +38,7 @@ The vector reference artwork is branded. The two bitmap files below still need t
 
 ## Current Status
 
-🔴 **PLACEHOLDER FILES** - Replace these with your custom images before building the installer!
+**Release blocker:** `installer-sidebar.bmp` and `installer-header.bmp` are still the original bitmap assets and must be regenerated to match the Ruination logo before release.
 
 ## How to Create BMP Files
 
