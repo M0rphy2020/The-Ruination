@@ -34,7 +34,7 @@ pub use ritoshark::bin::{is_blend_key_field, BlendKey, BLEND_DATA_TABLE};
 
 /// Hash dictionary the text form resolves names through. Owned by the hash
 /// crate, re-exported here so callers reach it alongside the codec that uses it.
-pub use flint_hash::hash::bin_dict::{get_cached_bin_hashes, reload_bin_hash_cache};
+pub use ruination_hash::hash::bin_dict::{get_cached_bin_hashes, reload_bin_hash_cache};
 
 pub use converter::{bin_to_json, bin_to_text, json_to_bin, text_to_bin};
 pub use concat::{classify_bin, concat_linked_bins_with, update_main_bin_links, BinCategory};
