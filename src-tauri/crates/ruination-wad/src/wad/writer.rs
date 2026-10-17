@@ -26,7 +26,7 @@
 //! compressed payload is at least 5% smaller than the source; otherwise
 //! the chunk goes in uncompressed.
 
-use flint_hash::error::{Error, Result};
+use ruination_hash::error::{Error, Result};
 use crate::wad::format::WadCompression;
 use byteorder::{LittleEndian, WriteBytesExt};
 use std::io::{Cursor, Write};
