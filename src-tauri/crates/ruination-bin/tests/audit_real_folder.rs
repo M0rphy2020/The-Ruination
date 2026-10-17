@@ -4,7 +4,7 @@
 #[ignore]
 fn audit_a_real_wad_folder() {
     let dir = std::env::var("FLINT_AUDIT_DIR").expect("set FLINT_AUDIT_DIR");
-    let report = flint_bin::audit_wad_folder(std::path::Path::new(&dir)).expect("audit");
+    let report = ruination_bin::audit_wad_folder(std::path::Path::new(&dir)).expect("audit");
     println!(
         "files={} bins={} failed={} missing={} issues={}",
         report.files_scanned,
