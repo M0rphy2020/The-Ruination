@@ -314,8 +314,8 @@ export const ProjectListModal: React.FC = () => {
             useConfigStore.getState().setRecentProjects(recent.slice(0, 10));
         } catch (error) {
             console.error('Failed to open project:', error);
-            const flintError = error as api.FlintError;
-            setError(flintError.getUserMessage?.() || 'Failed to open project');
+            const ruinationError = error as api.RuinationError;
+            setError(ruinationError.getUserMessage?.() || 'Failed to open project');
         }
     }, [recentProjects, closeModal, setWorking, setReady, setError]);
 
@@ -376,8 +376,8 @@ export const ProjectListModal: React.FC = () => {
                     }, 200);
                 } catch (error) {
                     console.error('Failed to delete project:', error);
-                    const flintError = error as api.FlintError;
-                    setError(flintError.getUserMessage?.() || 'Failed to delete project');
+                    const ruinationError = error as api.RuinationError;
+                    setError(ruinationError.getUserMessage?.() || 'Failed to delete project');
                     setRemovingId(null);
                 }
             },
@@ -494,9 +494,9 @@ export const ProjectListModal: React.FC = () => {
             setReady();
         } catch (error) {
             console.error('Failed to import mod:', error);
-            const flintError = error as api.FlintError;
+            const ruinationError = error as api.RuinationError;
             closeModal();
-            setError(flintError.getUserMessage?.() || 'Failed to import mod');
+            setError(ruinationError.getUserMessage?.() || 'Failed to import mod');
         }
     }, [leaguePath, creatorName, recentProjects, closeModal, setWorking, setReady, setError]);
 
