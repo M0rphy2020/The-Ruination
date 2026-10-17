@@ -1,0 +1,24 @@
+name: Brand residue audit
+
+on:
+  push:
+    branches:
+      - "rebrand/**"
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  brand-residue:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Report legacy Flint references
+        shell: bash
+        run: |
+          echo "Files or directories containing Flint in their path:"
+          find . -path './.git' -prune -o -iname '*flint*' -print
+          echo
+          echo "Text references (generated files and lockfiles excluded):"
+          git grep -n -i -E 'flint|flint_core|flint-' -- ':!Cargo.lock' ':!package-lock.json' || true
