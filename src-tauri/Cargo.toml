@@ -1,5 +1,5 @@
 [workspace]
-members = [".", "crates/ruination-core", "crates/flint-formats", "crates/flint-hash", "crates/flint-net", "crates/flint-bin", "crates/flint-wad", "crates/ruination-hematite", "crates/ruination-shaderforge"]
+members = [".", "crates/ruination-core", "crates/flint-formats", "crates/ruination-hash", "crates/flint-net", "crates/flint-bin", "crates/flint-wad", "crates/ruination-hematite", "crates/ruination-shaderforge"]
 
 # Single source of truth for deps shared across the workspace crates. Before
 # this, bumping `ritoshark` meant editing seven manifests and silently getting
