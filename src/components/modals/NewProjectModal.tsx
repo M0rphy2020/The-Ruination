@@ -537,7 +537,7 @@ export const NewProjectModal: React.FC = () => {
             const home = await api.getAppHome();
             setProjectPath(`${home}/projects`);
         } catch {
-            setProjectPath('C:/Users/Projects/Flint');
+            setProjectPath('C:/Users/Projects/The Ruination');
         }
     };
 
