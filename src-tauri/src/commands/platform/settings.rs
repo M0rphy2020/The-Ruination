@@ -5,7 +5,7 @@ use std::path::PathBuf;
 /// Bump when the settings shape changes.
 const SCHEMA_VERSION: u32 = 1;
 
-/// User-facing settings, persisted to `%APPDATA%/Flint/settings.json`.
+/// User-facing settings, persisted to `%APPDATA%/The Ruination/settings.json`.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct FlintSettings {
@@ -124,16 +124,27 @@ impl Default for FlintSettings {
 // App home directory
 // =============================================================================
 
-/// Returns `%APPDATA%/Flint` — the canonical app home.
+/// Returns `%APPDATA%/The Ruination` — the canonical app home.
 pub fn get_flint_home() -> Result<PathBuf, String> {
     let appdata = std::env::var("APPDATA")
         .map_err(|_| "APPDATA environment variable not found".to_string())?;
-    Ok(PathBuf::from(appdata).join("Flint"))
+    Ok(PathBuf::from(appdata).join("The Ruination"))
 }
 
-/// Ensures the full folder scaffold exists under `%APPDATA%/Flint/`.
+/// Ensures the full folder scaffold exists under `%APPDATA%/The Ruination/`.
 pub fn ensure_folder_structure() -> Result<PathBuf, String> {
     let home = get_flint_home()?;
+
+    // Preserve existing user data when upgrading from the previous app identity.
+    let appdata = std::env::var("APPDATA")
+        .map_err(|_| "APPDATA environment variable not found".to_string())?;
+    let legacy_home = PathBuf::from(appdata).join("Flint");
+    if !home.exists() && legacy_home.exists() {
+        std::fs::rename(&legacy_home, &home).map_err(|e| {
+            format!("Failed to migrate legacy Flint data directory: {}", e)
+        })?;
+    }
+
     let dirs = [
         home.join("projects"),
         home.join("themes"),
@@ -201,7 +212,7 @@ fn write_settings_to_disk(settings: &FlintSettings) -> Result<(), String> {
 /// Called once from `main.rs` setup — creates folder scaffold.
 pub fn initialize_app_home() -> Result<PathBuf, String> {
     let home = ensure_folder_structure()?;
-    tracing::info!("Flint home: {}", home.display());
+    tracing::info!("The Ruination home: {}", home.display());
     Ok(home)
 }
 
@@ -226,7 +237,7 @@ pub fn save_settings(settings: FlintSettings) -> Result<(), String> {
     write_settings_to_disk(&settings)
 }
 
-/// Migrate projects from old `%APPDATA%/RitoShark/Flint/Projects` to new `%APPDATA%/Flint/projects/`.
+/// Migrate projects from old `%APPDATA%/RitoShark/Flint/Projects` to `%APPDATA%/The Ruination/projects/`.
 /// Moves each project folder, then updates paths in settings.json (saved/recent projects, defaultProjectPath).
 /// Skips projects that already exist in the destination. Safe to call multiple times.
 #[tauri::command]
@@ -339,7 +350,7 @@ fn copy_dir_recursive(src: &std::path::Path, dest: &std::path::Path) -> Result<(
 // Theme commands
 // =============================================================================
 
-/// A theme file from `%APPDATA%/Flint/themes/`.
+/// A theme file from `%APPDATA%/The Ruination/themes/`.
 #[derive(Debug, Clone, Serialize)]
 pub struct ThemeInfo {
     /// Filename without extension.
