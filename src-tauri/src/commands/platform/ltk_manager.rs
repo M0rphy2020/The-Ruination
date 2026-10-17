@@ -323,7 +323,7 @@ fn is_wad_name(name: &str) -> bool {
 /**
 Every file to mirror, as `(source, destination-relative path)`.
 
-Older Flint projects put the WAD straight under `content/` with no layer directory. LTK
+Older Ruination projects put the WAD straight under `content/` with no layer directory. LTK
 Manager reads each child of `content/` AS a layer, so that shape would show up as a layer
 named `yone.wad.client` holding the game's own tree. Those are rehomed under `content/base/`,
 which is what `mod.config.json` already declares.
