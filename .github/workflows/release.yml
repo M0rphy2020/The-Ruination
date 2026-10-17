@@ -52,7 +52,7 @@ jobs:
           FLINT_TAG: ${{ github.ref_name }}
         run: |
           $flintVersion = (Get-Content src-tauri/tauri.conf.json -Raw | ConvertFrom-Json).version
-          if ($env:FLINT_TAG -ne "v$flintVersion") { throw 'Release tag must match the Flint application version' }
+          if ($env:FLINT_TAG -ne "v$flintVersion") { throw 'Release tag must match the The Ruination application version' }
           $releases = gh api 'repos/alanpq/ritobin-lsp/releases?per_page=100' | ConvertFrom-Json
           if ($LASTEXITCODE) { throw 'Upstream release lookup failed' }
           $release = $releases | Where-Object { !$_.draft -and !$_.prerelease -and $_.tag_name -match '^ritobin-lsp-v\d' } | Select-Object -First 1
@@ -103,13 +103,13 @@ jobs:
           # Builds the real shader preview in, not the stub.
           args: --features shaderforge
           tagName: ${{ github.ref_name }}
-          releaseName: 'Flint ${{ github.ref_name }}'
+          releaseName: 'The Ruination ${{ github.ref_name }}'
           releaseBody: ${{ steps.changelog.outputs.content }}
           releaseDraft: false
           prerelease: false
           updaterJsonPreferNsis: true
 
-      - name: Attach ritobin LSP to the Flint release
+      - name: Attach ritobin LSP to the The Ruination release
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
