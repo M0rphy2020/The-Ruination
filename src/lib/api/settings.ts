@@ -1,7 +1,7 @@
 import { invokeCommand } from './core';
 import type { RecentProject, SavedProject } from '../types';
 
-export interface FlintSettings {
+export interface RuinationSettings {
     schemaVersion: number;
     leaguePath: string | null;
     leaguePathPbe: string | null;
@@ -33,11 +33,11 @@ export async function getAppHome(): Promise<string> {
     return invokeCommand('get_app_home');
 }
 
-export async function getSettings(): Promise<FlintSettings> {
+export async function getSettings(): Promise<RuinationSettings> {
     return invokeCommand('get_settings');
 }
 
-export async function saveSettings(settings: FlintSettings): Promise<void> {
+export async function saveSettings(settings: RuinationSettings): Promise<void> {
     return invokeCommand('save_settings', { settings });
 }
 
