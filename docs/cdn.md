@@ -2,7 +2,7 @@
 
 [Documentation index](README.md) · [Project workflow](projects.md) · [Architecture](architecture.md)
 
-Flint can browse and download game files from Riot's CDN without a local League installation. Use this workflow when you want individual assets or a WAD from a particular patch. It does not require a Flint project and does not automatically create one.
+The Ruination can browse and download game files from Riot's CDN without a local League installation. Use this workflow when you want individual assets or a WAD from a particular patch. It does not require a The Ruination project and does not automatically create one.
 
 ## Load a patch
 
@@ -38,7 +38,7 @@ Selecting an inner asset fetches the compressed manifest chunks covering that as
 
 Manifest-file selection and inner-file selection can be combined. Doing so can download both an archive and selected assets from it. Whole-WAD unpacking decodes every entry; it is not the economical choice when you only need one texture.
 
-Names come from Flint's shared hash database. An unresolved hash can still identify and retrieve a WAD entry, but it cannot provide its original readable path. A hexadecimal filename means name resolution failed, not necessarily that downloading failed. Whole-WAD unpacking uses the hexadecimal hash for unnamed entries; it also falls back to a hash-based filename when a resolved destination path exceeds its length limit.
+Names come from The Ruination's shared hash database. An unresolved hash can still identify and retrieve a WAD entry, but it cannot provide its original readable path. A hexadecimal filename means name resolution failed, not necessarily that downloading failed. Whole-WAD unpacking uses the hexadecimal hash for unnamed entries; it also falls back to a hash-based filename when a resolved destination path exceeds its length limit.
 
 ## Using downloaded files in a project
 
@@ -53,9 +53,9 @@ The New Project skin workflow still reads a local League installation. CDN brows
 ## How the download works
 
 1. **Catalog discovery:** the current version picker reads the `Morilli/riot-manifests` repository's tree, filters it by region/platform, and resolves a chosen catalog text entry to a Riot manifest URL. The backend also exposes Riot Sieve discovery through `cdn_list_manifests`; that is separate from the catalog picker.
-2. **RMAN parsing:** Flint downloads or reuses the manifest and parses it with the RitoShark RMAN reader. This yields file paths and the bundle/chunk ranges needed for each file. A backend session holds the parsed manifest for the open browser tab.
-3. **WAD browsing:** Flint fetches the leading manifest chunks until it can parse the WAD table of contents, with an eight-chunk limit. Hash lookup supplies readable names.
-4. **Inner reads:** Flint requests the bundle ranges covering the chosen WAD entry, decompresses the manifest chunks, and decodes the entry's WAD compression. Subchunk compression can require additional metadata.
+2. **RMAN parsing:** The Ruination downloads or reuses the manifest and parses it with the RitoShark RMAN reader. This yields file paths and the bundle/chunk ranges needed for each file. A backend session holds the parsed manifest for the open browser tab.
+3. **WAD browsing:** The Ruination fetches the leading manifest chunks until it can parse the WAD table of contents, with an eight-chunk limit. Hash lookup supplies readable names.
+4. **Inner reads:** The Ruination requests the bundle ranges covering the chosen WAD entry, decompresses the manifest chunks, and decodes the entry's WAD compression. Subchunk compression can require additional metadata.
 5. **Whole-file downloads:** the downloader fetches each compressed manifest chunk in its own HTTP range request, decompresses it and streams it into the destination. It checks compressed/decompressed sizes and validates chunk hashes when the manifest supplies a supported hash type. Large grouped requests are avoided because truncated responses have been observed.
 
 The bundle URL is constructed as `https://lol.dyn.riotcdn.net/channels/public/bundles/<16-digit-uppercase-hex-id>.bundle`. This describes the endpoint used by the code, not a promise that every historical bundle remains available.
@@ -64,8 +64,8 @@ The bundle URL is constructed as `https://lol.dyn.riotcdn.net/channels/public/bu
 
 | Symptom / location | Meaning or next step |
 |---|---|
-| `%APPDATA%/Flint/cache/cdn` | Persistent catalog tree and resolved manifest URLs. Explicit refresh updates the catalog tree. |
-| `%APPDATA%/Flint/manifest` | Downloaded manifest files, keyed by URL basename. This is not a complete game cache. |
+| `%APPDATA%/The Ruination/cache/cdn` | Persistent catalog tree and resolved manifest URLs. Explicit refresh updates the catalog tree. |
+| `%APPDATA%/The Ruination/manifest` | Downloaded manifest files, keyed by URL basename. This is not a complete game cache. |
 | Cached manifest opens but assets will not download | Asset reads still need CDN access. Cached metadata does not make its contents available offline. |
 | No matching version | Check platform, kind, region and filter text; refresh the catalog. The picker lists cataloged versions, not a guarantee of all builds ever shipped. |
 | Missing locale WAD | Show all languages and check the chosen region/build. |
@@ -74,4 +74,4 @@ The bundle URL is constructed as `https://lol.dyn.riotcdn.net/channels/public/bu
 | WAD table cannot be parsed within eight chunks | The current remote-listing limit was reached or the data is unsupported/invalid. Try downloading the raw WAD and browsing it locally. |
 | Session not found | Reload the manifest to create a new backend session. |
 
-Implementation: [picker](../src/components/modals/LoadManifestModal.tsx), [browser and extraction actions](../src/components/browser/ManifestBrowser.tsx), [Tauri commands](../src-tauri/src/commands/cdn/cdn.rs), [catalog](../src-tauri/crates/flint-net/src/cdn/catalog.rs), [downloader](../src-tauri/crates/flint-net/src/cdn/downloader.rs), [remote WAD reader](../src-tauri/crates/flint-net/src/cdn/wad_browse.rs).
+Implementation: [picker](../src/components/modals/LoadManifestModal.tsx), [browser and extraction actions](../src/components/browser/ManifestBrowser.tsx), [Tauri commands](../src-tauri/src/commands/cdn/cdn.rs), [catalog](../src-tauri/crates/ruination-net/src/cdn/catalog.rs), [downloader](../src-tauri/crates/ruination-net/src/cdn/downloader.rs), [remote WAD reader](../src-tauri/crates/ruination-net/src/cdn/wad_browse.rs).
