@@ -139,12 +139,18 @@ interface MapPreviewProps {
 
 function loadPref<T>(key: string, fallback: T): T {
     try {
-        const raw = localStorage.getItem(`flint.mappreview.${key}`);
+        const storageKey = `ruination.mappreview.${key}`;
+        const legacyKey = `flint.mappreview.${key}`;
+        const raw = localStorage.getItem(storageKey) ?? localStorage.getItem(legacyKey);
+        if (raw !== null && localStorage.getItem(storageKey) === null) {
+            localStorage.setItem(storageKey, raw);
+            localStorage.removeItem(legacyKey);
+        }
         return raw == null ? fallback : (JSON.parse(raw) as T);
     } catch { return fallback; }
 }
 function savePref(key: string, value: unknown): void {
-    try { localStorage.setItem(`flint.mappreview.${key}`, JSON.stringify(value)); } catch { /* ignore */ }
+    try { localStorage.setItem(`ruination.mappreview.${key}`, JSON.stringify(value)); localStorage.removeItem(`flint.mappreview.${key}`); } catch { /* ignore */ }
 }
 
 /** Camera speed prefs (sensibilities are DIVISORS: higher = slower). */
