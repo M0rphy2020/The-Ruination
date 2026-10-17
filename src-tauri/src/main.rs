@@ -67,8 +67,8 @@ fn main() {
     tracing::info!("The Ruination starting...");
     tracing::info!(
         "IPC tracing active — frontend logs `[ipc#N ▶/✓]`, Rust logs `[rs-ipc#N ▶/✓]`. \
-         In DevTools, call `__FLINT_IPC_STATS()` to see per-command totals. \
-         Toggle JS-side trace via `localStorage.flintIpcTrace = '0'` then reload."
+         In DevTools, call `__RUINATION_IPC_STATS()` to see per-command totals. \
+         Toggle JS-side trace via `localStorage.ruinationIpcTrace = '0'` then reload."
     );
 
     let t_start = std::time::Instant::now();
