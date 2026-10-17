@@ -131,6 +131,29 @@ pub fn get_ruination_home() -> Result<PathBuf, String> {
     Ok(PathBuf::from(appdata).join("The Ruination"))
 }
 
+/// Copy legacy files only when the new identity has no file at that path.
+/// Existing destination files are never overwritten; symlinks are intentionally skipped.
+fn copy_missing_tree(source: &std::path::Path, destination: &std::path::Path) -> std::io::Result<()> {
+    std::fs::create_dir_all(destination)?;
+    for entry in std::fs::read_dir(source)? {
+        let entry = entry?;
+        let file_type = entry.file_type()?;
+        let source_path = entry.path();
+        let destination_path = destination.join(entry.file_name());
+
+        if file_type.is_dir() {
+            if !destination_path.exists() {
+                copy_missing_tree(&source_path, &destination_path)?;
+            } else if destination_path.is_dir() {
+                copy_missing_tree(&source_path, &destination_path)?;
+            }
+        } else if file_type.is_file() && !destination_path.exists() {
+            std::fs::copy(&source_path, &destination_path)?;
+        }
+    }
+    Ok(())
+}
+
 /// Ensures the full folder scaffold exists under `%APPDATA%/The Ruination/`.
 pub fn ensure_folder_structure() -> Result<PathBuf, String> {
     let home = get_ruination_home()?;
@@ -139,10 +162,19 @@ pub fn ensure_folder_structure() -> Result<PathBuf, String> {
     let appdata = std::env::var("APPDATA")
         .map_err(|_| "APPDATA environment variable not found".to_string())?;
     let legacy_home = PathBuf::from(appdata).join("Flint");
-    if !home.exists() && legacy_home.exists() {
-        std::fs::rename(&legacy_home, &home).map_err(|e| {
-            format!("Failed to migrate legacy Flint data directory: {}", e)
-        })?;
+    if legacy_home.exists() {
+        if !home.exists() {
+            std::fs::rename(&legacy_home, &home).map_err(|e| {
+                format!("Failed to migrate legacy Flint data directory: {}", e)
+            })?;
+        } else {
+            // The new directory may already exist from an earlier launch. Import
+            // missing legacy files without overwriting anything created under the
+            // new identity, and leave the old directory intact as a safety net.
+            copy_missing_tree(&legacy_home, &home).map_err(|e| {
+                format!("Failed to merge legacy Flint data directory: {}", e)
+            })?;
+        }
     }
 
     let dirs = [
