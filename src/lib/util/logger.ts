@@ -43,7 +43,7 @@ const originalConsole = {
 // Mirrors the "Verbose logging" setting (appMetadataStore keeps it in sync via
 // setVerboseCapture; seeded from the same localStorage key so a restart keeps
 // the choice). console.debug always still reaches DevTools regardless.
-export const VERBOSE_STORAGE_KEY = 'flint_verbose_logging';
+export const VERBOSE_STORAGE_KEY = 'ruination_verbose_logging';
 
 let verboseCapture = (() => {
     try {
@@ -126,7 +126,7 @@ export function initializeLogger() {
         }
     };
 
-    addLogEntry('info', 'Flint frontend logger initialized');
+    addLogEntry('info', 'The Ruination frontend logger initialized');
 }
 
 export function restoreConsole() {
