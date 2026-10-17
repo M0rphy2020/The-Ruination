@@ -341,7 +341,7 @@ const FileTree: React.FC<FileTreeProps> = ({ searchQuery }) => {
                             setFileTreeRef.current(tab.id, files);
                             showToastRef.current('success', `Imported ${created.length} item${created.length === 1 ? '' : 's'}`);
                         } catch (err) {
-                            const fe = err as api.FlintError;
+                            const fe = err as api.RuinationError;
                             showToastRef.current('error', fe.getUserMessage?.() || 'Failed to import');
                         }
                     })();
@@ -477,7 +477,7 @@ const FileTree: React.FC<FileTreeProps> = ({ searchQuery }) => {
                     setSelectedPaths(new Set());
                     showToastRef.current('success', targets.length === 1 ? 'Deleted' : `Deleted ${targets.length} items`);
                 } catch (err) {
-                    const fe = err as api.FlintError;
+                    const fe = err as api.RuinationError;
                     showToastRef.current('error', fe.getUserMessage?.() || 'Failed to delete');
                 }
             },
@@ -620,7 +620,7 @@ const FileTree: React.FC<FileTreeProps> = ({ searchQuery }) => {
     const openWad = useCallback((fullFilePath: string) => {
         showToastRef.current('info', 'Opening WAD…');
         openWadInExtract(fullFilePath).catch((err) => {
-            const fe = err as api.FlintError;
+            const fe = err as api.RuinationError;
             showToastRef.current('error', fe.getUserMessage?.() || 'Failed to open WAD');
         });
     }, []);
@@ -664,8 +664,8 @@ const FileTree: React.FC<FileTreeProps> = ({ searchQuery }) => {
                 showToast('success', 'File renamed');
             }
         } catch (err) {
-            const flintError = err as api.FlintError;
-            showToast('error', flintError.getUserMessage?.() || 'Failed to rename');
+            const ruinationError = err as api.RuinationError;
+            showToast('error', ruinationError.getUserMessage?.() || 'Failed to rename');
         }
     }, [projectPath, refreshFileTree, showToast]);
 
@@ -1068,8 +1068,8 @@ const ProjectsPanel: React.FC = () => {
             setReady();
         } catch (error) {
             console.error('Failed to open project:', error);
-            const flintError = error as api.FlintError;
-            setError(flintError.getUserMessage?.() || 'Failed to open project');
+            const ruinationError = error as api.RuinationError;
+            setError(ruinationError.getUserMessage?.() || 'Failed to open project');
         }
     };
 
