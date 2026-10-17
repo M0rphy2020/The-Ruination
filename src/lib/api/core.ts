@@ -5,7 +5,7 @@
 
 import { invoke, type InvokeArgs, type InvokeOptions } from '@tauri-apps/api/core';
 
-export class RuinationError extends Error {
+export class FlintError extends Error {
     command: string;
     originalError: unknown;
 
@@ -14,7 +14,7 @@ export class RuinationError extends Error {
             ? originalError
             : (originalError as Error)?.message || 'Unknown error';
         super(message);
-        this.name = 'RuinationError';
+        this.name = 'FlintError';
         this.command = command;
         this.originalError = originalError;
     }
