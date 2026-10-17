@@ -1,6 +1,6 @@
-use flint_core::audio::bank::{self, AudioBankInfo, DecodedAudio};
-use flint_core::audio::event_mapper::{self, BinEventString, EventMapping};
-use flint_core::audio::hirc::{self, HircData};
+use ruination_core::audio::bank::{self, AudioBankInfo, DecodedAudio};
+use ruination_core::audio::event_mapper::{self, BinEventString, EventMapping};
+use ruination_core::audio::hirc::{self, HircData};
 use serde::{Deserialize, Serialize};
 
 // ============================================================
