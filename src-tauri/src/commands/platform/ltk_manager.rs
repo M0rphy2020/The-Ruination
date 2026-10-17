@@ -127,7 +127,7 @@ pub async fn get_celestial_mod_path(app: tauri::AppHandle) -> Result<Option<Stri
     Ok(None)
 }
 
-/// Sync a Flint project to the Celestial launcher by handing it the project
+/// Sync a Ruination project to the Celestial launcher by handing it the project
 /// path via a `celestial://import-flint?path=...` deep link (Celestial reads the
 /// raw project folder itself, so nothing is packaged).
 ///
@@ -138,7 +138,7 @@ pub async fn sync_project_to_celestial(project_path: String) -> Result<String, S
 
     if !project_buf.join("flint.json").is_file() {
         return Err(format!(
-            "Not a Flint project (no flint.json found at {})",
+            "Not a Ruination project (no flint.json found at {})",
             project_path
         ));
     }
@@ -236,15 +236,15 @@ pub struct LauncherSyncResult {
 }
 
 /**
-Hand a Flint project to LTK Manager.
+Hand a Ruination project to LTK Manager.
 
 The **workshop** is LTK Manager's authoring side — the projects a user is making — and the
-**library** is the other side, the mods they installed. A project open in Flint is being
+**library** is the other side, the mods they installed. A project open in The Ruination is being
 authored, so it belongs in the workshop; the library only gets it once it ships. So the
 workshop wins whenever `workshopPath` is set, and the old package-and-install path is the
 fallback for a user who has never configured one.
 
-A workshop project and a Flint project are the same thing on disk — `mod.config.json` beside
+A workshop project and a Ruination project are the same thing on disk — `mod.config.json` beside
 a `content/<layer>/` tree — so this mirrors the folder rather than packaging anything.
 */
 #[tauri::command]
