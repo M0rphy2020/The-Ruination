@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">The Ruination</title>
+  <defs>
+    <linearGradient id="silver" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f4ffff"/>
+      <stop offset=".32" stop-color="#aabec2"/>
+      <stop offset=".55" stop-color="#f1ffff"/>
+      <stop offset=".78" stop-color="#718b91"/>
+      <stop offset="1" stop-color="#e9ffff"/>
+    </linearGradient>
+    <linearGradient id="cyan" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8affff"/>
+      <stop offset=".5" stop-color="#20dde0"/>
+      <stop offset="1" stop-color="#087d89"/>
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <circle cx="256" cy="256" r="194" fill="none" stroke="#17363b" stroke-width="2"/>
+  <path d="M113 111 A194 194 0 0 1 363 74 L345 91 A171 171 0 0 0 132 137 Z" fill="#29474c"/>
+  <path d="M403 145 A194 194 0 0 1 391 350 L373 336 A171 171 0 0 0 382 163 Z" fill="url(#cyan)" opacity=".8"/>
+  <path d="M346 423 A194 194 0 0 1 118 388 L135 370 A171 171 0 0 0 327 400 Z" fill="#29474c"/>
+  <path d="M72 329 A194 194 0 0 1 79 170 L99 183 A171 171 0 0 0 95 313 Z" fill="url(#cyan)" opacity=".7"/>
+  <path d="M160 121 L188 95 L177 133 L213 116 L204 151 L240 139 L223 175 L192 186 L174 221 L161 206 L147 239 L126 225 L141 184 Z" fill="#16383e"/>
+  <path d="M350 378 L321 402 L331 365 L296 381 L305 347 L270 358 L287 323 L318 311 L336 277 L349 292 L363 260 L384 274 L369 315 Z" fill="#16383e"/>
+  <text x="256" y="337" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="310" font-weight="700" fill="url(#silver)" stroke="#0b2024" stroke-width="2">R</text>
+  <path d="M168 104 L190 136 L178 166 M346 370 L324 340 L337 309" fill="none" stroke="url(#cyan)" stroke-width="5" stroke-linecap="square" filter="url(#glow)"/>
+  <path d="M252 28 L262 50 L252 65 L263 84 L252 98" fill="none" stroke="url(#cyan)" stroke-width="4" filter="url(#glow)"/>
+  <path d="M250 414 L260 430 L250 444 L261 462" fill="none" stroke="url(#cyan)" stroke-width="4" filter="url(#glow)"/>
+</svg>
