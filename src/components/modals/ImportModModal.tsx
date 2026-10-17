@@ -310,7 +310,7 @@ export const ImportModModal: React.FC = () => {
                         <div className="import-mod__dropzone-icon">📦</div>
                         <div className="import-mod__dropzone-title">Choose a mod package</div>
                         <div className="import-mod__dropzone-hint">
-                            Select a <code>.fantome</code> or <code>.modpkg</code> file to import into a The Ruination project
+                            Select a <code>.fantome</code> or <code>.modpkg</code> file to import into a project in The Ruination
                         </div>
                         <Button variant="primary">Browse…</Button>
                     </div>
