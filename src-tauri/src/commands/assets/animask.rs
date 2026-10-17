@@ -4,9 +4,9 @@
 //! weight list and a bone list of different lengths cannot be paired safely.
 
 use crate::core::ipc_trace;
-use flint_core::bin::{read_bin, write_bin, MaskEntry};
-use flint_core::mesh::animation::resolve_skl_for_animation_bin;
-use flint_core::mesh::skl::{parse_skl_file, BoneData};
+use ruination_core::bin::{read_bin, write_bin, MaskEntry};
+use ruination_core::mesh::animation::resolve_skl_for_animation_bin;
+use ruination_core::mesh::skl::{parse_skl_file, BoneData};
 use serde::{Deserialize, Serialize};
 use std::path::Path;
 
@@ -77,7 +77,7 @@ pub async fn read_animation_masks(
 
     let bytes = std::fs::read(&bin_path).map_err(|e| format!("Failed to read {}: {}", bin_path, e))?;
     let bin = read_bin(&bytes).map_err(|e| format!("Failed to parse BIN: {}", e))?;
-    let masks = flint_core::bin::read_masks(&bin);
+    let masks = ruination_core::bin::read_masks(&bin);
 
     if masks.is_empty() {
         return Ok(MaskDocument {
@@ -130,7 +130,7 @@ pub async fn bin_has_animation_masks(bin_path: String) -> Result<bool, String> {
         return Ok(false);
     }
     let bin = read_bin(&bytes).map_err(|e| format!("Failed to parse BIN: {}", e))?;
-    Ok(!flint_core::bin::read_masks(&bin).is_empty())
+    Ok(!ruination_core::bin::read_masks(&bin).is_empty())
 }
 
 #[tauri::command]
@@ -152,7 +152,7 @@ pub async fn save_animation_masks(
         })
         .collect();
 
-    let written = flint_core::bin::write_masks(&mut bin, &edits)?;
+    let written = ruination_core::bin::write_masks(&mut bin, &edits)?;
 
     let out = write_bin(&bin).map_err(|e| format!("Failed to serialize BIN: {}", e))?;
     std::fs::write(&bin_path, out).map_err(|e| format!("Failed to write {}: {}", bin_path, e))?;
@@ -164,7 +164,7 @@ pub async fn save_animation_masks(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use flint_core::mesh::skl::BoneData;
+    use ruination_core::mesh::skl::BoneData;
 
     fn bone(name: &str, id: i16, parent_id: i16) -> BoneData {
         BoneData {
