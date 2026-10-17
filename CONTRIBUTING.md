@@ -7,8 +7,8 @@ PRs are welcome. Nothing here is strict except the commit format, which the chan
 Needs Rust (stable), Node 20, and Windows 10 or 11.
 
 ```bash
-git clone https://github.com/RitoShark/Flint
-cd Flint
+git clone https://github.com/M0rphy2020/The-Ruination
+cd The-Ruination
 npm install
 npm run tauri dev
 ```
@@ -44,7 +44,7 @@ meaning a non-obvious trap where the next person breaks something without the wa
 quirk, an ordering requirement, a platform bug. Keep that to one line. Comments go stale the moment
 the code moves and a comment that lies is worse than none.
 
-**Format work belongs in the library.** If Flint needs a new format capability, or a format bug
+**Format work belongs in the library.** If The Ruination needs a new format capability, or a format bug
 fixed, it goes in [RitoShark-Crates](https://github.com/RitoShark/RitoShark-Crates), not into a
 workaround here. Open an issue first so the change lands in the right place.
 
