@@ -55,7 +55,7 @@ flint-wad = { path = "../flint-wad" }
 intel_tex_2 = "0.4"
 
 
-# Hematite fixer lives in crates/hematite-flint (re-integrated 2026-07-21). Its
+# Hematite fixer lives in crates/ruination-hematite (re-integrated 2026-07-21). Its
 # rs_* pins must match the application's ritoshark revision or two copies of each rs_* compile.
 
 # LMDB via heed — memory-mapped B-tree DB for fast hash lookups
