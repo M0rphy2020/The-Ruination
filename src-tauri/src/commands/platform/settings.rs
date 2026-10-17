@@ -416,9 +416,12 @@ pub fn seed_builtin_themes() -> Result<(), String> {
     if lily.exists() && !froggy.exists() {
         let _ = std::fs::rename(&lily, &froggy);
     }
+    // Preserve a user-created legacy theme while migrating its filename.
+    // If the new name already exists, leave the old file untouched rather than deleting user data.
     let legacy_flint = themes_dir.join("flint.json");
-    if legacy_flint.exists() {
-        let _ = std::fs::remove_file(&legacy_flint);
+    let ruination_theme = themes_dir.join("ruination.json");
+    if legacy_flint.exists() && !ruination_theme.exists() {
+        let _ = std::fs::rename(&legacy_flint, &ruination_theme);
     }
 
     let presets: [(&str, serde_json::Value); 4] = [
