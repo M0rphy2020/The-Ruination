@@ -174,7 +174,12 @@ export const NewProjectModal: React.FC = () => {
     const [experimentalWarning, setExperimentalWarning] = useState<'map' | null>(null);
 
     const handleSelectExperimentalType = (type: 'map') => {
-        const key = `flint.seenExperimentalWarning.${type}`;
+        const key = `ruination.seenExperimentalWarning.${type}`;
+        const legacyKey = `flint.seenExperimentalWarning.${type}`;
+        if (localStorage.getItem(key) === null && localStorage.getItem(legacyKey) === 'true') {
+            localStorage.setItem(key, 'true');
+            localStorage.removeItem(legacyKey);
+        }
         if (localStorage.getItem(key) !== 'true') {
             setExperimentalWarning(type);
         } else {
@@ -184,7 +189,7 @@ export const NewProjectModal: React.FC = () => {
 
     const confirmExperimental = () => {
         if (!experimentalWarning) return;
-        localStorage.setItem(`flint.seenExperimentalWarning.${experimentalWarning}`, 'true');
+        localStorage.setItem(`ruination.seenExperimentalWarning.${experimentalWarning}`, 'true'); localStorage.removeItem(`flint.seenExperimentalWarning.${experimentalWarning}`);
         setProjectType(experimentalWarning);
         setExperimentalWarning(null);
     };
