@@ -436,7 +436,7 @@ export const ProjectListModal: React.FC = () => {
             const appData = await appDataDir();
             const parts = toPosix(appData).split('/');
             parts.pop();
-            const defaultProjectsDir = `${parts.join('/')}/RitoShark/Flint/Projects`;
+            const defaultProjectsDir = `${parts.join('/')}/The Ruination/projects`;
 
             const sanitizedModName = modName.replace(/[^a-zA-Z0-9_-]/g, '_');
             const dirName = `${champion}_Skin${skinId}_${sanitizedModName}`;
