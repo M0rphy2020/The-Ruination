@@ -3,13 +3,27 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useModalStore } from '../../lib/stores';
 import type { ModalType } from '../../lib/types';
 
-const ONBOARDING_KEY = 'flint_onboarding_done';
-export function isOnboardingDone(): boolean { return localStorage.getItem(ONBOARDING_KEY) === 'true'; }
-export function markOnboardingDone(): void { localStorage.setItem(ONBOARDING_KEY, 'true'); }
+const ONBOARDING_KEY = 'ruination_onboarding_done';
+const LEGACY_ONBOARDING_KEY = 'flint_onboarding_done';
+export function isOnboardingDone(): boolean {
+    const current = localStorage.getItem(ONBOARDING_KEY);
+    if (current !== null) return current === 'true';
+    const legacy = localStorage.getItem(LEGACY_ONBOARDING_KEY);
+    if (legacy !== null) {
+        localStorage.setItem(ONBOARDING_KEY, legacy);
+        localStorage.removeItem(LEGACY_ONBOARDING_KEY);
+        return legacy === 'true';
+    }
+    return false;
+}
+export function markOnboardingDone(): void {
+    localStorage.setItem(ONBOARDING_KEY, 'true');
+    localStorage.removeItem(LEGACY_ONBOARDING_KEY);
+}
 
-export const TUTORIAL_REPLAY_EVENT = 'flint:tutorial:replay';
+export const TUTORIAL_REPLAY_EVENT = 'ruination:tutorial:replay';
 export function triggerTutorialReplay(): void {
-    try { localStorage.removeItem(ONBOARDING_KEY); } catch {}
+    try { localStorage.removeItem(ONBOARDING_KEY); localStorage.removeItem(LEGACY_ONBOARDING_KEY); } catch {}
     window.dispatchEvent(new CustomEvent(TUTORIAL_REPLAY_EVENT));
 }
 
@@ -39,8 +53,8 @@ function clickWhenReady(selector: string, maxTries = 50, intervalMs = 150): void
 
 const STEPS: Step[] = [
     {
-        title: 'Welcome to Flint!',
-        body: "Flint is a League of Legends asset extractor and modding IDE — extraction, path rewriting, and mod packaging all in one place. Let's take a quick look around.",
+        title: 'Welcome to The Ruination!',
+        body: "The Ruination is a League of Legends custom-skin editor and modding IDE — extraction, path rewriting, and mod packaging all in one place. Let's take a quick look around.",
     },
     {
         title: 'Create a Mod Project',
