@@ -10,7 +10,8 @@ use std::path::{Path, PathBuf};
 
 const PROJECT_FILE: &str = "mod.config.json";
 
-const FLINT_FILE: &str = "flint.json";
+const RUINATION_FILE: &str = "ruination.json";
+const LEGACY_METADATA_FILE: &str = "flint.json";
 
 /// Drives which fields in `flint.json` are meaningful. Persisted as kebab-case
 /// (`"skin" | "map" | "loading-screen" | "tft"`).
@@ -374,8 +375,13 @@ impl Project {
         self.project_path.join(PROJECT_FILE)
     }
 
+    pub fn ruination_path(&self) -> PathBuf {
+        self.project_path.join(RUINATION_FILE)
+    }
+
+    /// Compatibility accessor retained for internal callers during the rename.
     pub fn flint_path(&self) -> PathBuf {
-        self.project_path.join(FLINT_FILE)
+        self.ruination_path()
     }
 
     pub fn content_path(&self, layer: &str) -> PathBuf {
@@ -478,7 +484,7 @@ pub fn register_in_index(projects_root: &Path, project: &Project) -> Result<()> 
     })
 }
 
-/// `path` may be the project directory or a mod.config.json / flint.json /
+/// `path` may be the project directory or a mod.config.json / ruination.json /
 /// project.json file (the parent directory is used in that case).
 pub fn open_project(path: &Path) -> Result<Project> {
     tracing::debug!("Attempting to open project from path: {}", path.display());
@@ -486,7 +492,7 @@ pub fn open_project(path: &Path) -> Result<Project> {
     let project_path = if path.is_file() {
         let file_name = path.file_name().and_then(|n| n.to_str());
         match file_name {
-            Some("mod.config.json") | Some("flint.json") | Some("project.json") => {
+            Some("mod.config.json") | Some("ruination.json") | Some("flint.json") | Some("project.json") => {
                 tracing::debug!("Path points to project file, using parent directory");
                 path.parent().unwrap_or(path).to_path_buf()
             }
@@ -519,10 +525,13 @@ pub fn open_project(path: &Path) -> Result<Project> {
 
     project.project_path = project_path.clone();
 
-    let flint_path = project_path.join(FLINT_FILE);
-    let mut needs_resave = false;
-    if flint_path.exists() {
-        if let Ok(file) = File::open(&flint_path) {
+    let metadata_path = {
+        let current = project_path.join(RUINATION_FILE);
+        if current.exists() { current } else { project_path.join(LEGACY_METADATA_FILE) }
+    };
+    let mut needs_resave = metadata_path.file_name().and_then(|n| n.to_str()) == Some(LEGACY_METADATA_FILE);
+    if metadata_path.exists() {
+        if let Ok(file) = File::open(&metadata_path) {
             let reader = BufReader::new(file);
             if let Ok(flint) = serde_json::from_reader::<_, FlintMetadata>(reader) {
                 let flint = flint.normalized();
@@ -578,7 +587,7 @@ pub fn open_project(path: &Path) -> Result<Project> {
     Ok(project)
 }
 
-/// Writes both mod.config.json (league-mod compatible) and flint.json.
+/// Writes mod.config.json (league-mod compatible) and ruination.json metadata.
 pub fn save_project(project: &Project) -> Result<()> {
     let config_path = project.config_path();
     tracing::debug!("Saving project to: {}", config_path.display());
@@ -597,13 +606,19 @@ pub fn save_project(project: &Project) -> Result<()> {
     serde_json::to_writer_pretty(writer, &config)
         .map_err(|e| Error::InvalidInput(format!("Failed to write project file: {}", e)))?;
 
-    let flint_path = project.flint_path();
-    let flint_metadata = project.to_flint_metadata();
-    let file = File::create(&flint_path)
-        .map_err(|e| Error::io_with_path(e, &flint_path))?;
+    let metadata_path = project.ruination_path();
+    let metadata = project.to_flint_metadata();
+    let file = File::create(&metadata_path)
+        .map_err(|e| Error::io_with_path(e, &metadata_path))?;
     let writer = BufWriter::new(file);
-    serde_json::to_writer_pretty(writer, &flint_metadata)
-        .map_err(|e| Error::InvalidInput(format!("Failed to write flint file: {}", e)))?;
+    serde_json::to_writer_pretty(writer, &metadata)
+        .map_err(|e| Error::InvalidInput(format!("Failed to write Ruination metadata: {}", e)))?;
+
+    // Only remove the legacy file after the new metadata was written successfully.
+    let legacy_path = project.project_path.join(LEGACY_METADATA_FILE);
+    if legacy_path.exists() && legacy_path != metadata_path {
+        fs::remove_file(&legacy_path).map_err(|e| Error::io_with_path(e, &legacy_path))?;
+    }
 
     tracing::debug!("Project saved successfully");
     Ok(())
@@ -673,7 +688,7 @@ mod tests {
         );
 
         assert_eq!(project.config_path(), PathBuf::from("C:\\Projects\\test\\mod.config.json"));
-        assert_eq!(project.flint_path(), PathBuf::from("C:\\Projects\\test\\flint.json"));
+        assert_eq!(project.flint_path(), PathBuf::from("C:\\Projects\\test\\ruination.json"));
         assert_eq!(project.assets_path(), PathBuf::from("C:\\Projects\\test\\content\\base"));
         assert_eq!(project.output_path(), PathBuf::from("C:\\Projects\\test\\output"));
     }
