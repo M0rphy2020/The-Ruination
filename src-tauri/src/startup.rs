@@ -175,7 +175,7 @@ async fn run_startup(app: AppHandle) {
             Ok(updater) => updater,
             Err(error) => {
                 tracing::warn!("startup updater unavailable: {error}");
-                finish_without_update(&app, "Starting Flint offline...", started).await;
+                finish_without_update(&app, "Starting The Ruination offline...", started).await;
                 return;
             }
         };
@@ -199,7 +199,7 @@ async fn run_startup(app: AppHandle) {
             Ok(Ok(None)) => finish_without_update(&app, "Flint is up to date", started).await,
             Ok(Err(error)) => {
                 tracing::warn!("startup update check failed: {error}");
-                finish_without_update(&app, "Starting Flint offline...", started).await;
+                finish_without_update(&app, "Starting The Ruination offline...", started).await;
             }
             Err(_) => {
                 tracing::warn!("startup update check timed out after {} seconds", UPDATE_CHECK_TIMEOUT.as_secs());
