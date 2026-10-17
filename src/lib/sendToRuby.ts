@@ -11,7 +11,7 @@ export async function sendToRuby(binPath: string | null): Promise<void> {
         const result = await api.launchRuby(binPath, useConfigStore.getState().rubyPath);
         if (result.warning) showToast('warning', result.warning);
     } catch (err) {
-        const flintError = err as api.FlintError;
-        showToast('error', flintError.getUserMessage?.() || 'Failed to launch RubyRe');
+        const ruinationError = err as api.RuinationError;
+        showToast('error', ruinationError.getUserMessage?.() || 'Failed to launch RubyRe');
     }
 }
