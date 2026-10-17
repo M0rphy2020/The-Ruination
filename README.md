@@ -6,7 +6,7 @@
 [![Rust](https://img.shields.io/badge/Rust-stable-orange?style=flat-square&logo=rust)](https://www.rust-lang.org/)
 [![Tauri](https://img.shields.io/badge/Tauri-2.0-24C8D8?style=flat-square&logo=tauri)](https://tauri.app/)
 [![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react)](https://react.dev/)
-[![Release](https://img.shields.io/github/v/release/RitoShark/The Ruination?style=flat-square&color=f5a422)](https://github.com/M0rphy2020/The-Ruination/releases/latest)
+[![Release](https://img.shields.io/github/v/release/M0rphy2020/The-Ruination?style=flat-square&color=20DDE0)](https://github.com/M0rphy2020/The-Ruination/releases/latest)
 [![License](https://img.shields.io/badge/License-AGPL--3.0-22c55e?style=flat-square)](LICENSE)
 
 [Download](#download) · [Features](#features) · [Documentation](docs/README.md) · [License](#license)
@@ -184,7 +184,7 @@ npm run tauri dev
 ```
 
 `npm run tauri build` produces an installer at
-`src-tauri/target/release/bundle/nsis/The Ruination_<version>_x64-setup.exe`.
+`src-tauri/target/release/bundle/nsis/The-Ruination_<version>_x64-setup.exe`.
 
 </details>
 
