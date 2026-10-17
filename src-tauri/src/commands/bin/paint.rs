@@ -6,13 +6,13 @@
 //! from the checkpoint timeline, then invalidates the `.ritobin` sidecar so the
 //! Monaco view re-converts instead of showing pre-recolor text.
 
-use flint_core::path_slash::to_slash;
+use ruination_core::path_slash::to_slash;
 use crate::core::ipc_trace;
-use flint_core::bin::paint::model::VfxModel;
-use flint_core::bin::paint::recolor::{
+use ruination_core::bin::paint::model::VfxModel;
+use ruination_core::bin::paint::recolor::{
     ColorTargetSel, PaletteStop, RecolorMode, RecolorOptions,
 };
-use flint_core::bin::paint::session;
+use ruination_core::bin::paint::session;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::path::{Path, PathBuf};
@@ -53,7 +53,7 @@ pub struct RecolorResult {
     pub changed: usize,
     /// Refreshed colors for the touched emitters only — patch these into the
     /// resident model instead of replacing it wholesale.
-    pub colors: HashMap<String, flint_core::bin::paint::model::EmitterColors>,
+    pub colors: HashMap<String, ruination_core::bin::paint::model::EmitterColors>,
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -80,8 +80,8 @@ pub async fn bin_has_vfx_systems(bin_path: String) -> Result<bool, String> {
     if bytes.len() < 4 || (&bytes[..4] != b"PROP" && &bytes[..4] != b"PTCH") {
         return Ok(false);
     }
-    let bin = flint_core::bin::read_bin(&bytes).map_err(|e| format!("Failed to parse BIN: {}", e))?;
-    Ok(flint_core::bin::has_vfx_content(&bin))
+    let bin = ruination_core::bin::read_bin(&bytes).map_err(|e| format!("Failed to parse BIN: {}", e))?;
+    Ok(ruination_core::bin::has_vfx_content(&bin))
 }
 
 /// Open a BIN into a resident paint session.
@@ -235,7 +235,7 @@ pub async fn paint_save(app: tauri::AppHandle, session_id: u64) -> Result<PaintS
 
     // Checkpoint BEFORE writing, so the pre-recolor state is recoverable. A BIN
     // outside a project still saves — it just has no restore point.
-    let checkpointed = match flint_core::mesh::discovery::find_project_root(&bin_path) {
+    let checkpointed = match ruination_core::mesh::discovery::find_project_root(&bin_path) {
         Some(project_root) => {
             let name = bin_path
                 .file_name()
