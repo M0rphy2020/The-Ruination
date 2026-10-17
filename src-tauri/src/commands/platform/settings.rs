@@ -448,10 +448,8 @@ pub fn seed_builtin_themes() -> Result<(), String> {
     if lily.exists() && !froggy.exists() {
         let _ = std::fs::rename(&lily, &froggy);
     }
-    let legacy_flint = themes_dir.join("flint.json");
-    if legacy_flint.exists() {
-        let _ = std::fs::remove_file(&legacy_flint);
-    }
+    // Keep any legacy theme file intact: it may contain user edits.
+    // Legacy branding is handled at the UI level, never by deleting user data.
 
     let presets: [(&str, serde_json::Value); 4] = [
         ("celestial", serde_json::json!({
