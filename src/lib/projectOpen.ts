@@ -21,7 +21,7 @@ async function fallbackProjectsDir(): Promise<string> {
     const appData = await appDataDir();
     const parts = toPosix(appData).split('/');
     parts.pop();
-    return `${parts.join('/')}/RitoShark/Flint/Projects`;
+    return `${parts.join('/')}/The Ruination/projects`;
 }
 
 /** Configured projects root, falling back to the default Flint home. */
