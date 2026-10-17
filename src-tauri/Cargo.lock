@@ -1543,7 +1543,7 @@ dependencies = [
  "dashmap",
  "ddsfile",
  "flate2",
- "flint-core",
+ "ruination-core",
  "flint-shaderforge",
  "futures",
  "hematite-flint",
@@ -1606,7 +1606,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "flint-core"
+name = "ruination-core"
 version = "0.1.0"
 dependencies = [
  "anyhow",
