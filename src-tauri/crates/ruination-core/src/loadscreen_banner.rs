@@ -315,7 +315,7 @@ pub fn build_material_entry(
         class_hash: fnv1a_32("StaticMaterialDef"),
         fields,
     };
-    flint_bin::meta_schema::generation_schema().adapt_entry(&mut entry)?;
+    ruination_bin::meta_schema::generation_schema().adapt_entry(&mut entry)?;
     Ok(entry)
 }
 
@@ -369,7 +369,7 @@ pub fn read_loadscreen_image(bin: &Bin, bin_path: &std::path::Path) -> Option<St
 }
 
 fn name_of_file(bin: &Bin, bin_path: &std::path::Path, hash: u64) -> Option<String> {
-    flint_bin::name_table(bin, bin_path).files.get(&hash).cloned()
+    ruination_bin::name_table(bin, bin_path).files.get(&hash).cloned()
 }
 
 
@@ -463,7 +463,7 @@ pub fn apply_banner_to_bin(
     })?;
 
     // Validate everything before mutating the caller's skin BIN.
-    let schema = flint_bin::meta_schema::generation_schema();
+    let schema = ruination_bin::meta_schema::generation_schema();
     let new_entry = build_material_entry(material_name, mask_asset_path, params)?;
     let mut attachment = BinEntry {
         path_hash: bin.entries[skin_idx].path_hash,
@@ -740,8 +740,8 @@ mod tests {
 
         let out1 = apply_banner_to_bin(&mut bin, &name, &mask, &params).unwrap();
         let entries_after_first = bin.entries.len();
-        let encoded = flint_bin::write_bin(&bin).unwrap();
-        let decoded = flint_bin::read_bin(&encoded).unwrap();
+        let encoded = ruination_bin::write_bin(&bin).unwrap();
+        let decoded = ruination_bin::read_bin(&encoded).unwrap();
         let material = decoded.entries.iter().find(|e| e.path_hash == out1.material_hash).unwrap();
         assert!(matches!(material.fields.get(&fnv1a_32("type")), Some(BinValue::U8(3))));
 
