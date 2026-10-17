@@ -78,8 +78,8 @@ export const CreateProjectFromWadModal: React.FC = () => {
             closeModal();
             showToast('success', 'Project created successfully!');
         } catch (err) {
-            const flintError = err as api.FlintError;
-            const message = flintError?.getUserMessage?.()
+            const ruinationError = err as api.RuinationError;
+            const message = ruinationError?.getUserMessage?.()
                 || (err instanceof Error ? err.message : String(err));
             console.error('[CreateProjectFromWad] failed:', err);
             setReady();
