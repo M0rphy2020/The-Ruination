@@ -1,4 +1,4 @@
-use flint_core::path_slash::{slash_str, to_slash};
+use ruination_core::path_slash::{slash_str, to_slash};
 use serde::{Deserialize, Serialize};
 use std::path::PathBuf;
 
