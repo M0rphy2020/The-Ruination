@@ -7,7 +7,7 @@ to request completions).
 
 **LSP hover help** is a separate preference, off by default. It can be toggled
 without restarting the server or editor. Even when enabled, LSP hovers are
-suppressed inside quoted strings so Flint's file previews stay unobstructed.
+suppressed inside quoted strings so The Ruination's file previews stay unobstructed.
 
 While a BIN editor has LSP enabled, open the bottom log panel and select **LSP**.
 This view shows the current file's connection state, pending requests, request
@@ -22,7 +22,7 @@ the snapshot. **Copy current** copies only the currently displayed snapshot.
 Parser debug messages such as `UnexpectedItem`, `QuotedPropertyName` and
 `MissingType` are displayed in plain language; expand **Original server message**
 for the raw details. A missing bracket at EOF can cause many later type errors.
-When the LSP reports exactly one missing closing bracket, Flint uses its existing
+When the LSP reports exactly one missing closing bracket, The Ruination uses its existing
 indentation recovery helper to suggest one local insertion, if unambiguous. This
 helper supplies no diagnostics or bracket status in LSP mode. Suggestions appear
 in the live panel and as editor Quick Fix actions near the affected block or EOF.
@@ -36,74 +36,74 @@ point and open its Quick Fix menu. These decorations clear with stale diagnostic
 
 The editor uses ritobin-lsp for class/property/value completion, completion
 details, hover documentation, formatting (Monaco's Format Document action), and
-diagnostics. Flint's bracket checker, closing-bracket suggestions, inline audit
+diagnostics. The Ruination's bracket checker, closing-bracket suggestions, inline audit
 findings and automatic per-file audit refresh on save are disabled in this mode.
 Turning the setting off restores them without replacing the editor or losing
 unsaved edits/undo history. Project-wide audits remain independently available.
 BIN serialization still validates the text when saving.
 
-Flint continues to open, save, and unhash BINs through its existing implementation.
+The Ruination continues to open, save, and unhash BINs through its existing implementation.
 Its manual Unhash action and Auto unhash preference are unchanged. The LSP receives
-the resulting editor text; it cannot invoke Flint's unhashing or perform BIN I/O.
+the resulting editor text; it cannot invoke The Ruination's unhashing or perform BIN I/O.
 
 ## Hash isolation
 
 Upstream **ritobin-lsp v0.1.18** starts Mimir updates unconditionally and does not
 read its `hashPath` option. Setting an empty directory would not disable its hash
-downloads. `scripts/lsp/patch-upstream.mjs` therefore builds a small Flint variant:
+downloads. `scripts/lsp/patch-upstream.mjs` therefore builds a small The Ruination variant:
 
 - No hash-store discovery, loading, or update implementation remains.
 - Every server is initialized with `hashes: None`.
 - The server advertises `capabilities.experimental.flintNoHashes = 1`.
-- Flint refuses initialization without that marker, before sending `initialized`.
+- The Ruination refuses initialization without that marker, before sending `initialized`.
 - The Rust IPC bridge allows only the implemented editor protocol methods.
   Unhash, BIN conversion, execute-command and code-action requests are excluded.
 - Completion commands and server-initiated workspace edits are never applied.
 
 The adapter also includes document versions in diagnostic notifications, allowing
-Flint to discard results from older edits.
+The Ruination to discard results from older edits.
 
-Flint resolves hashed class/property suggestions through its existing local
+The Ruination resolves hashed class/property suggestions through its existing local
 LMDB-backed BIN hash cache, including custom and extracted name overlays. One
 batched lookup supplies only the suggested identifiers, without copying whole
 databases into each LSP process. Labels, filtering, insertion and property-doc
 requests use those names. Unknown hashes remain hexadecimal. Literal values and
 document contents are never rewritten by this bridge, and no hash download is
-triggered. It uses the same cache as Flint's existing unhash implementation.
+triggered. It uses the same cache as The Ruination's existing unhash implementation.
 
 Class schema metadata and hover documentation can still be fetched by the LSP.
 The schema contains numeric class/property IDs; readable completion names come
-from Flint's local hashes, not Mimir. No external hash cache is read or populated.
-Text the user has already unhashed in Flint remains visible to the LSP.
+from The Ruination's local hashes, not Mimir. No external hash cache is read or populated.
+Text the user has already unhashed in The Ruination remains visible to the LSP.
 
-## Distribution with Flint releases
+## Distribution with The Ruination releases
 
-The managed executable currently targets **Windows x64**, matching Flint's release
+The managed executable currently targets **Windows x64**, matching The Ruination's release
 workflow. Users do not need Rust, a VS Code extension, or a manually installed LSP.
 
-`.github/workflows/release.yml` resolves and validates the LSP only when Flint's
+`.github/workflows/release.yml` resolves and validates the LSP only when The Ruination's
 normal release trigger runs (a `v*` tag push). It selects the latest upstream
 server release, checks out that exact tag, applies the adapter, builds with the
-upstream lockfile, and runs a real protocol smoke test. Every Flint release runs
+upstream lockfile, and runs a real protocol smoke test. Every The Ruination release runs
 these checks, even if the upstream LSP version has not changed. A failed patch,
-build, or smoke test stops the workflow before Flint is released.
+build, or smoke test stops the workflow before The Ruination is released.
 
-The executable and `ritobin-lsp-manifest.json` (including SHA-256 and the Flint
-version) are attached to that same normal Flint release in **RitoShark/Flint**.
+The executable and `ritobin-lsp-manifest.json` (including SHA-256 and the The Ruination
+version) are attached to that same normal The Ruination release in **M0rphy2020/The-Ruination**.
 There is no scheduled LSP workflow or separate LSP prerelease. The workflow uses
 the repository's normal Actions `contents: write` permission and no new secret.
 
-On first opted-in use, Flint installs the LSP from its own `v<app-version>` release.
-A verified cached installation for that Flint version is reused without any
-network update check. Installing a new Flint release selects that release's LSP
-on next use; independent upstream LSP releases do not change an installed Flint.
+On first opted-in use, The Ruination installs the LSP from its own `v<app-version>` release.
+A verified cached installation for that The Ruination version is reused without any
+network update check. Installing a new The Ruination release selects that release's LSP
+on next use; independent upstream LSP releases do not change an installed The Ruination.
 Binaries live in Tauri's local app-data directory under `ritobin-lsp`. If a release
 download fails, a previously cached executable is used only after checksum
-verification. With the option off, Flint makes no LSP installation requests and
-starts no LSP process. Closing the editor, disabling the setting, or exiting Flint
+verification. With the option off, The Ruination makes no LSP installation requests and
+starts no LSP process. Closing the editor, disabling the setting, or exiting The Ruination
 stops its session. Class metadata fetching is unchanged.
 
-**First deployment:** publish a normal Flint release using the updated workflow.
+**First deployment:** publish a normal The Ruination release using the updated workflow.
 An app version whose release has no LSP assets cannot perform a first-time LSP
 installation; it displays an installation error. No upstream executable is used
 as a fallback.
@@ -111,7 +111,7 @@ as a fallback.
 The adapter fails closed if its expected source boundaries change or known hash
 I/O entry points remain. Such an upstream change requires adapting the build
 script; existing installations keep their last working server. Ordinary upstream
-releases are picked up automatically by the next Flint release workflow, with no
+releases are picked up automatically by the next The Ruination release workflow, with no
 manual LSP version bump.
 
 ## Validation and attribution
@@ -129,7 +129,7 @@ and stages the executable plus checksum manifest in the already ignored
 server when LSP is enabled, without contacting GitHub. Restart the Rust backend
 after adding this support; refreshing the frontend does not replace a running
 backend. Release builds exclude this local lookup and still install only from
-their normal Flint release. This command performs no update checks or publishing.
+their normal The Ruination release. This command performs no update checks or publishing.
 
 Frontend tests cover hash-isolation refusal, document-scoped completion, command
 stripping, edit ordering, stale diagnostics/formatting, local completion names,
@@ -138,9 +138,9 @@ cover message framing, method restrictions and installer manifest validation.
 The build's smoke test exercises initialize, diagnostics, completion, close and
 shutdown against the actual patched server, with metadata fetching disabled.
 The current upstream release requires Rust 1.95 or newer when building it locally;
-this does not change the compiler required to build Flint itself.
+this does not change the compiler required to build The Ruination itself.
 
 Upstream: [alanpq/ritobin-lsp](https://github.com/alanpq/ritobin-lsp), by alanpq,
 declared `MIT OR Apache-2.0` in its workspace manifest. The LSP manifest identifies
-the upstream source revision and this repository's adapter. Flint's distribution is a
+the upstream source revision and this repository's adapter. The Ruination's distribution is a
 patched upstream executable, not the VS Code extension.
