@@ -1,6 +1,6 @@
 //! Reading and decompressing a single WAD chunk.
 
-use flint_hash::error::{Error, Result};
+use ruination_hash::error::{Error, Result};
 use crate::wad::format::{WadChunk, WadCompression};
 use std::fs::File;
 use std::io::{Read, Seek, SeekFrom};
