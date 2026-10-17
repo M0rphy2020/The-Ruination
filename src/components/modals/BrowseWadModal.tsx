@@ -54,7 +54,7 @@ export const BrowseWadModal: React.FC = () => {
             setChunks(list);
             setPhase('loaded');
         } catch (err) {
-            const msg = err instanceof api.FlintError ? err.getUserMessage() : String(err);
+            const msg = err instanceof api.RuinationError ? err.getUserMessage() : String(err);
             setError(msg);
             setPhase('error');
         }
@@ -198,7 +198,7 @@ export const BrowseWadModal: React.FC = () => {
                 );
             }
         } catch (err) {
-            const msg = err instanceof api.FlintError ? err.getUserMessage() : String(err);
+            const msg = err instanceof api.RuinationError ? err.getUserMessage() : String(err);
             showToast('error', `Extract failed: ${msg}`);
         } finally {
             setExtracting(false);
