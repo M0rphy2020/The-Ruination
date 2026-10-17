@@ -8,7 +8,7 @@ import { useTranslation } from '../../../lib/i18n';
 /* -------------------------------------------------------------------------- */
 export type SettingsThemePreset = { id: string | null; name: string; bg: string; raised: string; accent: string };
 export const SETTINGS_THEME_PRESETS: SettingsThemePreset[] = [
-    { id: null,        name: 'Flint',     bg: '#0c0c10', raised: '#15151b', accent: '#EF5244' },
+    { id: null,        name: 'The Ruination',     bg: '#0c0c10', raised: '#15151b', accent: '#EF5244' },
     { id: 'celestial', name: 'Celestial', bg: '#0a0a14', raised: '#13132a', accent: '#A05CF6' },
     { id: 'jade',      name: 'Jade',      bg: '#08111a', raised: '#0f1c28', accent: '#06B6D4' },
     { id: 'froggy',    name: 'Froggy',    bg: '#0a1410', raised: '#11241c', accent: '#22C55E' },
