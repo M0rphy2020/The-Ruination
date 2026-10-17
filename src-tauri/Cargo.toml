@@ -1,5 +1,5 @@
 [workspace]
-members = [".", "crates/ruination-core", "crates/flint-formats", "crates/flint-hash", "crates/flint-net", "crates/flint-bin", "crates/flint-wad", "crates/hematite-flint", "crates/ruination-shaderforge"]
+members = [".", "crates/ruination-core", "crates/flint-formats", "crates/flint-hash", "crates/flint-net", "crates/flint-bin", "crates/flint-wad", "crates/ruination-hematite", "crates/ruination-shaderforge"]
 
 # Single source of truth for deps shared across the workspace crates. Before
 # this, bumping `ritoshark` meant editing seven manifests and silently getting
@@ -40,7 +40,7 @@ ruination-core = { path = "crates/ruination-core" }
 # Skin-fixer engine (wraps Hematite's hematite-orchestrate). Its hematite deps
 # pin rs_* at their own rev. Cargo unifies them with ritoshark below into ONE
 # copy of rs_* — verified in Cargo.lock, which holds a single rs_file entry.
-hematite-flint = { path = "crates/hematite-flint" }
+ruination-hematite = { path = "crates/ruination-hematite" }
 # Shader-preview module boundary — stub by default; the `shaderforge`
 # feature compiles the private overlay when present (see the crate's docs).
 ruination-shaderforge = { path = "crates/ruination-shaderforge" }
