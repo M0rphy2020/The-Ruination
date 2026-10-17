@@ -51,7 +51,7 @@ try {
         initializationOptions: { hashPath: '', metaDumpPath: metadata },
     }, 1);
     const { result } = await receive(m => m.id === 1);
-    assert.equal(result.capabilities.experimental.flintNoHashes, 1);
+    assert.equal(result.capabilities.experimental.ruinationNoHashes, 1);
     assert.ok(result.capabilities.completionProvider);
     send('initialized', {});
     const loaded = await receive(m => m.method === 'experimental/serverStatus' && m.params.quiescent);
