@@ -63,7 +63,7 @@ jobs:
           if ($LASTEXITCODE) { throw 'Upstream revision lookup failed' }
           $adapter = (Get-FileHash scripts/lsp/patch-upstream.mjs -Algorithm SHA256).Hash.ToLower().Substring(0,12)
           "version=$revision-$adapter" >> $env:GITHUB_OUTPUT
-          "flint_version=$appVersion" >> $env:GITHUB_OUTPUT
+          "app_version=$appVersion" >> $env:GITHUB_OUTPUT
 
       - name: Rust Cache
         uses: Swatinem/rust-cache@v2
@@ -76,7 +76,7 @@ jobs:
         shell: pwsh
         env:
           LSP_VERSION: ${{ steps.lsp.outputs.version }}
-          APP_VERSION: ${{ steps.lsp.outputs.flint_version }}
+          APP_VERSION: ${{ steps.lsp.outputs.app_version }}
         run: |
           node scripts/lsp/patch-upstream.mjs upstream
           if ($LASTEXITCODE) { throw 'Hash isolation patch failed' }
@@ -88,7 +88,7 @@ jobs:
           $asset = "ritobin-lsp-$env:LSP_VERSION-windows-x86_64.exe"
           Copy-Item upstream/target/release/ritobin-lsp.exe "lsp-artifacts/$asset"
           $sha = (Get-FileHash "lsp-artifacts/$asset" -Algorithm SHA256).Hash.ToLower()
-          @{ version=$env:LSP_VERSION; appVersion=$env:APP_VERSION; asset=$asset; sha256=$sha; noHashes=1 } | ConvertTo-Json | Set-Content lsp-artifacts/ritobin-lsp-manifest.json -Encoding utf8NoBOM
+          @{ version=$env:LSP_VERSION; flintVersion=$env:APP_VERSION; asset=$asset; sha256=$sha; noHashes=1 } | ConvertTo-Json | Set-Content lsp-artifacts/ritobin-lsp-manifest.json -Encoding utf8NoBOM
 
       - name: Install Dependencies
         run: npm ci
