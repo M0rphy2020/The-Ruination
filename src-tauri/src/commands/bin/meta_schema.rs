@@ -80,7 +80,7 @@ pub async fn refresh(app: &tauri::AppHandle) {
             return Ok::<(), String>(());
         }
         let client = reqwest::Client::builder()
-            .user_agent("Flint-class-metadata")
+            .user_agent("The-Ruination-class-metadata")
             .timeout(Duration::from_secs(15))
             .build()
             .map_err(|e| e.to_string())?;
