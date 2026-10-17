@@ -1,4 +1,4 @@
-//! Skin Fixer commands — drive Hematite's fix engine over Flint projects.
+//! Skin Fixer commands — drive Hematite's fix engine over The Ruination projects.
 //!
 //! `hematite_list_fixes` returns the fix catalog; `hematite_scan_projects` runs
 //! a detect-only pass (which fixes fire per project, writes nothing);
