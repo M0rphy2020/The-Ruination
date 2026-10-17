@@ -1,4 +1,4 @@
-use flint_core::skin_port::{jade_character_name, port_skin_bin, PortOutcome};
+use ruination_core::skin_port::{jade_character_name, port_skin_bin, PortOutcome};
 use std::path::{Path, PathBuf};
 
 fn find_character_skin_bin(project: &Path, character: &str, skin_id: u32) -> Option<PathBuf> {
