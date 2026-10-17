@@ -1,5 +1,5 @@
-use flint_core::path_slash::to_slash;
-use flint_core::hud::{parse_hud_file, serialize_hud_file, HudData};
+use ruination_core::path_slash::to_slash;
+use ruination_core::hud::{parse_hud_file, serialize_hud_file, HudData};
 use std::fs;
 use std::path::PathBuf;
 
