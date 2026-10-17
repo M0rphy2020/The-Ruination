@@ -54,7 +54,7 @@ downloads. `scripts/lsp/patch-upstream.mjs` therefore builds a small The Ruinati
 
 - No hash-store discovery, loading, or update implementation remains.
 - Every server is initialized with `hashes: None`.
-- The server advertises `capabilities.experimental.flintNoHashes = 1`.
+- The server advertises `capabilities.experimental.ruinationNoHashes = 1`.
 - The Ruination refuses initialization without that marker, before sending `initialized`.
 - The Rust IPC bridge allows only the implemented editor protocol methods.
   Unhash, BIN conversion, execute-command and code-action requests are excluded.
