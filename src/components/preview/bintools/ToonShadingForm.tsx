@@ -165,12 +165,12 @@ export const ToonShadingForm: React.FC<ToonShadingFormProps> = ({ content, fileP
                 <div className="bin-tools__hint">Base texture for {submesh}:</div>
                 <input
                     className="dl-input"
-                    list="flint-toon-textures"
+                    list="ruination-toon-textures"
                     value={texture}
                     onChange={(e) => setTexture(e.target.value)}
                     placeholder="assets/characters/.../maintexture.dds"
                 />
-                <datalist id="flint-toon-textures">
+                <datalist id="ruination-toon-textures">
                     {otherTextures.map((t) => <option key={t} value={t} />)}
                 </datalist>
                 <div className="bin-tools__row">
