@@ -18,11 +18,11 @@ pub mod loadscreen;
 
 
 
-pub use flint_formats::{audio, hud, inibin_text, luabin, manifest, stringtable, troybin};
+pub use ruination_formats::{audio, hud, inibin_text, luabin, manifest, stringtable, troybin};
 pub use ruination_hash::{error, hash};
-pub use flint_net::{cdn, net};
-pub use flint_bin as bin;
-pub use flint_wad::{overlay, wad};
-pub use flint_wad::project_storage;
+pub use ruination_net::{cdn, net};
+pub use ruination_bin as bin;
+pub use ruination_wad::{overlay, wad};
+pub use ruination_wad::project_storage;
 
 pub use heed;
