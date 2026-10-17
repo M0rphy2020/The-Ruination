@@ -97,8 +97,8 @@ export const WelcomeScreen: React.FC = () => {
             setReady();
         } catch (error) {
             console.error('Failed to open project:', error);
-            const flintError = error as api.FlintError;
-            setError(flintError.getUserMessage?.() || 'Failed to open project');
+            const ruinationError = error as api.RuinationError;
+            setError(ruinationError.getUserMessage?.() || 'Failed to open project');
         }
     };
 
