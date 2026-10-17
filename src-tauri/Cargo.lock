@@ -1546,7 +1546,7 @@ dependencies = [
  "ruination-core",
  "ruination-shaderforge",
  "futures",
- "hematite-flint",
+ "ruination-hematite",
  "image",
  "image_dds",
  "indexmap 2.13.0",
@@ -2392,7 +2392,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "hematite-flint"
+name = "ruination-hematite"
 version = "0.1.0"
 dependencies = [
  "anyhow",
