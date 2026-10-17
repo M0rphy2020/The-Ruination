@@ -1,5 +1,5 @@
 /**
- * Flint — What's New Changelog Data
+ * The Ruination — What's New Changelog Data
  *
  * Static changelog entries for each release. The WhatsNewModal reads
  * the first entry whose `version` matches the running app version
