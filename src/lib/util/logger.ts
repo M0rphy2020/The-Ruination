@@ -44,10 +44,21 @@ const originalConsole = {
 // setVerboseCapture; seeded from the same localStorage key so a restart keeps
 // the choice). console.debug always still reaches DevTools regardless.
 export const VERBOSE_STORAGE_KEY = 'ruination_verbose_logging';
+const LEGACY_VERBOSE_STORAGE_KEY = 'flint_verbose_logging';
 
 let verboseCapture = (() => {
     try {
-        return localStorage.getItem(VERBOSE_STORAGE_KEY) === '1';
+        const current = localStorage.getItem(VERBOSE_STORAGE_KEY);
+        if (current !== null) return current === '1';
+
+        // Preserve the user's previous preference during the brand-key migration.
+        const legacy = localStorage.getItem(LEGACY_VERBOSE_STORAGE_KEY);
+        if (legacy !== null) {
+            localStorage.setItem(VERBOSE_STORAGE_KEY, legacy);
+            localStorage.removeItem(LEGACY_VERBOSE_STORAGE_KEY);
+            return legacy === '1';
+        }
+        return false;
     } catch {
         return false;
     }
