@@ -1,5 +1,5 @@
-use flint_hash::error::{Error, Result};
-use flint_hash::hash::ResolvedHashes;
+use ruination_hash::error::{Error, Result};
+use ruination_hash::hash::ResolvedHashes;
 use ritoshark::bin::BinValue;
 use ritoshark::file::{detect, FileKind};
 use ritoshark::prelude::*;
@@ -216,7 +216,7 @@ fn write_hashed_names_file(output_dir: &Path, mappings: &HashMap<String, String>
     if mappings.is_empty() {
         return;
     }
-    let map_file = output_dir.join("_flint_hashed_names.json");
+    let map_file = output_dir.join("_ruination_hashed_names.json");
     if let Ok(json) = serde_json::to_string_pretty(mappings) {
         let _ = fs::write(map_file, json);
     }
@@ -550,7 +550,7 @@ fn collect_paths_and_hashes_from_value_into(
         BinValue::File(h) => {
             if *h != 0 {
                 out_hashes.push(*h);
-                let known = flint_hash::hash::get_cached_bin_hashes().read();
+                let known = ruination_hash::hash::get_cached_bin_hashes().read();
                 if let Some(v) = known.get(*h) {
                     if v.len() >= 5
                         && (v.len() >= 7 && v[..7].eq_ignore_ascii_case("assets/")
@@ -602,7 +602,7 @@ fn find_sub_characters(resolved: &ResolvedHashes, champion_lower: &str, skin_id:
         let Some(rest) = p.strip_prefix("data/characters/") else { continue };
         let Some((character, tail)) = rest.split_once('/') else { continue };
         if character != champion_lower
-            && !character.starts_with(flint_bin::preloads::ALT_MODE_CHARACTER_PREFIX)
+            && !character.starts_with(ruination_bin::preloads::ALT_MODE_CHARACTER_PREFIX)
             && tails.iter().any(|t| tail == t)
             && !subs.iter().any(|s| s == character)
         {
@@ -685,8 +685,8 @@ pub fn extract_skin_assets_selective(
         let declared: Vec<String> = by_hash
             .get(&xx(&seed))
             .and_then(|chunk| wad.chunk_data(chunk).ok())
-            .and_then(|bytes| flint_bin::codec::read_bin(&bytes).ok())
-            .map(|bin| flint_bin::preloads::extra_character_preloads(&bin))
+            .and_then(|bytes| ruination_bin::codec::read_bin(&bytes).ok())
+            .map(|bin| ruination_bin::preloads::extra_character_preloads(&bin))
             .unwrap_or_default()
             .into_iter()
             .filter(|c| *c != champion_lower)
@@ -738,7 +738,7 @@ pub fn extract_skin_assets_selective(
         };
         want_paths.insert(bin_path.clone());
 
-        let bin = match flint_bin::codec::read_bin(&bytes) {
+        let bin = match ruination_bin::codec::read_bin(&bytes) {
             Ok(b) => b,
             Err(e) => {
                 tracing::warn!("[selective] failed to parse {}: {}", bin_path, e);
@@ -777,7 +777,7 @@ pub fn extract_skin_assets_selective(
             }
         }
         for h in hashes_found {
-            let known = flint_hash::hash::get_cached_bin_hashes().read();
+            let known = ruination_hash::hash::get_cached_bin_hashes().read();
             if let Some(p) = known.get(h) {
                 let p_norm = p.to_lowercase().replace('\\', "/");
                 if !audio.includes_path(&p_norm) {
@@ -1026,7 +1026,7 @@ mod tests {
         let texture = "assets/characters/audiotest/body.tex";
         let audio_only_texture = "assets/characters/audiotest/audio-only.tex";
         let hash = ritoshark::hash::xxh64;
-        flint_hash::hash::get_cached_bin_hashes().write().insert(hash(hashed_bank), hashed_bank);
+        ruination_hash::hash::get_cached_bin_hashes().write().insert(hash(hashed_bank), hashed_bank);
         let make_bin = |values: Vec<BinValue>, linked: Vec<String>| {
             let mut bin = Bin::new();
             bin.linked = linked;
@@ -1034,7 +1034,7 @@ mod tests {
                 path_hash: 1, class_hash: 2,
                 fields: values.into_iter().enumerate().map(|(i, v)| (i as u32, v)).collect(),
             });
-            flint_bin::write_bin(&bin).unwrap()
+            ruination_bin::write_bin(&bin).unwrap()
         };
         let files = [
             (seed, make_bin(vec![BinValue::String(bank.into()), BinValue::File(hash(hashed_bank)),
@@ -1076,7 +1076,7 @@ mod tests {
                 if selective {
                     assert_eq!(root.join(audio_only_texture).exists(), enabled, "excluded audio BIN must not be walked");
                 }
-                let seed_bin = flint_bin::read_bin(&fs::read(root.join(seed)).unwrap()).unwrap();
+                let seed_bin = ruination_bin::read_bin(&fs::read(root.join(seed)).unwrap()).unwrap();
                 assert_eq!(seed_bin.linked, vec![sound_bin]);
             }
         }
