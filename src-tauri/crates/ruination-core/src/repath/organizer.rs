@@ -440,7 +440,7 @@ mod tests {
             let dir = tempfile::tempdir().unwrap();
             let assets = dir.path().join("content/base");
             std::fs::create_dir_all(&assets).unwrap();
-            let resolve = |_h: &[u64]| flint_hash::hash::ResolvedHashes::new();
+            let resolve = |_h: &[u64]| ruination_hash::hash::ResolvedHashes::new();
             let r = crate::wad::extractor::extract_skin_assets_selective(
                 &wad, &assets, champ, skin_id, &resolve, false,
                 crate::wad::extractor::AudioExtraction::ALL,
