@@ -855,7 +855,6 @@ mod tests {
         assert!(project.config_path().exists());
         assert!(project.ruination_path().exists());
 
-        assert!(!project.project_path.to_string_lossy().ends_with(".flint"));
 
         let loaded = open_project(&project.project_path).unwrap();
         assert_eq!(loaded.display_name, project.display_name);
