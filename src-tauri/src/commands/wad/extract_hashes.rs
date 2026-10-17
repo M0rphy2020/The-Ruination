@@ -10,20 +10,20 @@
 //! Pairs are merged into `hashes.extracted.txt` (xxhash64 hex → path) and
 //! `hashes.binhashes.extracted.txt` (fnv1a hex → name) in the user hash dir.
 
-use flint_core::path_slash::to_slash;
-use flint_core::wad::adapter::WadHandle as WadReader;
+use ruination_core::path_slash::to_slash;
+use ruination_core::wad::adapter::WadHandle as WadReader;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 use std::fs;
 use std::path::Path;
 
-use flint_core::heed::types::{Bytes, Str};
-use flint_core::heed::Database;
+use ruination_core::heed::types::{Bytes, Str};
+use ruination_core::heed::Database;
 
 // ─── Scanners (port of Quartz's bin_hashes.rs) ──────────────────────────────
 
 // Share recovery behavior between manual unhash and archive imports.
-use flint_core::wad::hash_scanner::{scan_chunk_for_bin_names, scan_chunk_for_paths};
+use ruination_core::wad::hash_scanner::{scan_chunk_for_bin_names, scan_chunk_for_paths};
 
 pub(crate) fn scan_one(
     data: &[u8],
@@ -109,7 +109,7 @@ fn merge_into_wad_lmdb(
     hash_dir: &str,
     entries: &BTreeMap<u64, String>,
 ) -> Result<usize, String> {
-    let env = flint_core::hash::get_wad_env(hash_dir)
+    let env = ruination_core::hash::get_wad_env(hash_dir)
         .ok_or_else(|| "WAD LMDB not present (run hash download first)".to_string())?;
     let mut wtxn = env.write_txn().map_err(|e| format!("write_txn: {}", e))?;
     let db: Database<Bytes, Str> = env
@@ -132,7 +132,7 @@ fn merge_into_bin_lmdb(
     hash_dir: &str,
     entries: &BTreeMap<u32, String>,
 ) -> Result<usize, String> {
-    let env = flint_core::hash::get_bin_env(hash_dir)
+    let env = ruination_core::hash::get_bin_env(hash_dir)
         .ok_or_else(|| "BIN LMDB not present (run hash download first)".to_string())?;
     let mut wtxn = env.write_txn().map_err(|e| format!("write_txn: {}", e))?;
     let db: Database<Bytes, Str> = env
@@ -158,7 +158,7 @@ pub(crate) fn extract_and_merge_hashes(
     let game_for_lmdb = game.clone();
     let bin_for_lmdb = bin.clone();
     let (added_game, added_bin) = write_merged(hash_dir, game, bin)?;
-    flint_core::wad::extracted_overlay::invalidate();
+    ruination_core::wad::extracted_overlay::invalidate();
 
     let hash_dir_str = hash_dir.to_string_lossy().to_string();
     let mut written = 0usize;
@@ -182,7 +182,7 @@ pub(crate) fn extract_and_merge_hashes(
        "fixed" it. Reload so the names are live for the next render. */
     if written > 0 || added_game > 0 || added_bin > 0 {
         tracing::info!("Extraction added {written} hash name(s); reloading the resolver cache");
-        flint_core::bin::reload_bin_hash_cache();
+        ruination_core::bin::reload_bin_hash_cache();
     }
 
     Ok((added_game, added_bin))
@@ -240,7 +240,7 @@ pub struct ExtractHashesResult {
 pub async fn extract_hashes_from_wad(
     wad_path: String,
 ) -> Result<ExtractHashesResult, String> {
-    let hash_dir = flint_core::hash::get_hash_dir()
+    let hash_dir = ruination_core::hash::get_hash_dir()
         .map_err(|e| format!("Failed to locate hash dir: {}", e))?;
     fs::create_dir_all(&hash_dir)
         .map_err(|e| format!("Failed to create hash dir {}: {}", hash_dir.display(), e))?;
