@@ -21,12 +21,18 @@ type Tool = 'brush' | 'eraser';
 
 function loadPref<T>(key: string, fallback: T): T {
     try {
-        const raw = localStorage.getItem(`flint.loadscreenbanner.${key}`);
+        const storageKey = `ruination.loadscreenbanner.${key}`;
+        const legacyKey = `flint.loadscreenbanner.${key}`;
+        const raw = localStorage.getItem(storageKey) ?? localStorage.getItem(legacyKey);
+        if (raw !== null && localStorage.getItem(storageKey) === null) {
+            localStorage.setItem(storageKey, raw);
+            localStorage.removeItem(legacyKey);
+        }
         return raw == null ? fallback : (JSON.parse(raw) as T);
     } catch { return fallback; }
 }
 function savePref(key: string, value: unknown): void {
-    try { localStorage.setItem(`flint.loadscreenbanner.${key}`, JSON.stringify(value)); } catch { /* ignore */ }
+    try { localStorage.setItem(`ruination.loadscreenbanner.${key}`, JSON.stringify(value)); localStorage.removeItem(`flint.loadscreenbanner.${key}`); } catch { /* ignore */ }
 }
 
 async function decodeTexToImageData(path: string): Promise<{ data: ImageData; width: number; height: number }> {
