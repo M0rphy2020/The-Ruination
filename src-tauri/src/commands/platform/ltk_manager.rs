@@ -2,7 +2,7 @@
 //!
 //! These commands provide integration with LTK Manager for syncing projects to the launcher.
 
-use flint_core::path_slash::{slash_str, to_slash};
+use ruination_core::path_slash::{slash_str, to_slash};
 use chrono::Utc;
 use serde::{Deserialize, Serialize};
 use std::fs;
@@ -255,7 +255,7 @@ pub async fn sync_project_to_launcher(
     let sync_start = Instant::now();
     let project_path_buf = PathBuf::from(&project_path);
 
-    let project = flint_core::project::open_project(&project_path_buf)
+    let project = ruination_core::project::open_project(&project_path_buf)
         .map_err(|e| format!("Failed to open project: {}", e))?;
 
     tracing::info!("Syncing project {} v{}", project.name, project.version);
@@ -453,8 +453,8 @@ fn mirror_project_to_workshop(
 }
 
 fn package_project(project_path: &std::path::Path, output_path: &std::path::Path) -> Result<(), String> {
-    use flint_core::export::build_wad_from_directory;
-    use flint_core::project::{ModProject, ModProjectAuthor};
+    use ruination_core::export::build_wad_from_directory;
+    use ruination_core::project::{ModProject, ModProjectAuthor};
     use std::io::Write;
     use zip::write::SimpleFileOptions;
     use zip::ZipWriter;
