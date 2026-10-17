@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="docs/media/the-ruination-logo.gif" alt="The Ruination" width="500">
+<img src="docs/media/flint-logo.gif" alt="The Ruination" width="500">
 
 [![Rust](https://img.shields.io/badge/Rust-stable-orange?style=flat-square&logo=rust)](https://www.rust-lang.org/)
 [![Tauri](https://img.shields.io/badge/Tauri-2.0-24C8D8?style=flat-square&logo=tauri)](https://tauri.app/)
@@ -177,13 +177,13 @@ Needs Rust (stable), Node 20, and Windows 10 or 11.
 
 ```bash
 git clone https://github.com/M0rphy2020/The-Ruination
-cd The Ruination
+cd The-Ruination
 npm install
 npm run tauri dev
 ```
 
 `npm run tauri build` produces an installer at
-`src-tauri/target/release/bundle/nsis/The-Ruination_<version>_x64-setup.exe`.
+`src-tauri/target/release/bundle/nsis/The Ruination_<version>_x64-setup.exe`.
 
 </details>
 
