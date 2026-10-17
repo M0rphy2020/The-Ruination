@@ -14,14 +14,14 @@
         /* The glow behind the logo only. Neutral rather than the accent: the
            orange wash tinted the whole panel and fought the logo's own colour.
            Everything else here still uses --ruination-accent. */
-        --flint-glow: #8b93a1;
+        --ruination-glow: #8b93a1;
       }
       * { box-sizing: border-box; }
       html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #0b0d10; user-select: none; }
       button { font: inherit; }
       .startup {
         position: relative; width: 100%; height: 100%; overflow: hidden; border: 1px solid #2d2527;
-        background: radial-gradient(circle at 50% 30%, color-mix(in oklab, var(--flint-glow) 17%, transparent), transparent 34%), linear-gradient(180deg, #101014 0%, #0a0b0e 100%);
+        background: radial-gradient(circle at 50% 30%, color-mix(in oklab, var(--ruination-glow) 17%, transparent), transparent 34%), linear-gradient(180deg, #101014 0%, #0a0b0e 100%);
       }
       .startup::before {
         content: ""; position: absolute; inset: 0; opacity: .22; pointer-events: none;
@@ -31,13 +31,13 @@
       .visual { position: absolute; inset: 0 0 142px; display: grid; place-items: end center; padding-bottom: 44px; transform: translateY(52px); }
       .visual__aura {
         position: absolute; width: 320px; height: 260px; border-radius: 50%;
-        background: radial-gradient(circle, color-mix(in oklab, var(--flint-glow) 27%, transparent), color-mix(in oklab, var(--flint-glow) 5%, transparent) 46%, transparent 72%);
+        background: radial-gradient(circle, color-mix(in oklab, var(--ruination-glow) 27%, transparent), color-mix(in oklab, var(--ruination-glow) 5%, transparent) 46%, transparent 72%);
         filter: blur(10px); animation: aura 3.6s ease-in-out infinite;
       }
       .brand { position: relative; display: flex; flex-direction: column; align-items: center; gap: 13px; width: 100%; }
       .brand__logo {
         width: 166px; height: 166px; display: block; margin-inline: auto;
-        filter: drop-shadow(0 12px 24px rgba(0,0,0,.42)) drop-shadow(0 0 18px color-mix(in oklab, var(--flint-glow) 15%, transparent));
+        filter: drop-shadow(0 12px 24px rgba(0,0,0,.42)) drop-shadow(0 0 18px color-mix(in oklab, var(--ruination-glow) 15%, transparent));
         transform-origin: center; animation: logo-pop .6s cubic-bezier(.34,1.56,.64,1) both;
       }
       .brand__name { display: flex; align-items: baseline; justify-content: center; width: 100%; color: #f1f3f6; font-size: 30px; font-weight: 650; letter-spacing: .035em; }
@@ -93,19 +93,19 @@
       <section class="visual">
         <div class="visual__aura"></div>
         <div class="brand">
-          <img class="brand__logo" src="/flint-logo.png" width="512" height="512" alt="Flint" />
-          <div class="brand__name"><span class="brand__word">Flint</span><span class="brand__dot">.</span></div>
+          <img class="brand__logo" src="/flint-logo.png" width="512" height="512" alt="The Ruination" />
+          <div class="brand__name"><span class="brand__word">The Ruination</span><span class="brand__dot">.</span></div>
         </div>
       </section>
       <section class="bottom">
         <div id="loading-view" class="loading">
           <div class="progress"><div id="progress-bar" class="progress__bar"></div></div>
-          <div id="status" class="status">Preparing Flint interface...</div>
+          <div id="status" class="status">Preparing The Ruination interface...</div>
           <div id="version" class="version"></div>
         </div>
         <div id="error-view" class="error-prompt" hidden>
           <div class="prompt">
-            <div class="prompt__title">Flint could not finish starting.</div>
+            <div class="prompt__title">The Ruination could not finish starting.</div>
             <div id="error-copy" class="prompt__copy">You can continue and check for updates later in Settings.</div>
             <div class="prompt__actions"><button id="continue-anyway" class="action action--primary" type="button">Continue</button></div>
           </div>
