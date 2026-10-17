@@ -1,4 +1,4 @@
-use flint_core::bin::{
+use ruination_core::bin::{
     bin_to_json, is_hash_hex, json_to_bin, mod_root, read_bin, remember_custom_hash_names,
     text_to_bin, tree_to_text_cached, write_bin, Bin,
 };
@@ -39,15 +39,15 @@ fn encode_with_names(text: &str) -> Result<Vec<u8>, String> {
 /// can read byte for byte, so `files.txt` is the record.
 pub(crate) fn encode_capturing_names(
     text: &str,
-) -> Result<(Vec<u8>, flint_core::bin::Trailer), String> {
-    let bin = flint_core::bin::text_to_tree(text)
+) -> Result<(Vec<u8>, ruination_core::bin::Trailer), String> {
+    let bin = ruination_core::bin::text_to_tree(text)
         .map_err(|e| format!("Failed to parse text content: {}", e))?;
     remember_hash_names(text, &bin);
-    let recorded = flint_core::bin::capture_names(&bin, text);
+    let recorded = ruination_core::bin::capture_names(&bin, text);
     if !recorded.is_empty() {
         tracing::info!("Captured {} hash name(s) for files.txt", recorded.len());
     }
-    let bytes = flint_core::bin::write_bin(&bin)
+    let bytes = ruination_core::bin::write_bin(&bin)
         .map_err(|e| format!("Failed to convert to binary: {}", e))?;
     Ok((bytes, recorded))
 }
@@ -63,7 +63,7 @@ pub(crate) fn encode_capturing_names(
 /// belongs to — an object name and an asset path are both just text. Merged by
 /// NAME (never overwritten) so saving one bin cannot drop another's entries, and
 /// sorted so re-saving produces no diff.
-pub(crate) fn merge_into_files_txt(bin_path: &Path, trailer: &flint_core::bin::Trailer) {
+pub(crate) fn merge_into_files_txt(bin_path: &Path, trailer: &ruination_core::bin::Trailer) {
     if trailer.is_empty() {
         return;
     }
@@ -150,7 +150,7 @@ pub async fn convert_bin_to_text(
 
     tracing::debug!("Read {} bytes from {}", data.len(), input_path);
 
-    let bin = flint_core::bin::read_bin(&data)
+    let bin = ruination_core::bin::read_bin(&data)
         .map_err(|e| {
             tracing::error!("Failed to parse bin file '{}': {}", input_path, e);
             format!("Failed to parse bin file '{}': {}", input_path, e)
@@ -336,7 +336,7 @@ pub async fn convert_bin_bytes_to_text(
     };
     tracing::debug!("Converting {} bytes of BIN data to text", bin_data.len());
 
-    let bin = flint_core::bin::read_bin(bin_data)
+    let bin = ruination_core::bin::read_bin(bin_data)
         .map_err(|e| {
             tracing::error!("Failed to parse bin data: {}", e);
             format!("Failed to parse bin data: {}", e)
@@ -364,7 +364,7 @@ pub async fn convert_bin_bytes_to_text(
 #[tauri::command]
 pub async fn unhash_bin_text(text: String) -> Result<UnhashResult, String> {
     let _t = ipc_trace::enter("unhash_bin_text");
-    let (unhashed, replaced) = flint_core::bin::unhash_text_cached(&text);
+    let (unhashed, replaced) = ruination_core::bin::unhash_text_cached(&text);
     tracing::debug!("unhash_bin_text: resolved {} hash token(s)", replaced);
     Ok(UnhashResult { text: unhashed, replaced })
 }
@@ -428,12 +428,12 @@ pub async fn parse_bin_file_to_text(
 
     tracing::debug!("Read {} bytes from {}", data.len(), path);
 
-    let bin = flint_core::bin::read_bin(&data)
+    let bin = ruination_core::bin::read_bin(&data)
         .map_err(|e| format!("Failed to parse bin file: {}", e))?;
 
     tracing::debug!("Parsed bin file with {} objects", bin.entries.len());
 
-    let text = flint_core::bin::render_bin_text(&bin, input)
+    let text = ruination_core::bin::render_bin_text(&bin, input)
         .map_err(|e| format!("Failed to convert to text: {}", e))?;
 
     tracing::info!("Successfully parsed BIN file to text ({} chars)", text.len());
@@ -521,9 +521,9 @@ async fn read_or_convert_bin_inner(
         .map_err(|e| format!("Failed to read file: {}", e))?;
 
     let text = {
-        let bin = flint_core::bin::read_bin(&data)
+        let bin = ruination_core::bin::read_bin(&data)
             .map_err(|e| format!("Failed to parse bin file: {}", e))?;
-        flint_core::bin::render_bin_text(&bin, bin_file)
+        ruination_core::bin::render_bin_text(&bin, bin_file)
             .map_err(|e| format!("Failed to convert to text: {}", e))?
     };
 
@@ -579,7 +579,7 @@ pub async fn save_ritobin_to_bin(
     // any tool reserializes this bin; this copy is not, and it is what gets
     // packed into `META/files.txt`.
     merge_into_files_txt(Path::new(&bin_path), &trailer);
-    flint_core::bin::forget_mod_root(Path::new(&bin_path));
+    ruination_core::bin::forget_mod_root(Path::new(&bin_path));
 
     // No `.ritobin` sidecar is written — see the fn doc. A stale sidecar left
     // over from an older build would now be OLDER than the just-saved .bin, so
