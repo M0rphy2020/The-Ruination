@@ -8,7 +8,7 @@ mod startup;
 mod state;
 
 use commands::project_watcher::WatcherState;
-use commands::settings::{initialize_app_home, get_flint_home};
+use commands::settings::{initialize_app_home, get_ruination_home};
 use flint_core::hash::get_hash_dir;
 use core::frontend_log::{FrontendLogLayer, set_app_handle};
 use shell_args::PendingFileOpen;
@@ -22,7 +22,7 @@ fn main() {
     // "No provider set" (CDN manifest browse, updater, …).
     flint_core::net::install_tls_provider();
 
-    let log_dir = get_flint_home()
+    let log_dir = get_ruination_home()
         .map(|h| h.join("logs"))
         .unwrap_or_else(|_| std::path::PathBuf::from("./logs"));
     std::fs::create_dir_all(&log_dir).ok();
