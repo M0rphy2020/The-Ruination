@@ -108,7 +108,7 @@ export const FirstTimeSetupModal: React.FC = () => {
     const [autoUpdate, setAutoUpdate] = useState<boolean>(autoUpdateStored);
     const [detectingAll, setDetectingAll] = useState<DetectingState>(false);
     const autoDetectRan = useRef(false);
-    const [flintHome, setThe RuinationHome] = useState<string>('');
+    const [ruinationHome, setRuinationHome] = useState<string>('');
 
     const isVisible = activeModal === 'firstTimeSetup';
     const step = STEPS[stepIndex];
@@ -118,14 +118,14 @@ export const FirstTimeSetupModal: React.FC = () => {
     const back    = () => { setDirection(-1); setStepIndex((i) => Math.max(0, i - 1)); };
 
     useEffect(() => {
-        if (!isVisible || flintHome) return;
+        if (!isVisible || ruinationHome) return;
         api.getAppHome().then((home) => {
             const sep = home.includes('\\') ? '\\' : '/';
             const guess = `${home.replace(/[\\/]+$/, '')}${sep}projects`;
-            setThe RuinationHome(guess);
+            setRuinationHome(guess);
             setDefaultProjectPath((prev) => prev || guess);
         }).catch(() => { /* non-fatal */ });
-    }, [isVisible, flintHome]);
+    }, [isVisible, ruinationHome]);
 
     useEffect(() => {
         if (!isVisible) return;
@@ -363,7 +363,7 @@ export const FirstTimeSetupModal: React.FC = () => {
                                     ruby={rubyPath}
                                     autoSync={autoSync}
                                     editorsOpen={editorsOpen}
-                                    flintHome={flintHome}
+                                    ruinationHome={ruinationHome}
                                     detectingAll={detectingAll}
                                     onLeague={setLeaguePath}
                                     onPbe={setPbePath}
@@ -682,7 +682,7 @@ const PathsPane: React.FC<{
     jade: string; quartz: string; ruby: string;
     autoSync: boolean;
     editorsOpen: boolean;
-    flintHome: string;
+    ruinationHome: string;
     detectingAll: boolean;
     onLeague: (v: string) => void;
     onPbe: (v: string) => void;
@@ -731,7 +731,7 @@ const PathsPane: React.FC<{
                     iconName: 'folder',
                     label: 'Default project folder',
                     badge: 'Workspace',
-                    placeholder: p.flintHome || 'Where new mods will be created',
+                    placeholder: p.ruinationHome || 'Where new mods will be created',
                     value: p.project,
                     onChange: p.onProject,
                     browseTitle: 'Where should new projects be created?',
