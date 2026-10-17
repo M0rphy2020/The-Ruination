@@ -32,7 +32,7 @@ pub(crate) fn scan_has_alpha(rgba: &[u8]) -> bool {
 /// chain length `rs_tex` derives wrongly. Both together are why the panel used to show
 /// dimensions for almost nothing.
 pub(super) fn parse_texture_dimensions(data: &[u8]) -> Result<(u32, u32, String), String> {
-    let header = flint_core::bin::read_texture_header(data)?;
+    let header = ruination_core::bin::read_texture_header(data)?;
     Ok((header.width, header.height, header.format))
 }
 
