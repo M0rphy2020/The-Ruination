@@ -529,11 +529,12 @@ pub fn open_project(path: &Path) -> Result<Project> {
         let current = project_path.join(RUINATION_FILE);
         if current.exists() { current } else { project_path.join(LEGACY_METADATA_FILE) }
     };
-    let mut needs_resave = metadata_path.file_name().and_then(|n| n.to_str()) == Some(LEGACY_METADATA_FILE);
+    let mut needs_resave = false;
     if metadata_path.exists() {
         if let Ok(file) = File::open(&metadata_path) {
             let reader = BufReader::new(file);
             if let Ok(flint) = serde_json::from_reader::<_, FlintMetadata>(reader) {
+                needs_resave |= metadata_path.file_name().and_then(|n| n.to_str()) == Some(LEGACY_METADATA_FILE);
                 let flint = flint.normalized();
                 project.pid = flint.pid;
                 project.kind = flint.kind;
