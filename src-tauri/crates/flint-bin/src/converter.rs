@@ -7,7 +7,7 @@
 
 use crate::bin_json;
 use crate::codec::{tree_to_text_cached, text_to_tree};
-use flint_hash::error::{Error, Result};
+use ruination_hash::error::{Error, Result};
 use ritoshark::bin::Bin;
 
 fn bin_error(message: impl Into<String>) -> Error {
