@@ -263,7 +263,7 @@ pub async fn register_file_associations() -> Result<AssocResult, String> {
         let exe_basename = std::path::Path::new(&exe)
             .file_name()
             .and_then(|n| n.to_str())
-            .unwrap_or("flint.exe");
+            .unwrap_or("the-ruination.exe");
 
         let app_key_path = format!(r"Software\Classes\Applications\{}", exe_basename);
         match hkcu.create_subkey(&app_key_path) {
@@ -354,7 +354,7 @@ pub async fn unregister_file_associations() -> Result<AssocResult, String> {
         let exe_basename = std::path::Path::new(&exe)
             .file_name()
             .and_then(|n| n.to_str())
-            .unwrap_or("flint.exe");
+            .unwrap_or("the-ruination.exe");
         let app_key_path = format!(r"Software\Classes\Applications\{}", exe_basename);
         let _ = hkcu.delete_subkey_all(&app_key_path);
 
