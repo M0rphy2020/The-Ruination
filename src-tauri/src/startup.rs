@@ -79,7 +79,7 @@ fn try_reveal_main(app: &AppHandle) {
     }
 
     tracing::info!("startup gates resolved; revealing the fully initialized main window");
-    emit_status(app, "Flint is ready", Some(100.0));
+    emit_status(app, "The Ruination is ready", Some(100.0));
     if let Err(error) = main.show() {
         gate.resolved.store(false, Ordering::Release);
         tracing::error!("startup gate could not show the main window: {error}");
@@ -125,7 +125,7 @@ async fn install_checked_update(app: &AppHandle, update: Update) -> Result<Strin
     let finished_app = app.clone();
     let finished_version = version.clone();
 
-    emit_status(app, format!("Preparing Flint v{version}..."), Some(0.0));
+    emit_status(app, format!("Preparing The Ruination v{version}..."), Some(0.0));
     let download = update.download_and_install(
         move |chunk_length, content_length| {
             if let Some(length) = content_length {
