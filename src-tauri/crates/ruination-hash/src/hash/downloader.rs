@@ -21,7 +21,7 @@ use tokio::io::AsyncWriteExt;
 const RELEASE_API_URL: &str =
     "https://api.github.com/repos/RitoShark/lmdb-hashes/releases/latest";
 const META_FILE_NAME: &str = "hashes-meta.json";
-const USER_AGENT: &str = "flint-hash-manager";
+const USER_AGENT: &str = "the-ruination-hash-manager";
 
 // Startup and settings share staging paths and metadata.
 static UPDATE_LOCK: tokio::sync::Mutex<()> = tokio::sync::Mutex::const_new(());
