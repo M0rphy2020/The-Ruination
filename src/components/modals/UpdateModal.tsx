@@ -331,7 +331,7 @@ export const UpdateModal: React.FC = () => {
 
                 <span className="um-silent-hint">
                     <Icon name="info" />
-                    Install runs silently — Flint will relaunch automatically when finished.
+                    Install runs silently — The Ruination will relaunch automatically when finished.
                 </span>
             </ModalBody>
 
