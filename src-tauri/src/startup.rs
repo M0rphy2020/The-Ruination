@@ -46,7 +46,7 @@ fn emit_status(app: &AppHandle, text: impl Into<String>, percent: Option<f32>) {
 }
 
 fn pending_update_path() -> Option<std::path::PathBuf> {
-    crate::commands::settings::get_flint_home()
+    crate::commands::settings::get_ruination_home()
         .ok()
         .map(|home| home.join("pending-update"))
 }
