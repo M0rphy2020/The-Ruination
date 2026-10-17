@@ -1,8 +1,11 @@
-/* The Ruination — Obsidian and Ruination Cyan */
+/* The Ruination Default Theme
+   This is the default theme with Ruination cyan accents.
+   The ramp sits at obsidian surfaces with silver text and cyan highlights. */
+
 :root {
   --accent-primary: #20DDE0;
-  --accent-hover: #70F4F0;
-  --accent-secondary: #12BFC7;
+  --accent-hover: #12BFC7;
+  --accent-secondary: #70F4F0;
   --accent-muted: #0B646B;
-  --button-primary: #12BFC7;
+  --button-primary: #20DDE0;
 }
