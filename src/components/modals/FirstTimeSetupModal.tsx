@@ -5,7 +5,7 @@ import { open } from '../../lib/api/dialog';
 import { openUrl } from '@tauri-apps/plugin-opener';
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import { Button, Input, Icon, Textarea, Checkbox, Spinner, type IconName } from '../ui';
-import { FlintFlameMark } from '../ui/FlintFlameMark';
+import { RuinationMark } from '../ui/RuinationMark';
 import { SettingsRow } from './settings/SettingsRow';
 import { PathSettingItem } from './settings/PathSettingItem';
 import { FlowPane, ProjectsPane, WorkspacePane, WadPane, MenusPane } from './setup/TourPanes';
@@ -28,7 +28,7 @@ const STEPS: Step[] = [
     { id: 'splash', short: '', hint: '', icon: 'info', title: '', subtitle: '' },
     {
         id: 'flow', group: 'Learn', short: 'How it works', hint: 'The five stages', icon: 'refresh',
-        title: 'How Flint works',
+        title: 'How The Ruination works',
         subtitle: 'From the files sitting in your League folder to a mod someone else can install.',
     },
     {
@@ -49,7 +49,7 @@ const STEPS: Step[] = [
     {
         id: 'menus', short: 'Right-click', hint: 'Where the tools live', icon: 'more',
         title: 'Right-click menus',
-        subtitle: 'Most of what Flint can do is one right-click away.',
+        subtitle: 'Most of what The Ruination can do is one right-click away.',
     },
     {
         id: 'identity', group: 'Set up', short: 'You', hint: 'Name and links', icon: 'user',
@@ -456,7 +456,7 @@ const SplashPane: React.FC<{ onStart: () => void }> = ({ onStart }) => {
         >
             <div className="fwiz-splash__logo" aria-hidden="true">
                 <span className="fwiz-splash__logo-glow" />
-                <FlintFlameMark size={118} />
+                <RuinationMark size={118} />
                 <span className="fwiz-splash__logo-ring" />
                 <span className="fwiz-splash__logo-ring fwiz-splash__logo-ring--two" />
             </div>
@@ -515,7 +515,7 @@ const WizTitleBar: React.FC = () => {
             <div className="titlebar__left fwiz__titlebar-left" data-tauri-drag-region>
                 <div className="titlebar__logo fwiz__titlebar-logo" data-tauri-drag-region="false">
                     <span className="fwiz-mark" aria-hidden="true">
-                        <FlintFlameMark size={22} />
+                        <RuinationMark size={22} />
                         <span className="fwiz-mark__halo" />
                     </span>
                     <span className="titlebar__app-name">Flint</span>
