@@ -19,7 +19,7 @@ use ritoshark::hash::fnv1a;
 use crate::migration::{table as migration_table, table_key, Conversion, Migration};
 use crate::texture_header::{read_texture_header, TextureContainer};
 
-use flint_hash::hash::HashMapper;
+use ruination_hash::hash::HashMapper;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, serde::Serialize)]
 #[serde(rename_all = "lowercase")]
@@ -540,7 +540,7 @@ fn collect_clip_files(
                 if *field == ANIMATION_FILE_PATH {
                     match inner {
                         BinValue::String(path) if !path.is_empty() => {
-                            out.push((owner, path.clone(), flint_hash::hash::wad_chunk_hash(path)))
+                            out.push((owner, path.clone(), ruination_hash::hash::wad_chunk_hash(path)))
                         }
                         BinValue::File(hash) if *hash != 0 => {
                             out.push((owner, String::new(), *hash))
@@ -596,7 +596,7 @@ pub fn check_animation_assets(
         }
     }
 
-    let local = flint_hash::hash::local_custom_hashes().read();
+    let local = ruination_hash::hash::local_custom_hashes().read();
     /* `(label, reference)` — the label reads in the message, the reference is what the
        printer actually put in the text, which is what a line lookup can match on. */
     let mut invented: Vec<(String, String)> = Vec::new();
@@ -1635,7 +1635,7 @@ mod tests {
     #[test]
     fn an_unresolved_clip_hash_still_finds_its_line() {
         let anm = "assets/characters/yone/skins/base/invented/dance.anm";
-        let hash = flint_hash::hash::wad_chunk_hash(anm);
+        let hash = ruination_hash::hash::wad_chunk_hash(anm);
         let bin = animation_bin(BinValue::File(hash));
         let text = format!("a
 b
@@ -1653,7 +1653,7 @@ b
         let anm = "assets/characters/yone/skins/skin0/animations/dance.anm";
         let bin = animation_bin(BinValue::String(anm.to_string()));
         let mut names = HashMapper::new();
-        names.insert(flint_hash::hash::wad_chunk_hash(anm), anm.to_string());
+        names.insert(ruination_hash::hash::wad_chunk_hash(anm), anm.to_string());
 
         let issues = check_animation_assets(&bin, "anim.bin", &names, &HashSet::new(), None);
         assert_eq!(codes(&issues), vec!["animation.clip-from-game"]);
@@ -1664,24 +1664,24 @@ b
     #[test]
     fn a_locally_invented_name_does_not_make_a_path_a_game_asset() {
         let anm = "assets/characters/yone/skins/base/invented_7d9f/dance.anm";
-        let hash = flint_hash::hash::wad_chunk_hash(anm);
+        let hash = ruination_hash::hash::wad_chunk_hash(anm);
         let bin = animation_bin(BinValue::String(anm.to_string()));
         let mut names = HashMapper::new();
         names.insert(hash, anm.to_string());
-        flint_hash::hash::local_custom_hashes().write().insert(hash);
+        ruination_hash::hash::local_custom_hashes().write().insert(hash);
 
         let issues = check_animation_assets(&bin, "anim.bin", &names, &HashSet::new(), None);
         assert_eq!(codes(&issues), vec!["animation.missing-clip-file"]);
         assert_eq!(issues[0].severity, Severity::Critical);
 
-        flint_hash::hash::local_custom_hashes().write().remove(&hash);
+        ruination_hash::hash::local_custom_hashes().write().remove(&hash);
     }
 
     #[test]
     fn a_clip_whose_anm_is_shipped_is_clean() {
         let anm = "assets/characters/yone/skins/skin0/animations/dance.anm";
         let bin = animation_bin(BinValue::String(anm.to_string()));
-        let present = HashSet::from([flint_hash::hash::wad_chunk_hash(anm)]);
+        let present = HashSet::from([ruination_hash::hash::wad_chunk_hash(anm)]);
         assert!(check_animation_assets(&bin, "anim.bin", &HashMapper::new(), &present, None).is_empty());
     }
 
@@ -1689,7 +1689,7 @@ b
     #[test]
     fn a_file_typed_clip_path_is_checked_by_hash() {
         let anm = "assets/characters/yone/skins/skin0/animations/dance.anm";
-        let hash = flint_hash::hash::wad_chunk_hash(anm);
+        let hash = ruination_hash::hash::wad_chunk_hash(anm);
         let bin = animation_bin(BinValue::File(hash));
 
         assert!(check_animation_assets(&bin, "anim.bin", &HashMapper::new(), &HashSet::from([hash]), None)
