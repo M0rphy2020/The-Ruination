@@ -440,7 +440,7 @@ export const App: React.FC = () => {
                     }
                 } catch (err) {
                     console.error('Failed to open project folder:', err);
-                    showToast('error', 'Failed to open folder as a The Ruination project');
+                    showToast('error', 'Failed to open folder as a project in The Ruination');
                 }
                 return;
             }
