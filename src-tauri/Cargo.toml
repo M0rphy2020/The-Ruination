@@ -1,5 +1,5 @@
 [workspace]
-members = [".", "crates/ruination-core", "crates/flint-formats", "crates/flint-hash", "crates/flint-net", "crates/flint-bin", "crates/flint-wad", "crates/hematite-flint", "crates/flint-shaderforge"]
+members = [".", "crates/ruination-core", "crates/flint-formats", "crates/flint-hash", "crates/flint-net", "crates/flint-bin", "crates/flint-wad", "crates/hematite-flint", "crates/ruination-shaderforge"]
 
 # Single source of truth for deps shared across the workspace crates. Before
 # this, bumping `ritoshark` meant editing seven manifests and silently getting
@@ -43,7 +43,7 @@ ruination-core = { path = "crates/ruination-core" }
 hematite-flint = { path = "crates/hematite-flint" }
 # Shader-preview module boundary — stub by default; the `shaderforge`
 # feature compiles the private overlay when present (see the crate's docs).
-flint-shaderforge = { path = "crates/flint-shaderforge" }
+ruination-shaderforge = { path = "crates/ruination-shaderforge" }
 # RST: MIGRATED to ritoshark::rst (Phase 4) — the standalone dep was removed.
 # RitoShark crates — migration target. Binary-crate commands use ritoshark types directly;
 # same git revision as the core crate dependency, so Cargo compiles ONE shared copy (identical types across crates).
@@ -138,8 +138,8 @@ tempfile = "3"
 [features]
 custom-protocol = ["tauri/custom-protocol"]
 # Compiles the private shader-preview overlay when present
-# (crates/flint-shaderforge). Default off — public builds use the stub.
-shaderforge = ["flint-shaderforge/real"]
+# (crates/ruination-shaderforge). Default off — public builds use the stub.
+shaderforge = ["ruination-shaderforge/real"]
 
 # =============================================================================
 # BUILD PROFILES - Optimized for fast incremental compilation
