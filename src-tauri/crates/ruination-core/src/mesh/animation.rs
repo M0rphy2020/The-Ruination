@@ -253,7 +253,7 @@ pub fn find_animation_bin(skn_path: &Path) -> Option<PathBuf> {
         while let Some(dir) = current {
             let data_dir = dir.join("data");
             if data_dir.exists() && data_dir.is_dir() {
-                // NOTE: WAD folders are checked too — in Flint projects the
+                // NOTE: WAD folders are checked too — in Ruination projects the
                 // extracted `.wad.client` folder IS where the `data/` tree
                 // lives (the old skip-and-continue here meant the champion
                 // loop never looked inside it and kept walking toward
@@ -278,8 +278,8 @@ pub fn find_animation_bin(skn_path: &Path) -> Option<PathBuf> {
                     return Some(skin0_anim);
                 }
             }
-            // Stop at the Flint project boundary — never scan above it.
-            if crate::mesh::texture::is_flint_project_root(dir) {
+            // Stop at the Ruination project boundary — never scan above it.
+            if crate::mesh::texture::is_ruination_project_root(dir) {
                 break;
             }
             current = dir.parent();
@@ -300,7 +300,7 @@ pub fn find_animation_bin(skn_path: &Path) -> Option<PathBuf> {
                 }
             }
         }
-        if crate::mesh::texture::is_flint_project_root(dir) {
+        if crate::mesh::texture::is_ruination_project_root(dir) {
             break;
         }
         current = dir.parent();
@@ -370,14 +370,14 @@ fn find_animation_bin_by_content(skn_path: &Path) -> Option<PathBuf> {
     })
 }
 
-/// Where the content scan starts: the Flint project root when the SKN is inside
+/// Where the content scan starts: the Ruination project root when the SKN is inside
 /// one, else the nearest ancestor holding a `data/` tree. Bounded on purpose —
 /// walking above the project reaches the user profile and drive root.
 fn content_scan_root(skn_path: &Path) -> Option<PathBuf> {
     let mut current = skn_path.parent();
     let mut data_owner = None;
     while let Some(dir) = current {
-        if crate::mesh::texture::is_flint_project_root(dir) {
+        if crate::mesh::texture::is_ruination_project_root(dir) {
             return Some(dir.to_path_buf());
         }
         if data_owner.is_none() && dir.join("data").is_dir() {
@@ -793,7 +793,7 @@ mod tests {
         use ritoshark::prelude::Serialize as _;
 
         let root = std::env::temp_dir().join(format!(
-            "flint-animfallback-{}-{}",
+            "ruination-animfallback-{}-{}",
             std::process::id(),
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
@@ -854,7 +854,7 @@ mod tests {
     #[test]
     fn the_content_scan_never_climbs_above_the_project() {
         let root = std::env::temp_dir().join(format!(
-            "flint-animscope-{}-{}",
+            "ruination-animscope-{}-{}",
             std::process::id(),
             std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
@@ -926,7 +926,7 @@ mod tests {
         /// A mod folder with an `assets/` tree, so `mod_root` finds it from any bin inside.
         fn new(tag: &str) -> Self {
             let root = std::env::temp_dir().join(format!(
-                "flint-anim-{tag}-{}-{}",
+                "ruination-anim-{tag}-{}-{}",
                 std::process::id(),
                 std::time::SystemTime::now()
                     .duration_since(std::time::UNIX_EPOCH)

@@ -1,8 +1,8 @@
-//! Discover Flint projects on disk and reconcile with `projects.json`.
+//! Discover Ruination projects on disk and reconcile with `projects.json`.
 
 use crate::error::Result;
 use crate::project::index::{read_index, upsert, ProjectIndexEntry};
-use crate::project::project::{open_project, FlintMetadata, Project, ProjectKind};
+use crate::project::project::{open_project, RuinationMetadata, Project, ProjectKind};
 use chrono::Utc;
 use serde::{Deserialize, Serialize};
 use std::fs::{self, File};
@@ -10,7 +10,7 @@ use std::io::BufReader;
 use std::path::{Path, PathBuf};
 
 const PROJECT_FILE: &str = "mod.config.json";
-const FLINT_FILE: &str = "flint.json";
+const RUINATION_FILE: &str = "flint.json";
 const INDEX_FILE: &str = "projects.json";
 
 /// One row returned to the frontend, always reflecting current on-disk state.
@@ -170,11 +170,11 @@ fn read_listing_lightweight(project_path: &Path) -> Option<ProjectListing> {
     let name = config.get("name").and_then(|v| v.as_str()).unwrap_or("").to_string();
     let display_name = config.get("display_name").and_then(|v| v.as_str()).unwrap_or(&name).to_string();
 
-    // Flint metadata is optional — projects imported from another tool may lack it.
-    let flint_path = project_path.join(FLINT_FILE);
-    let (pid, kind, champion, skin_id, map_id, created_at, modified_at) = if flint_path.exists() {
-        match File::open(&flint_path).and_then(|f| {
-            serde_json::from_reader::<_, FlintMetadata>(BufReader::new(f))
+    // Ruination metadata is optional — projects imported from another tool may lack it.
+    let metadata_path = project_path.join(RUINATION_FILE);
+    let (pid, kind, champion, skin_id, map_id, created_at, modified_at) = if metadata_path.exists() {
+        match File::open(&metadata_path).and_then(|f| {
+            serde_json::from_reader::<_, RuinationMetadata>(BufReader::new(f))
                 .map_err(std::io::Error::other)
         }) {
             Ok(meta) => {
@@ -271,7 +271,7 @@ mod tests {
     fn write_project(dir: &Path, flint: &str) {
         std::fs::create_dir_all(dir).unwrap();
         std::fs::write(dir.join(PROJECT_FILE), r#"{"name":"p","display_name":"P","version":"0.1.0","description":"","authors":[]}"#).unwrap();
-        std::fs::write(dir.join(FLINT_FILE), flint).unwrap();
+        std::fs::write(dir.join(RUINATION_FILE), flint).unwrap();
     }
 
     #[test]

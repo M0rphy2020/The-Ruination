@@ -36,13 +36,13 @@ pub struct TextureMapping {
     pub static_materials: Vec<String>,
 }
 
-/// True when `dir` is a Flint project root (holds one of the project marker
+/// True when `dir` is a Ruination project root (holds one of the project marker
 /// files). Directory walks that look for a `data/` tree MUST stop here —
 /// anything above the project (AppData, the user's home, drive root) can
 /// contain an unrelated `data\` folder that hijacks root resolution. That
 /// breakage is machine-dependent: the same project works on one PC and shows
 /// magenta/no-texture meshes on another.
-pub fn is_flint_project_root(dir: &Path) -> bool {
+pub fn is_ruination_project_root(dir: &Path) -> bool {
     dir.join("mod.config.json").exists()
         || dir.join("flint.json").exists()
         || dir.join("project.json").exists()
@@ -236,8 +236,8 @@ fn extract_skin_folder_from_path(path: &Path) -> Option<String> {
 
 /// Walks up until a directory with a `data/` subdirectory is found, skipping
 /// `.wad.client` / `.wad` folders (extracted WAD content, not the project root).
-/// The walk NEVER goes above the Flint project root (see
-/// [`is_flint_project_root`]) — a stray `data\` dir in AppData / the user's
+/// The walk NEVER goes above the Ruination project root (see
+/// [`is_ruination_project_root`]) — a stray `data\` dir in AppData / the user's
 /// home would otherwise win over the correct WAD-folder fallback.
 fn find_project_root_from_path(file_path: &Path) -> Option<PathBuf> {
     let mut current = file_path.parent()?;
@@ -260,7 +260,7 @@ fn find_project_root_from_path(file_path: &Path) -> Option<PathBuf> {
                 return Some(current.to_path_buf());
             }
         }
-        if is_flint_project_root(current) {
+        if is_ruination_project_root(current) {
             break;
         }
         current = match current.parent() {
@@ -351,7 +351,7 @@ mod tests {
         // PC, magenta textures on another): an unrelated `data/` dir ABOVE the
         // project (AppData, user home, ...) used to win over the WAD folder.
         let tmp = std::env::temp_dir().join(format!("flint_texture_hijack_{}", std::process::id()));
-        // The hijacker: <tmp>/data (sibling of projects/, like %APPDATA%/Flint/data).
+        // The hijacker: <tmp>/data (sibling of projects/, like %APPDATA%/Ruination/data).
         std::fs::create_dir_all(tmp.join("data")).unwrap();
 
         let proj = tmp.join("projects/uwu");

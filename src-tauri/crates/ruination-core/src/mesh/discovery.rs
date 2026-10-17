@@ -137,9 +137,9 @@ pub fn find_project_root(file_path: &Path) -> Option<std::path::PathBuf> {
                 return Some(current.to_path_buf());
             }
         }
-        // Never walk above the Flint project root — a stray `data\` dir in
+        // Never walk above the Ruination project root — a stray `data\` dir in
         // AppData / the user's home hijacks resolution (machine-dependent).
-        if crate::mesh::texture::is_flint_project_root(current) {
+        if crate::mesh::texture::is_ruination_project_root(current) {
             break;
         }
         current = match current.parent() {

@@ -1,4 +1,4 @@
-//! Creating, loading, and saving Flint mod projects in the league-mod format.
+//! Creating, loading, and saving Ruination mod projects in the league-mod format.
 
 use crate::error::{Error, Result};
 use chrono::{DateTime, Utc};
@@ -10,7 +10,7 @@ use std::path::{Path, PathBuf};
 
 const PROJECT_FILE: &str = "mod.config.json";
 
-const FLINT_FILE: &str = "flint.json";
+const RUINATION_FILE: &str = "flint.json";
 
 /// Drives which fields in `flint.json` are meaningful. Persisted as kebab-case
 /// (`"skin" | "map" | "loading-screen" | "tft"`).
@@ -45,7 +45,7 @@ fn is_false(v: &bool) -> bool { !*v }
 /// bytes were pulled from, whether it was Live or PBE, and which slice of the
 /// WAD was taken.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
-pub struct FlintSource {
+pub struct RuinationSource {
     /// Champion internal name (e.g. "Ahri"). Skin projects only.
     #[serde(default, skip_serializing_if = "is_empty_string")]
     pub champion: String,
@@ -76,7 +76,7 @@ pub struct FlintSource {
 /// What the extraction actually pulled, so a later pass can tell the difference
 /// between "the mod does not touch sounds" and "the sounds were left stock".
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
-pub struct FlintExtract {
+pub struct RuinationExtract {
     #[serde(default, skip_serializing_if = "is_false")]
     pub sfx: bool,
 
@@ -84,14 +84,14 @@ pub struct FlintExtract {
     pub vo: bool,
 }
 
-pub const FLINT_SCHEMA: u32 = 2;
+pub const RUINATION_SCHEMA: u32 = 2;
 
-/// Flint-specific metadata, stored beside mod.config.json. Schema 1 was a flat
+/// Ruination-specific metadata, stored beside mod.config.json. Schema 1 was a flat
 /// bag that also carried an absolute `league_path`; those files still load, but
 /// the path is never written back — it went stale whenever League moved and it
 /// leaked the user's Windows account name into anything they shared.
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct FlintMetadata {
+pub struct RuinationMetadata {
     #[serde(default)]
     pub schema: u32,
 
@@ -104,7 +104,7 @@ pub struct FlintMetadata {
     pub kind: ProjectKind,
 
     #[serde(default)]
-    pub source: FlintSource,
+    pub source: RuinationSource,
 
     /// The `ASSETS/<creator>/<project>` segment the repath actually wrote.
     /// Renames and anything resolving an asset path need the value that was
@@ -113,7 +113,7 @@ pub struct FlintMetadata {
     pub repath_prefix: Option<String>,
 
     #[serde(default)]
-    pub extract: FlintExtract,
+    pub extract: RuinationExtract,
 
     pub created_at: DateTime<Utc>,
 
@@ -133,7 +133,7 @@ pub struct FlintMetadata {
     pub league_path: Option<PathBuf>,
 }
 
-impl FlintMetadata {
+impl RuinationMetadata {
     /// Schema 1 kept champion/skin/map at the top level. Fold them in so the
     /// rest of the code only ever reads `source`.
     pub fn normalized(mut self) -> Self {
@@ -172,12 +172,12 @@ pub struct Project {
     #[serde(default, deserialize_with = "deserialize_authors")]
     pub authors: Vec<String>,
 
-    /// mod.config.json keys Flint doesn't model (hashtables, license, transformers,
+    /// mod.config.json keys Ruination doesn't model (hashtables, license, transformers,
     /// thumbnail, …), carried verbatim so a save never deletes another tool's data.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
 
-    // ===== Flint-specific fields (from flint.json, populated at runtime) =====
+    // ===== Ruination-specific fields (from flint.json, populated at runtime) =====
 
     /// Stable project id (UUID v4), persisting across moves.
     #[serde(default)]
@@ -344,14 +344,14 @@ impl Project {
         }
     }
 
-    pub fn to_flint_metadata(&self) -> FlintMetadata {
+    pub fn to_flint_metadata(&self) -> RuinationMetadata {
         let is_skin = matches!(self.kind, ProjectKind::Skin | ProjectKind::Tft);
         let is_map = matches!(self.kind, ProjectKind::Map);
-        FlintMetadata {
-            schema: FLINT_SCHEMA,
+        RuinationMetadata {
+            schema: RUINATION_SCHEMA,
             pid: self.pid.clone(),
             kind: self.kind,
-            source: FlintSource {
+            source: RuinationSource {
                 champion: if is_skin { self.champion.clone() } else { String::new() },
                 skin_id: if is_skin { self.skin_id } else { 0 },
                 map_id: if is_map { self.map_id.clone() } else { None },
@@ -360,7 +360,7 @@ impl Project {
                 branch: self.source_branch.clone(),
             },
             repath_prefix: self.repath_prefix.clone(),
-            extract: FlintExtract { sfx: self.extract_sfx, vo: self.extract_vo },
+            extract: RuinationExtract { sfx: self.extract_sfx, vo: self.extract_vo },
             created_at: self.created_at,
             modified_at: Utc::now(),
             champion: String::new(),
@@ -374,8 +374,8 @@ impl Project {
         self.project_path.join(PROJECT_FILE)
     }
 
-    pub fn flint_path(&self) -> PathBuf {
-        self.project_path.join(FLINT_FILE)
+    pub fn metadata_path(&self) -> PathBuf {
+        self.project_path.join(RUINATION_FILE)
     }
 
     pub fn content_path(&self, layer: &str) -> PathBuf {
@@ -519,12 +519,12 @@ pub fn open_project(path: &Path) -> Result<Project> {
 
     project.project_path = project_path.clone();
 
-    let flint_path = project_path.join(FLINT_FILE);
+    let metadata_path = project_path.join(RUINATION_FILE);
     let mut needs_resave = false;
-    if flint_path.exists() {
-        if let Ok(file) = File::open(&flint_path) {
+    if metadata_path.exists() {
+        if let Ok(file) = File::open(&metadata_path) {
             let reader = BufReader::new(file);
-            if let Ok(flint) = serde_json::from_reader::<_, FlintMetadata>(reader) {
+            if let Ok(flint) = serde_json::from_reader::<_, RuinationMetadata>(reader) {
                 let flint = flint.normalized();
                 project.pid = flint.pid;
                 project.kind = flint.kind;
@@ -540,7 +540,7 @@ pub fn open_project(path: &Path) -> Result<Project> {
                 project.league_path = flint.league_path;
                 project.created_at = flint.created_at;
                 project.modified_at = flint.modified_at;
-                needs_resave |= flint.schema < FLINT_SCHEMA;
+                needs_resave |= flint.schema < RUINATION_SCHEMA;
             }
         }
     }
@@ -597,10 +597,10 @@ pub fn save_project(project: &Project) -> Result<()> {
     serde_json::to_writer_pretty(writer, &config)
         .map_err(|e| Error::InvalidInput(format!("Failed to write project file: {}", e)))?;
 
-    let flint_path = project.flint_path();
+    let metadata_path = project.metadata_path();
     let flint_metadata = project.to_flint_metadata();
-    let file = File::create(&flint_path)
-        .map_err(|e| Error::io_with_path(e, &flint_path))?;
+    let file = File::create(&metadata_path)
+        .map_err(|e| Error::io_with_path(e, &metadata_path))?;
     let writer = BufWriter::new(file);
     serde_json::to_writer_pretty(writer, &flint_metadata)
         .map_err(|e| Error::InvalidInput(format!("Failed to write flint file: {}", e)))?;
@@ -673,13 +673,13 @@ mod tests {
         );
 
         assert_eq!(project.config_path(), PathBuf::from("C:\\Projects\\test\\mod.config.json"));
-        assert_eq!(project.flint_path(), PathBuf::from("C:\\Projects\\test\\flint.json"));
+        assert_eq!(project.metadata_path(), PathBuf::from("C:\\Projects\\test\\flint.json"));
         assert_eq!(project.assets_path(), PathBuf::from("C:\\Projects\\test\\content\\base"));
         assert_eq!(project.output_path(), PathBuf::from("C:\\Projects\\test\\output"));
     }
 
     /// mod.config.json is a shared format — a `hashtables` array (or any field a
-    /// newer league-mod writes) must survive Flint's open→save round trip.
+    /// newer league-mod writes) must survive Ruination's open→save round trip.
     #[test]
     fn unknown_config_fields_survive_a_save_round_trip() {
         let dir = tempdir().unwrap();
@@ -736,7 +736,7 @@ mod tests {
             "modified_at": "2026-09-02T20:24:20.394350400Z"
         }"#;
 
-        let flint: FlintMetadata = serde_json::from_str(raw).unwrap();
+        let flint: RuinationMetadata = serde_json::from_str(raw).unwrap();
         assert_eq!(flint.schema, 0);
         let flint = flint.normalized();
         assert_eq!(flint.source.champion, "Irelia");
@@ -762,7 +762,7 @@ mod tests {
         let project = Project::new("Test", "Ahri", 5, "C:\\League", "C:\\test", None);
         let flint = project.to_flint_metadata();
         
-        assert_eq!(flint.schema, FLINT_SCHEMA);
+        assert_eq!(flint.schema, RUINATION_SCHEMA);
         assert_eq!(flint.source.champion, "Ahri");
         assert_eq!(flint.source.skin_id, 5);
         assert!(flint.league_path.is_none());
@@ -818,7 +818,7 @@ mod tests {
         assert!(project.assets_path().exists());
         assert!(project.output_path().exists());
         assert!(project.config_path().exists());
-        assert!(project.flint_path().exists());
+        assert!(project.metadata_path().exists());
 
         assert!(!project.project_path.to_string_lossy().ends_with(".flint"));
 
