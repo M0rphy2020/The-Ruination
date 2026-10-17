@@ -1,4 +1,4 @@
-//! Creating, loading, and saving Flint mod projects in the league-mod format.
+//! Creating, loading, and saving The Ruination projects in the league-mod format.
 
 use crate::error::{Error, Result};
 use chrono::{DateTime, Utc};
@@ -13,7 +13,7 @@ const PROJECT_FILE: &str = "mod.config.json";
 const RUINATION_FILE: &str = "ruination.json";
 const LEGACY_METADATA_FILE: &str = "flint.json";
 
-/// Drives which fields in `flint.json` are meaningful. Persisted as kebab-case
+/// Drives which fields in Ruination project metadata are meaningful. Persisted as kebab-case
 /// (`"skin" | "map" | "loading-screen" | "tft"`).
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Default)]
 #[serde(rename_all = "kebab-case")]
@@ -87,7 +87,7 @@ pub struct FlintExtract {
 
 pub const FLINT_SCHEMA: u32 = 2;
 
-/// Flint-specific metadata, stored beside mod.config.json. Schema 1 was a flat
+/// Ruination project metadata, stored beside mod.config.json. Schema 1 was a flat
 /// bag that also carried an absolute `league_path`; those files still load, but
 /// the path is never written back — it went stale whenever League moved and it
 /// leaked the user's Windows account name into anything they shared.
@@ -173,12 +173,12 @@ pub struct Project {
     #[serde(default, deserialize_with = "deserialize_authors")]
     pub authors: Vec<String>,
 
-    /// mod.config.json keys Flint doesn't model (hashtables, license, transformers,
+    /// mod.config.json keys the application doesn't model (hashtables, license, transformers,
     /// thumbnail, …), carried verbatim so a save never deletes another tool's data.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
 
-    // ===== Flint-specific fields (from flint.json, populated at runtime) =====
+    // ===== Ruination-specific fields (populated at runtime) =====
 
     /// Stable project id (UUID v4), persisting across moves.
     #[serde(default)]
@@ -695,7 +695,7 @@ mod tests {
     }
 
     /// mod.config.json is a shared format — a `hashtables` array (or any field a
-    /// newer league-mod writes) must survive Flint's open→save round trip.
+    /// newer league-mod writes) must survive the application's open→save round trip.
     #[test]
     fn unknown_config_fields_survive_a_save_round_trip() {
         let dir = tempdir().unwrap();
