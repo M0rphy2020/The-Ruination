@@ -67,7 +67,7 @@ body:
     attributes:
       label: Log
       description: >
-        Logs are in %APPDATA%\The Ruination\logs\, one file per day. Paste the part from around when it
+        Logs are stored in the application's data directory, one file per day. Paste the part from around when it
         broke, or attach the file. Paths in it may include your username, so trim it if you care.
       render: text
 
