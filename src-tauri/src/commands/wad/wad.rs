@@ -402,7 +402,7 @@ pub async fn extract_wad_model_preview(
     }
 
     let uuid = uuid::Uuid::new_v4();
-    let temp_dir = std::env::temp_dir().join("flint-wad-preview").join(uuid.to_string());
+    let temp_dir = std::env::temp_dir().join("ruination-wad-preview").join(uuid.to_string());
     std::fs::create_dir_all(&temp_dir)
         .map_err(|e| format!("Failed to create temp dir: {}", e))?;
 
@@ -450,10 +450,10 @@ pub async fn extract_wad_model_preview(
 #[tauri::command]
 pub async fn cleanup_wad_model_preview(temp_dir: String) -> Result<(), String> {
     let path = std::path::Path::new(&temp_dir);
-    let expected_prefix = std::env::temp_dir().join("flint-wad-preview");
+    let expected_prefix = std::env::temp_dir().join("ruination-wad-preview");
 
     if !path.starts_with(&expected_prefix) {
-        return Err("Invalid temp dir path — must be inside flint-wad-preview".to_string());
+        return Err("Invalid temp dir path — must be inside ruination-wad-preview".to_string());
     }
 
     if path.exists() {
