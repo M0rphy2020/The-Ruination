@@ -14,7 +14,7 @@
 
   function setLoading(text, percent) {
     show(loadingView);
-    status.textContent = text || 'Starting Flint...';
+    status.textContent = text || 'Starting The Ruination...';
     if (typeof percent === 'number') {
       progressBar.classList.remove('is-indeterminate');
       progressBar.style.width = `${Math.max(0, Math.min(100, percent))}%`;
@@ -50,7 +50,7 @@
 
     await tauri.core.invoke('startup_window_ready');
   }).catch((error) => {
-    console.error('Flint startup handshake failed:', error);
+    console.error('The Ruination startup handshake failed:', error);
     errorCopy.textContent = typeof error === 'string'
       ? error
       : 'The startup service did not respond. You can continue and check for updates later in Settings.';
