@@ -10,7 +10,7 @@ use tokio::{
     sync::{mpsc, oneshot},
 };
 
-const RELEASES: &str = "https://github.com/RitoShark/Flint/releases/download";
+const RELEASES: &str = "https://github.com/M0rphy2020/The-Ruination/releases/download";
 const MAX_MESSAGE: usize = 64 * 1024 * 1024;
 
 #[derive(Default)]
@@ -42,8 +42,8 @@ impl LspState {
 #[serde(rename_all = "camelCase")]
 struct Manifest {
     version: String,
-    #[serde(default, rename = "flintVersion")]
-    upstream_app_version: String,
+    #[serde(default, rename = "appVersion")]
+    app_version: String,
     asset: String,
     sha256: String,
     no_hashes: u32,
@@ -81,7 +81,7 @@ async fn development_binary(app_version: &str) -> Result<Option<PathBuf>, String
     };
     let manifest: Manifest = serde_json::from_slice(&data)
         .map_err(|error| format!("Invalid development LSP manifest: {error}"))?;
-    if manifest.upstream_app_version != app_version {
+    if manifest.app_version != app_version {
         return Err("Development LSP was staged for another app version; run scripts/lsp/stage-dev.mjs again.".into());
     }
     let binary = verified_binary(&dir, &manifest)
@@ -121,7 +121,7 @@ async fn install(app: &tauri::AppHandle) -> Result<PathBuf, String> {
     // Reuse a verified installation for this app version without an update request.
     // A new app version fetches a compatible release asset on first opt-in use.
     if let Some((manifest, path)) = &cached {
-        if manifest.upstream_app_version == app_version {
+        if manifest.app_version == app_version {
             return Ok(path.clone());
         }
     }
@@ -143,7 +143,7 @@ async fn install(app: &tauri::AppHandle) -> Result<PathBuf, String> {
             .json()
             .await
             .map_err(|e| e.to_string())?;
-        if !valid_manifest(&m) || m.upstream_app_version != app_version {
+        if !valid_manifest(&m) || m.app_version != app_version {
             return Err("Invalid hash-disabled LSP manifest".to_string());
         }
         if let Some(path) = verified_binary(&dir, &m).await {
@@ -404,7 +404,7 @@ mod tests {
     fn rejects_untrusted_manifests() {
         let mut m = Manifest {
             version: "abc-123".into(),
-            upstream_app_version: "2.9.7".into(),
+            app_version: "2.9.7".into(),
             asset: "ritobin-lsp-abc-123-windows-x86_64.exe".into(),
             sha256: "a".repeat(64),
             no_hashes: 1,
