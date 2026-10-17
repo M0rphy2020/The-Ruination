@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { Button } from '../ui/Button';
-import { Icon, Modal, ModalBody, ModalFooter, ModalHeader } from '../ui';
+import { Modal, ModalBody, ModalFooter, ModalHeader } from '../ui';
 import { useModalStore } from '../../lib/stores';
 
 type Topic = 'penta' | 'arena' | 'vfx' | 'bin' | 'skin';
@@ -129,7 +129,7 @@ export const CreatorCopilotModal: React.FC = () => {
           <div style={{ marginTop: 18 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, marginBottom: 8 }}>
               <h3 style={{ fontSize: 14, margin: 0 }}>Starter notes</h3>
-              <Button variant="secondary" size="sm" onClick={copyStarter}><Icon name="copy" /> {copied ? 'Copied' : 'Copy template'}</Button>
+              <Button variant="secondary" size="sm" onClick={copyStarter}>{copied ? 'Copied' : 'Copy template'}</Button>
             </div>
             <pre style={{ whiteSpace: 'pre-wrap', overflowWrap: 'anywhere', padding: 14, borderRadius: 8, background: 'var(--bg-primary)', border: '1px solid var(--border)', fontFamily: 'var(--font-mono)', fontSize: 12, lineHeight: 1.6 }}>{guide.starter}</pre>
           </div>
