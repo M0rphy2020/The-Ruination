@@ -25,7 +25,7 @@
 //! BIN class hashes are 32-bit FNV1a of the lowercase class name string.
 //! See `event_mapper.rs::fnv1_hash` for FNV-1 vs FNV-1a; we use 1a here.
 
-use flint_hash::error::{Error, Result};
+use ruination_hash::error::{Error, Result};
 use ritoshark::bin::{Bin, BinEntry};
 use std::collections::HashSet;
 use std::path::{Path, PathBuf};
