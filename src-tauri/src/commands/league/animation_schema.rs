@@ -719,7 +719,7 @@ pub async fn aggregate_animation_bin_schema(
     // `#` is ritobin's comment marker — the parser skips these lines, so the
     // file opens in the BIN editor like any other ritobin text. `//` is NOT
     // valid ritobin and would make the whole file unparseable.
-    let _ = writeln!(output, "# Animation BIN Schema Reference — Flint");
+    let _ = writeln!(output, "# Animation BIN Schema Reference — The Ruination");
     let _ = writeln!(output, "# Generated: {}", chrono::Utc::now().to_rfc3339());
     let _ = writeln!(
         output,
