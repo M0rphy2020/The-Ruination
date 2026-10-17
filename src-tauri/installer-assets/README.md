@@ -1,18 +1,18 @@
-# Flint Installer Assets
+# The Ruination Installer Assets
 
 This folder contains custom branding images for the NSIS installer.
 
 ## Required Images
 
-Replace the placeholder files with your custom Flint-branded images:
+Replace the placeholder files with your custom The Ruination-branded images:
 
 ### 1. **installer-sidebar.bmp** (Left Side Panel)
 - **Resolution**: 164 x 314 pixels
 - **Format**: BMP (24-bit)
 - **Usage**: Displayed on the left side of the installer during all steps
 - **Design Tips**:
-  - Use dark background (#1a1a1a or similar)
-  - Include Flint logo/branding vertically centered
+  - Use dark background (#05090B or similar)
+  - Include The Ruination logo/branding vertically centered
   - Keep important content in the center (top/bottom may be cut off)
 
 ### 2. **installer-header.bmp** (Top Banner)
@@ -21,18 +21,18 @@ Replace the placeholder files with your custom Flint-branded images:
 - **Usage**: Displayed as the header banner at the top of installer pages
 - **Design Tips**:
   - Use dark background to match sidebar
-  - Small Flint logo or text
+  - Small The Ruination logo or text
   - Keep text/logo on the left side (header image is right-aligned)
 
 ### 3. **Icon** (Already exists)
 - **File**: `icons/icon.ico`
 - **Usage**: Installer icon, uninstaller icon, shortcuts
-- **Note**: This is already configured and uses your current Flint icon
+- **Note**: This is already configured and uses the current application icon
 
 ### 4. **Logo SVG** (For reference)
 - **Files**:
-  - `flint-logo.svg` - Monochrome version (light on dark)
-  - `flint-logo-colored.svg` - Colored version (orange/yellow flame)
+  - `ruination-logo.svg` - Monochrome version (light on dark)
+  - `ruination-logo-colored.svg` - Colored version (cyan fractured sigil)
 - **Usage**: Reference for creating installer graphics
 - **Note**: Use these as a basis for your custom BMP images
 
@@ -55,10 +55,10 @@ Replace the placeholder files with your custom Flint-branded images:
 
 ## Color Palette (Dark Theme)
 
-- **Background**: #1a1a1a (dark gray)
-- **Text**: #e0e0e0 (light gray)
-- **Accent**: Your Flint brand color
-- **Logo**: Use your Flint logo/icon
+- **Background**: #05090B (dark gray)
+- **Text**: #C7D6D8 (light gray)
+- **Accent**: Turquoise cyan (#20DDE0)
+- **Logo**: Use your The Ruination logo/icon
 
 ## Testing
 
