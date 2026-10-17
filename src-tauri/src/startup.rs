@@ -135,7 +135,7 @@ async fn install_checked_update(app: &AppHandle, update: Update) -> Result<Strin
                 + chunk_length as u64;
             let length = callback_total.load(Ordering::Relaxed);
             let percent = (length > 0).then(|| (current as f32 / length as f32) * 100.0);
-            emit_status(&callback_app, format!("Downloading Flint v{callback_version}..."), percent);
+            emit_status(&callback_app, format!("Downloading The Ruination v{callback_version}..."), percent);
         },
         move || {
             emit_status(&finished_app, format!("Installing Flint v{finished_version}..."), Some(100.0));
