@@ -1,15 +1,15 @@
 //! Tauri commands for map projects.
 //!
 //! Mirrors the surface of `commands/project.rs` but routes through the
-//! `flint_core::map` module. See `MAP_PROJECT_PLAN.md` at the repo root for
+//! `ruination_core::map` module. See `MAP_PROJECT_PLAN.md` at the repo root for
 //! the full design.
 
 use crate::state::LmdbCacheState;
-use flint_core::hash::resolve_hashes_lmdb_bulk;
-use flint_core::map::{
+use ruination_core::hash::resolve_hashes_lmdb_bulk;
+use ruination_core::map::{
     self, MapEntry, MapProjectResult, MapVariant,
 };
-use flint_core::project::Project;
+use ruination_core::project::Project;
 use serde::Serialize;
 use std::path::PathBuf;
 use tauri::Emitter;
@@ -64,7 +64,7 @@ pub async fn list_map_variants(
         return Err(format!("League path does not exist: {}", league_path));
     }
 
-    let hash_dir = flint_core::hash::get_hash_dir()
+    let hash_dir = ruination_core::hash::get_hash_dir()
         .map(|p| p.to_string_lossy().into_owned())
         .unwrap_or_default();
     let env_arc = lmdb.prime(&hash_dir).ok_or_else(||
@@ -114,7 +114,7 @@ pub async fn create_map_project(
         "message": "Initializing..."
     }));
 
-    let hash_dir = flint_core::hash::get_hash_dir()
+    let hash_dir = ruination_core::hash::get_hash_dir()
         .map(|p| p.to_string_lossy().into_owned())
         .unwrap_or_default();
     let env_arc = lmdb.prime(&hash_dir).ok_or_else(||
