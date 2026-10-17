@@ -17,7 +17,7 @@ For your first project, read [Working with projects](projects.md). If you only n
 ## Reference
 
 - [ritobin-lsp.md](ritobin-lsp.md) — the optional ritobin language server: what it does, how it
-  is kept away from your hashes, and how it is built and shipped with a The Ruination release.
+  is kept away from your hashes, and how it is built and shipped with a release of The Ruination.
 
 ## superpowers/
 
