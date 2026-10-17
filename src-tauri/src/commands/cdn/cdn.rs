@@ -51,13 +51,13 @@ fn http_client() -> reqwest::Client {
 /// Persistent on-disk cache dir for the manifest catalog (tree + resolved URLs).
 fn cdn_cache_dir() -> std::path::PathBuf {
     let base = std::env::var("APPDATA").unwrap_or_else(|_| ".".to_string());
-    std::path::PathBuf::from(base).join("Flint").join("cache").join("cdn")
+    crate::commands::settings::get_ruination_home().map(|home| home.join("cache").join("cdn")).unwrap_or_else(|_| std::path::PathBuf::from(base).join("The Ruination").join("cache").join("cdn"))
 }
 
 /// Where downloaded manifests are stored (keyed by URL basename).
 fn manifest_dir() -> std::path::PathBuf {
     let base = std::env::var("APPDATA").unwrap_or_else(|_| ".".to_string());
-    std::path::PathBuf::from(base).join("Flint").join("manifest")
+    crate::commands::settings::get_ruination_home().map(|home| home.join("manifest")).unwrap_or_else(|_| std::path::PathBuf::from(base).join("The Ruination").join("manifest"))
 }
 
 // ── manifest discovery ──────────────────────────────────────────────────────
