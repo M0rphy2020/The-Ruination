@@ -1,7 +1,7 @@
 //! Project file listing, tree building, and BIN preconversion.
 
-use flint_core::project::Project;
-use flint_core::bin::{classify_bin, BinCategory};
+use ruination_core::project::Project;
+use ruination_core::bin::{classify_bin, BinCategory};
 use crate::core::ipc_trace;
 use super::project::open_project;
 use std::path::{Path, PathBuf};
@@ -121,7 +121,7 @@ pub async fn preconvert_project_bins(
 
     // Pre-warm the hash cache on this thread before workers access it.
     tracing::info!("Pre-warming BIN hash cache...");
-    let _ = flint_core::bin::get_cached_bin_hashes();
+    let _ = ruination_core::bin::get_cached_bin_hashes();
     tracing::info!("Hash cache ready");
 
     let bin_files: Vec<_> = WalkDir::new(&path)
@@ -256,7 +256,7 @@ pub async fn preconvert_project_bins(
 /// Synchronously convert a single BIN file to ritobin (used from rayon workers).
 fn convert_bin_file_sync(bin_path: &str) -> Result<(), String> {
     use std::fs;
-    use flint_core::bin::{read_bin, tree_to_text_cached, MAX_BIN_SIZE};
+    use ruination_core::bin::{read_bin, tree_to_text_cached, MAX_BIN_SIZE};
 
     let metadata = fs::metadata(bin_path)
         .map_err(|e| format!("Failed to get file metadata for '{}': {}", bin_path, e))?;
@@ -306,17 +306,17 @@ pub(super) fn purge_from_index(project_path: &Path, projects_root: Option<&Path>
     }
 
     for root in roots {
-        if !flint_core::project::index_path(&root).is_file() {
+        if !ruination_core::project::index_path(&root).is_file() {
             continue;
         }
         let removed = match pid {
-            Some(pid) => flint_core::project::remove_from_index(&root, pid)
+            Some(pid) => ruination_core::project::remove_from_index(&root, pid)
                 .map(|hit| if hit { 1 } else { 0 }),
             None => Ok(0),
         };
         let removed = match removed {
             Ok(n) if n > 0 => n,
-            Ok(_) => flint_core::project::remove_from_index_by_path(&root, project_path)
+            Ok(_) => ruination_core::project::remove_from_index_by_path(&root, project_path)
                 .unwrap_or_else(|e| {
                     tracing::warn!("Failed to purge {} from index at {}: {}", project_path.display(), root.display(), e);
                     0
