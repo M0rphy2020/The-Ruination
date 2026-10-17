@@ -8,7 +8,7 @@
 //! never replaced. In-memory state is cached behind a `RwLock` keyed on the
 //! file mtime.
 
-use flint_hash::error::{Error, Result};
+use ruination_hash::error::{Error, Result};
 use parking_lot::RwLock;
 use std::collections::HashMap;
 use std::fmt::Write as _;
