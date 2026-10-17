@@ -32,16 +32,16 @@ The source matters: local skin creation performs dependency extraction and organ
 | Frontend API wrappers | Typed calls and binary transfers to Tauri commands | [src/lib/api](../src/lib/api) |
 | Frontend stores | Open tabs, selection, configuration and manifest UI state | [src/lib/stores](../src/lib/stores) |
 | Tauri command layer | IPC entry points, background work, application state and progress events | [src-tauri/src/commands](../src-tauri/src/commands) |
-| `flint-core` | Project creation/loading, indexing, repath/organization and checkpoints; also re-exports supporting modules | [flint-core](../src-tauri/crates/flint-core/src) |
-| `flint-net` | Network-facing functionality, including CDN catalogs, manifests and downloads | [flint-net](../src-tauri/crates/flint-net/src) |
-| `flint-wad` | WAD browsing/extraction and related archive operations | [flint-wad](../src-tauri/crates/flint-wad/src) |
-| `flint-bin` | BIN conversion, editing support and checks | [flint-bin](../src-tauri/crates/flint-bin/src) |
-| `flint-hash` | Shared hash lookup infrastructure | [flint-hash](../src-tauri/crates/flint-hash/src) |
-| `flint-formats` | Format-facing functionality used by the application | [flint-formats](../src-tauri/crates/flint-formats/src) |
-| `hematite-flint` | Integration with the Hematite skin-fixing engine | [hematite-flint](../src-tauri/crates/hematite-flint/src) |
+| `ruination-core` | Project creation/loading, indexing, repath/organization and checkpoints; also re-exports supporting modules | [ruination-core](../src-tauri/crates/ruination-core/src) |
+| `ruination-net` | Network-facing functionality, including CDN catalogs, manifests and downloads | [ruination-net](../src-tauri/crates/ruination-net/src) |
+| `ruination-wad` | WAD browsing/extraction and related archive operations | [ruination-wad](../src-tauri/crates/ruination-wad/src) |
+| `ruination-bin` | BIN conversion, editing support and checks | [ruination-bin](../src-tauri/crates/ruination-bin/src) |
+| `ruination-hash` | Shared hash lookup infrastructure | [ruination-hash](../src-tauri/crates/ruination-hash/src) |
+| `ruination-formats` | Format-facing functionality used by the application | [ruination-formats](../src-tauri/crates/ruination-formats/src) |
+| `ruination-hematite` | Integration with the Hematite skin-fixing engine | [ruination-hematite](../src-tauri/crates/ruination-hematite/src) |
 | RitoShark crates | Underlying readers/writers for game formats such as BIN, WAD, RMAN, meshes and textures | Pinned in the [Rust workspace manifest](../src-tauri/Cargo.toml) |
 
-A Rust command importing `flint_core::cdn` can therefore lead to an implementation under `flint-net/src/cdn`. Follow the re-export when locating the actual behavior.
+A Rust command importing `ruination_core::cdn` can therefore lead to an implementation under `ruination-net/src/cdn`. Follow the re-export when locating the actual behavior.
 
 ## Persistent files versus active state
 
