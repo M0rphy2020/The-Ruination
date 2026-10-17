@@ -13,7 +13,7 @@ static SKYBOX_NZ: &[u8] = include_bytes!("../../../../resources/skybox/nz.webp")
 
 #[tauri::command]
 pub fn get_bundled_floor_png() -> tauri::ipc::Response {
-    if let Ok(home) = crate::commands::settings::get_flint_home() {
+    if let Ok(home) = crate::commands::settings::get_ruination_home() {
         let custom = home.join("themes").join("floor.png");
         if custom.exists() {
             if let Ok(bytes) = std::fs::read(&custom) {
