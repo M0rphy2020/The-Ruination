@@ -88,7 +88,7 @@ jobs:
           $asset = "ritobin-lsp-$env:LSP_VERSION-windows-x86_64.exe"
           Copy-Item upstream/target/release/ritobin-lsp.exe "lsp-artifacts/$asset"
           $sha = (Get-FileHash "lsp-artifacts/$asset" -Algorithm SHA256).Hash.ToLower()
-          @{ version=$env:LSP_VERSION; flintVersion=$env:APP_VERSION; asset=$asset; sha256=$sha; noHashes=1 } | ConvertTo-Json | Set-Content lsp-artifacts/ritobin-lsp-manifest.json -Encoding utf8NoBOM
+          @{ version=$env:LSP_VERSION; appVersion=$env:APP_VERSION; asset=$asset; sha256=$sha; noHashes=1 } | ConvertTo-Json | Set-Content lsp-artifacts/ritobin-lsp-manifest.json -Encoding utf8NoBOM
 
       - name: Install Dependencies
         run: npm ci
