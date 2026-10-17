@@ -4,7 +4,7 @@ use futures_util::{stream, StreamExt};
 
 use ritoshark::rman::{ChunkHashType, ChunkRange};
 
-use flint_hash::error::{Error, Result};
+use ruination_hash::error::{Error, Result};
 
 const BUNDLE_BASE: &str = "https://lol.dyn.riotcdn.net/channels/public/bundles";
 const DOWNLOAD_CONCURRENCY: usize = 8;
