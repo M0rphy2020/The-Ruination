@@ -740,6 +740,42 @@ mod tests {
     }
 
     #[test]
+    fn legacy_metadata_is_migrated_to_ruination_json() {
+        let dir = tempdir().unwrap();
+        let config = serde_json::json!({
+            "name": "migration-test",
+            "display_name": "Migration Test",
+            "version": "1.0.0",
+            "description": "",
+            "authors": [],
+            "layers": [{ "name": "base", "priority": 0 }]
+        });
+        std::fs::write(
+            dir.path().join(PROJECT_FILE),
+            serde_json::to_string_pretty(&config).unwrap(),
+        ).unwrap();
+
+        let legacy = serde_json::json!({
+            "schema": 2,
+            "pid": "3fe695f1-17b9-4a12-86c5-3e78db4f9132",
+            "kind": "skin",
+            "source": { "champion": "Irelia", "skin_id": 18, "branch": "live" },
+            "extract": { "sfx": true, "vo": true },
+            "created_at": "2026-09-02T20:24:20Z",
+            "modified_at": "2026-09-02T20:24:20Z"
+        });
+        std::fs::write(
+            dir.path().join(LEGACY_METADATA_FILE),
+            serde_json::to_string_pretty(&legacy).unwrap(),
+        ).unwrap();
+
+        let project = open_project(dir.path()).unwrap();
+        assert_eq!(project.champion, "Irelia");
+        assert!(dir.path().join(RUINATION_FILE).exists());
+        assert!(!dir.path().join(LEGACY_METADATA_FILE).exists());
+    }
+
+    #[test]
     fn schema_one_flint_files_still_load() {
         let raw = r#"{
             "pid": "3fe695f1-17b9-4a12-86c5-3e78db4f9132",
