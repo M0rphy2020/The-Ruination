@@ -22,6 +22,19 @@ Point The Ruination at your League install, pick a skin, and you get a real proj
 
 ## Features
 
+<details>
+<summary><b>Creator Copilot</b> · guided workflows for new skin creators</summary>
+
+<br>
+
+The built-in Creator Copilot offers beginner-friendly workflows for pentakill celebrations, Arena entrances, VFX edits, BIN changes, and packaging a custom skin. Each guide lists the assets to inspect, a safer order of operations, and a copyable starter checklist.
+
+It is an offline guide today, not a connected generative AI model. It also explains the boundary between asset editing and client-side game logic, rather than promising that a skin package can create an event the game does not expose.
+
+<br clear="all">
+
+</details>
+
 <details open>
 <summary><b>Projects</b> · pull a skin out of the game and get something you can work on</summary>
 
