@@ -12,7 +12,7 @@ use std::path::{Path, PathBuf};
 
 use serde::{Deserialize, Serialize};
 
-use flint_hash::error::{Error, Result};
+use ruination_hash::error::{Error, Result};
 
 const TREE_URL: &str =
     "https://api.github.com/repos/Morilli/riot-manifests/git/trees";
