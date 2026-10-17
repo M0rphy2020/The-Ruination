@@ -320,7 +320,7 @@ mod tests {
             }],
         };
         let bytes = write_psd(&doc);
-        std::fs::write(std::env::temp_dir().join("flint_psd_rt.psd"), &bytes).unwrap();
+        std::fs::write(std::env::temp_dir().join("ruination_psd_rt.psd"), &bytes).unwrap();
 
         let parsed = psd::Psd::from_bytes(&bytes).expect("psd parses");
         assert_eq!(parsed.width(), 4);
