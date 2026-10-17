@@ -4,7 +4,7 @@ This folder contains custom branding images for the NSIS installer.
 
 ## Required Images
 
-Replace the placeholder files with your custom The Ruination-branded images:
+The vector reference artwork is branded. The two bitmap files below still need to be regenerated from the supplied Ruination logo before a release is considered visually complete:
 
 ### 1. **installer-sidebar.bmp** (Left Side Panel)
 - **Resolution**: 164 x 314 pixels
@@ -62,7 +62,7 @@ Replace the placeholder files with your custom The Ruination-branded images:
 
 ## Testing
 
-After adding your custom images:
+After regenerating both bitmap assets:
 1. Build the installer: `npm run tauri build`
 2. Run the installer to preview your branding
 3. Adjust images if needed and rebuild
