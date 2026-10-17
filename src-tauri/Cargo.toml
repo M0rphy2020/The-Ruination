@@ -16,18 +16,18 @@ rayon = "1.10"
 walkdir = "2.4"
 
 [package]
-name = "flint"
+name = "the-ruination"
 version = "3.0.5"
 edition = "2021"
 license = "AGPL-3.0-only"
-default-run = "flint"
+default-run = "the-ruination"
 
 [lib]
 name = "flint"
 path = "src/lib.rs"
 
 [[bin]]
-name = "flint"
+name = "the-ruination"
 path = "src/main.rs"
 
 
