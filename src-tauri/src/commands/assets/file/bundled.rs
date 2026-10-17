@@ -8,7 +8,7 @@ static SKYBOX_NY: &[u8] = include_bytes!("../../../../resources/skybox/ny.webp")
 static SKYBOX_PZ: &[u8] = include_bytes!("../../../../resources/skybox/pz.webp");
 static SKYBOX_NZ: &[u8] = include_bytes!("../../../../resources/skybox/nz.webp");
 
-/// Get floor texture as PNG bytes. Checks `%APPDATA%/Flint/themes/floor.png`
+/// Get floor texture as PNG bytes. Checks `%APPDATA%/The Ruination/themes/floor.png`
 /// first for user customization, falls back to the bundled default.
 
 #[tauri::command]
