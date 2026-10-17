@@ -56,7 +56,7 @@ export const DesignLab: React.FC<{ standalone?: boolean }> = ({ standalone = fal
     return (
         <main className="ui-preview">
             <div className="ui-preview__shell">
-                <header className="ui-preview__header"><div><span className="ui-preview__eyebrow">FLINT / WORKBENCH</span><h1>UI Preview</h1><p>Try the controls, icons, and motion used throughout Flint.</p></div><div className="ui-preview__preferences">
+                <header className="ui-preview__header"><div><span className="ui-preview__eyebrow">THE RUINATION / WORKBENCH</span><h1>UI Preview</h1><p>Try the controls, icons, and motion used throughout Flint.</p></div><div className="ui-preview__preferences">
                     <Checkbox toggle label="FPS mode" checked={fpsMode} onChange={event => setFpsMode(event.target.checked)} />
                     <Checkbox toggle label="Button glow" checked={buttonGlow && !fpsMode} disabled={fpsMode} onChange={event => setButtonGlow(event.target.checked)} />
                     <small>These use your app settings.</small>
