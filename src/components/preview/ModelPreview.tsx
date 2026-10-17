@@ -64,7 +64,8 @@ export interface ModelPreviewProps {
 // Main Component
 // ============================================================================
 
-const SETTINGS_KEY = 'flint-model-preview-settings';
+const SETTINGS_KEY = 'ruination-model-preview-settings';
+const LEGACY_SETTINGS_KEY = 'flint-model-preview-settings';
 
 /**
  * Dispose a Babylon SkeletonViewer safely and clear the ref.
@@ -117,8 +118,9 @@ function buildSkeletonViewer(
 
 const loadSettings = () => {
     try {
-        const saved = localStorage.getItem(SETTINGS_KEY);
+        const saved = localStorage.getItem(SETTINGS_KEY) ?? localStorage.getItem(LEGACY_SETTINGS_KEY);
         if (saved) {
+            if (localStorage.getItem(SETTINGS_KEY) === null) { localStorage.setItem(SETTINGS_KEY, saved); localStorage.removeItem(LEGACY_SETTINGS_KEY); }
             return JSON.parse(saved);
         }
     } catch {
@@ -336,7 +338,11 @@ export const ModelPreview: React.FC<ModelPreviewProps> = ({ filePath, meshType =
     // toggling off restores the fast PBR look instantly.
     const [gameShaders, setGameShaders] = useState(() => {
         try {
-            return localStorage.getItem('flint.gameShaders') === '1';
+            const current = localStorage.getItem('ruination.gameShaders');
+            if (current !== null) return current === '1';
+            const legacy = localStorage.getItem('flint.gameShaders');
+            if (legacy !== null) { localStorage.setItem('ruination.gameShaders', legacy); localStorage.removeItem('flint.gameShaders'); }
+            return legacy === '1';
         } catch {
             return false;
         }
@@ -423,7 +429,8 @@ export const ModelPreview: React.FC<ModelPreviewProps> = ({ filePath, meshType =
 
     useEffect(() => {
         try {
-            localStorage.setItem('flint.gameShaders', gameShaders ? '1' : '0');
+            localStorage.setItem('ruination.gameShaders', gameShaders ? '1' : '0');
+            localStorage.removeItem('flint.gameShaders');
         } catch { /* private mode etc. — session-only */ }
         if (gameShaders) {
             void applyGameShadersPass();
