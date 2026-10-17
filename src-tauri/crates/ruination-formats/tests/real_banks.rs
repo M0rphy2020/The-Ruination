@@ -7,7 +7,7 @@ Real game audio is copyrighted and never committed, so every test skips when its
 absent. Drop `.bnk` / `.wpk` samples in the path below to run them.
 */
 
-use flint_formats::audio::bank::{self, Bank};
+use ruination_formats::audio::bank::{self, Bank};
 use ritoshark::audio::Wem;
 use std::path::PathBuf;
 
