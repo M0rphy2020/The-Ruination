@@ -6,10 +6,10 @@ A skin is a set of files connected by references. A BIN can select a mesh, textu
 
 ## Common formats
 
-| Format | Role in Flint |
+| Format | Role in The Ruination |
 |---|---|
 | `.wad.client` | Archive containing game assets indexed by path hash. Browse/extract it to work on the inner files. |
-| `.bin` | Typed property data, including asset references and linked BIN content. Flint displays an editable ritobin representation. |
+| `.bin` | Typed property data, including asset references and linked BIN content. The Ruination displays an editable ritobin representation. |
 | `.ritobin` / ritobin text | Human-readable representation of BIN data. Text syntax and value types matter when encoding back to binary. |
 | `.skn`, `.skl` | Skinned mesh and skeleton. A correct model preview can need both and its referenced textures. |
 | `.scb`, `.sco` | Static mesh formats. |
@@ -24,9 +24,9 @@ A skin is a set of files connected by references. A BIN can select a mesh, textu
 
 WADs identify an inner path using `xxh64(lowercase(path))` with seed zero. BIN entry/class/field names use a different convention, FNV1a-32 of lowercase names. A BIN `file` value is a 64-bit path hash; a `hash` value is not interchangeable with it.
 
-Hashing is one-way. Flint uses shared LMDB dictionaries to display known names, but an unknown hash cannot be inverted into its original name. If a CDN asset displays as hex, the archive entry can still exist and be downloadable.
+Hashing is one-way. The Ruination uses shared LMDB dictionaries to display known names, but an unknown hash cannot be inverted into its original name. If a CDN asset displays as hex, the archive entry can still exist and be downloadable.
 
-Custom repaths invent names such as `assets/mycreator/my-skin/texture.tex`. These names are not necessarily in any public dictionary. Flint records custom names in the project's `files.txt`; supported embedded hashtables use project `hashes/` files and metadata in `mod.config.json`. Preserve these alongside the assets when sharing or moving a project. Flint also understands supported incoming BIN name records, but its current authoring workflow keeps its own name record outside the BIN.
+Custom repaths invent names such as `assets/mycreator/my-skin/texture.tex`. These names are not necessarily in any public dictionary. The Ruination records custom names in the project's `files.txt`; supported embedded hashtables use project `hashes/` files and metadata in `mod.config.json`. Preserve these alongside the assets when sharing or moving a project. The Ruination also understands supported incoming BIN name records, but its current authoring workflow keeps its own name record outside the BIN.
 
 ## Repath and dependency examples
 
@@ -40,6 +40,6 @@ A mod need not include every stock file it references: the installed game can su
 
 Use **Check files** after asset replacement, reference changes or importing older content. BIN types can change between game builds, and syntactically valid text can still represent the wrong type for the current game. Recording `source.game_version` documents where a project began; it does not migrate the data.
 
-Texture previews can read formats that should not be exported in the same container for League. Flint's DDS export is limited to BC1, BC3 and BGRA8; BC5/BC7 belong in TEX for this workflow. Keep the intended format and alpha behavior when replacing a texture, and inspect the audit rather than relying on the filename extension.
+Texture previews can read formats that should not be exported in the same container for League. The Ruination's DDS export is limited to BC1, BC3 and BGRA8; BC5/BC7 belong in TEX for this workflow. Keep the intended format and alpha behavior when replacing a texture, and inspect the audit rather than relying on the filename extension.
 
 For optional editor completion/diagnostics, see [ritobin LSP](ritobin-lsp.md). For implementation-oriented BIN validation notes, see [BIN schema checks](bin-schema-checks.md).
