@@ -745,7 +745,7 @@ pub async fn aggregate_tft_bin_schema(
     let mut output = String::with_capacity(2 * 1024 * 1024);
     use std::fmt::Write;
 
-    let _ = writeln!(output, "# TFT BIN Schema Reference — Flint");
+    let _ = writeln!(output, "# TFT BIN Schema Reference — The Ruination");
     let _ = writeln!(output, "# Generated: {}", chrono::Utc::now().to_rfc3339());
     let _ = writeln!(
         output,
