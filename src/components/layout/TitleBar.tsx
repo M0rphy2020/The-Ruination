@@ -416,7 +416,7 @@ export const TitleBar: React.FC = () => {
 
         } catch (err) {
             console.error('Sync to launcher failed:', err);
-            const operationError = err as api.FlintError;
+            const operationError = err as api.RuinationError;
             showToast('error', operationError.getUserMessage?.() || `Failed to sync to ${launcherTarget.name}`);
         } finally {
             setIsSyncing(false);
@@ -434,7 +434,7 @@ export const TitleBar: React.FC = () => {
             await api.rebuildLoadingScreenBin(currentProjectPath, leaguePath);
             showToast('success', 'Loadscreen rebuilt from the live game uibase.');
         } catch (err) {
-            const operationError = err as api.FlintError;
+            const operationError = err as api.RuinationError;
             showToast('error', operationError.getUserMessage?.() || 'Failed to rebuild loadscreen');
         } finally {
             setIsRebuildingLoadscreen(false);
@@ -478,7 +478,7 @@ export const TitleBar: React.FC = () => {
 
         } catch (err) {
             console.error('Export failed:', err);
-            const operationError = err as api.FlintError;
+            const operationError = err as api.RuinationError;
             showToast('error', operationError.getUserMessage?.() || 'Export failed');
         } finally {
             setIsExporting(false);
