@@ -19,7 +19,7 @@ pub mod loadscreen;
 
 
 pub use flint_formats::{audio, hud, inibin_text, luabin, manifest, stringtable, troybin};
-pub use flint_hash::{error, hash};
+pub use ruination_hash::{error, hash};
 pub use flint_net::{cdn, net};
 pub use flint_bin as bin;
 pub use flint_wad::{overlay, wad};
