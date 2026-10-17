@@ -27,7 +27,7 @@ fn main() {
         .unwrap_or_else(|_| std::path::PathBuf::from("./logs"));
     std::fs::create_dir_all(&log_dir).ok();
 
-    let file_appender = tracing_appender::rolling::daily(&log_dir, "flint.log");
+    let file_appender = tracing_appender::rolling::daily(&log_dir, "the-ruination.log");
     let (file_writer, _guard) = tracing_appender::non_blocking(file_appender);
 
     let filter = EnvFilter::try_from_default_env()
@@ -64,7 +64,7 @@ fn main() {
         .with(filter_layer)
         .init();
 
-    tracing::info!("Flint starting...");
+    tracing::info!("The Ruination starting...");
     tracing::info!(
         "IPC tracing active — frontend logs `[ipc#N ▶/✓]`, Rust logs `[rs-ipc#N ▶/✓]`. \
          In DevTools, call `__FLINT_IPC_STATS()` to see per-command totals. \
