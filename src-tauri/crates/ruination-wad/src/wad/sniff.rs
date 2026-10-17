@@ -4,7 +4,7 @@
 
 use crate::wad::format::{WadChunk, WadCompression};
 use crate::wad::mount::{registry_write, with_mount};
-use flint_hash::error::{Error, Result};
+use ruination_hash::error::{Error, Result};
 use memmap2::Mmap;
 use rayon::prelude::*;
 use std::fs::File;
