@@ -1,5 +1,5 @@
 import { invokeCommand } from './core';
-import { FlintError } from './core';
+import { RuinationError } from './core';
 import type { GameWadInfo } from '../types';
 
 export async function readWad(wadPath: string): Promise<{ version: string; chunkCount: number }> {
@@ -12,7 +12,7 @@ export async function getWadChunks(
     const batches = await loadAllWadChunks([wadPath]);
     const batch = batches[0];
     if (batch?.error) {
-        throw new FlintError('get_wad_chunks', batch.error);
+        throw new RuinationError('get_wad_chunks', batch.error);
     }
     return batch?.chunks ?? [];
 }
