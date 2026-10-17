@@ -1,4 +1,4 @@
-use flint_core::path_slash::to_slash;
+use ruination_core::path_slash::to_slash;
 use std::collections::{HashMap, HashSet};
 
 use indexmap::IndexMap;
@@ -7,14 +7,14 @@ use tauri::{AppHandle, Emitter};
 use walkdir::WalkDir;
 
 use crate::state::LmdbCacheState;
-use flint_core::bin::codec::{read_bin, MAX_BIN_SIZE};
-use flint_core::bin::get_cached_bin_hashes;
-use flint_core::bin::{classify_bin, BinCategory};
-use flint_core::bin::{is_blend_key_field, BlendKey};
-use flint_core::bin::{BinType, BinValue};
-use flint_core::hash::HashMapper;
-use flint_core::hash::{get_hash_dir, resolve_hashes_lmdb_bulk, ResolvedHashes};
-use flint_core::wad::adapter::WadHandle as WadReader;
+use ruination_core::bin::codec::{read_bin, MAX_BIN_SIZE};
+use ruination_core::bin::get_cached_bin_hashes;
+use ruination_core::bin::{classify_bin, BinCategory};
+use ruination_core::bin::{is_blend_key_field, BlendKey};
+use ruination_core::bin::{BinType, BinValue};
+use ruination_core::hash::HashMapper;
+use ruination_core::hash::{get_hash_dir, resolve_hashes_lmdb_bulk, ResolvedHashes};
+use ruination_core::wad::adapter::WadHandle as WadReader;
 
 const SAMPLE_LIMIT_COMPLEX: usize = 3;
 const SAMPLE_LIMIT_SCALAR: usize = 1;
@@ -832,7 +832,7 @@ pub async fn aggregate_animation_bin_schema(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use flint_core::bin::BLEND_DATA_TABLE;
+    use ruination_core::bin::BLEND_DATA_TABLE;
 
     fn field() -> FieldSchema {
         FieldSchema {
