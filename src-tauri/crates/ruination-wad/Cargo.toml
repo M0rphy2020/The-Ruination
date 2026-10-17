@@ -1,11 +1,11 @@
 [package]
-name = "flint-wad"
+name = "ruination-wad"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-flint-hash = { path = "../flint-hash" }
-flint-bin = { path = "../flint-bin" }
+ruination-hash = { path = "../ruination-hash" }
+ruination-bin = { path = "../ruination-bin" }
 
 tracing.workspace = true
 walkdir.workspace = true
