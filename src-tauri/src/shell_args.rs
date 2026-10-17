@@ -1,6 +1,6 @@
 //! Parsing of the command line Explorer hands us.
 //!
-//! Flint is launched three ways: by the user, by double-clicking an associated
+//! The Ruination is launched three ways: by the user, by double-clicking an associated
 //! file (a bare path), and by a context-menu verb (a flag plus a path). Both
 //! launch paths in `main.rs` — the single-instance callback and cold start —
 //! go through `parse_shell_args` so they cannot drift apart.
@@ -11,7 +11,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub enum ShellAction {
-    /// Double-click, or an explicit "Open in Flint" verb.
+    /// Double-click, or an explicit "Open in The Ruination" verb.
     Open,
     ExtractWad,
     PackWad,
@@ -82,7 +82,7 @@ mod tests {
     #[test]
     fn a_bare_path_still_means_open() {
         // This is the existing double-click behavior and must never regress.
-        let a = args(&["flint.exe", "C:/x/aatrox.wad.client"]);
+        let a = args(&["the-ruination.exe", "C:/x/aatrox.wad.client"]);
         let p = parse_shell_args(&a).unwrap();
         assert_eq!(p.action, ShellAction::Open);
         assert_eq!(p.path, "C:/x/aatrox.wad.client");
@@ -96,7 +96,7 @@ mod tests {
             ("--import-mod", ShellAction::ImportMod),
             ("--open-project", ShellAction::OpenProject),
         ] {
-            let a = args(&["flint.exe", flag, "C:/x/target"]);
+            let a = args(&["the-ruination.exe", flag, "C:/x/target"]);
             let p = parse_shell_args(&a).expect(flag);
             assert_eq!(p.action, expected, "flag {}", flag);
             assert_eq!(p.path, "C:/x/target");
@@ -105,20 +105,20 @@ mod tests {
 
     #[test]
     fn a_flag_with_no_path_yields_nothing() {
-        let a = args(&["flint.exe", "--extract-wad"]);
+        let a = args(&["the-ruination.exe", "--extract-wad"]);
         assert!(parse_shell_args(&a).is_none());
     }
 
     #[test]
     fn no_arguments_yields_nothing() {
-        assert!(parse_shell_args(&args(&["flint.exe"])).is_none());
+        assert!(parse_shell_args(&args(&["the-ruination.exe"])).is_none());
     }
 
     #[test]
     fn an_unknown_flag_is_ignored_and_a_bare_path_still_wins() {
         // Tauri and the updater pass their own flags; they must not be
         // mistaken for a path, and must not suppress a real one.
-        let a = args(&["flint.exe", "--some-tauri-flag", "C:/x/file.bin"]);
+        let a = args(&["the-ruination.exe", "--some-tauri-flag", "C:/x/file.bin"]);
         let p = parse_shell_args(&a).unwrap();
         assert_eq!(p.action, ShellAction::Open);
         assert_eq!(p.path, "C:/x/file.bin");
@@ -126,7 +126,7 @@ mod tests {
 
     #[test]
     fn a_quoted_path_with_spaces_survives() {
-        let a = args(&["flint.exe", "--pack-wad", "C:/My Mods/aatrox.wad.client"]);
+        let a = args(&["the-ruination.exe", "--pack-wad", "C:/My Mods/aatrox.wad.client"]);
         let p = parse_shell_args(&a).unwrap();
         assert_eq!(p.path, "C:/My Mods/aatrox.wad.client");
     }
