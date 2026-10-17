@@ -368,7 +368,7 @@ pub async fn ritobin_lsp_lookup_names(hashes: Vec<u32>) -> Result<HashMap<u32, S
         return Err("Too many completion hashes".into());
     }
     tauri::async_runtime::spawn_blocking(move || {
-        let cache = flint_core::hash::get_cached_bin_hashes().read();
+        let cache = ruination_core::hash::get_cached_bin_hashes().read();
         hashes.into_iter().filter_map(|hash| {
             cache.get(u64::from(hash)).map(|name| (hash, name.to_owned()))
         }).collect()
