@@ -1,7 +1,7 @@
 {
-  "name": "flint",
+  "name": "the-ruination",
   "version": "3.0.5",
-  "description": "League of Legends Modding IDE",
+  "description": "The Ruination — League of Legends Custom Skin Editor",
   "license": "AGPL-3.0-only",
   "type": "module",
   "scripts": {
