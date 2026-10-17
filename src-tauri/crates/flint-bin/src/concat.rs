@@ -8,7 +8,7 @@
 //! This prevents conflicts when multiple linked BINs reference the same assets.
 
 use crate::codec::{read_bin, write_bin};
-use flint_hash::error::{Error, Result};
+use ruination_hash::error::{Error, Result};
 use ritoshark::bin::{Bin, BinEntry};
 use std::collections::HashMap;
 use std::fs;
