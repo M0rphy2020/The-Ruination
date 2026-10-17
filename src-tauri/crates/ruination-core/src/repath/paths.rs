@@ -31,7 +31,7 @@ pub(crate) fn collect_paths_from_value(value: &BinValue, paths: &mut Vec<String>
             }
         }
         BinValue::File(hash) => {
-            let known = flint_hash::hash::get_cached_bin_hashes().read();
+            let known = ruination_hash::hash::get_cached_bin_hashes().read();
             if let Some(s) = known.get(*hash) {
                 if is_asset_path(s) {
                     paths.push(normalize_path(s));
