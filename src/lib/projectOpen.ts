@@ -229,8 +229,8 @@ export async function openOrImportFolder(path: string): Promise<DropOutcome> {
         return { kind: 'imported', project };
     } catch (error) {
         console.error('[openOrImportFolder] failed for', path, error);
-        const flintError = error as api.FlintError;
-        const reason = flintError?.getUserMessage?.()
+        const ruinationError = error as api.RuinationError;
+        const reason = ruinationError?.getUserMessage?.()
             || (error instanceof Error ? error.message : String(error));
         meta.setError(reason);
         return { kind: 'rejected', reason };
