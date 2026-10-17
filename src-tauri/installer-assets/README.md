@@ -12,7 +12,7 @@ Replace the placeholder files with your custom The Ruination-branded images:
 - **Usage**: Displayed on the left side of the installer during all steps
 - **Design Tips**:
   - Use dark background (#05090B or similar)
-  - Include The Ruination logo/branding vertically centered
+  - Include the Ruination logo/branding vertically centered
   - Keep important content in the center (top/bottom may be cut off)
 
 ### 2. **installer-header.bmp** (Top Banner)
@@ -21,7 +21,7 @@ Replace the placeholder files with your custom The Ruination-branded images:
 - **Usage**: Displayed as the header banner at the top of installer pages
 - **Design Tips**:
   - Use dark background to match sidebar
-  - Small The Ruination logo or text
+  - Small Ruination logo or text
   - Keep text/logo on the left side (header image is right-aligned)
 
 ### 3. **Icon** (Already exists)
@@ -58,7 +58,7 @@ Replace the placeholder files with your custom The Ruination-branded images:
 - **Background**: #05090B (dark gray)
 - **Text**: #C7D6D8 (light gray)
 - **Accent**: Turquoise cyan (#20DDE0)
-- **Logo**: Use your The Ruination logo/icon
+- **Logo**: Use the Ruination logo/icon
 
 ## Testing
 
