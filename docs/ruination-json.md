@@ -4,7 +4,7 @@
 
 `ruination.json` lives in the project root, beside `mod.config.json`. It records The Ruination's project identity, source assets, and extraction choices. It is not an application settings file or a list of commands to execute. Changing a source skin number does not extract that skin; changing a prefix does not move files or rewrite BIN references.
 
-This reference describes schema **2**, as implemented in [project.rs](../src-tauri/crates/flint-core/src/project/project.rs). Prefer The Ruination's project controls for changes that affect files.
+This reference describes schema **2**, as implemented in the project loader. Prefer The Ruination's project controls for changes that affect files.
 
 ## Example: skin project
 
@@ -86,7 +86,7 @@ Do not copy a `pid` into a separate project that should have its own identity. D
 | Mod name, display name, version, description, authors, layers | `mod.config.json` |
 | Game files to package | `content/<layer>/...` |
 | Readable custom names for hashed paths | `files.txt`, and supported embedded-hashtable project files |
-| Checkpoint history | `.ruination/` |
+| Checkpoint history | `.flint/` |
 | League install and projects-root settings | application settings |
 | CDN patch selection | Load from CDN dialog and manifest session; no `ruination.json` CDN switch exists |
 
