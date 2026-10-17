@@ -12,7 +12,7 @@
 //!
 //! Notification is triggered natively via shell32.dll SHChangeNotify without shelling out.
 
-use flint_core::path_slash::to_slash;
+use ruination_core::path_slash::to_slash;
 use serde::{Deserialize, Serialize};
 use tauri::State;
 
