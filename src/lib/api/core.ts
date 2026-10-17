@@ -1,5 +1,5 @@
 /**
- * Flint API core — error class, IPC tracing, and the low-level
+ * The Ruination API core — error class, IPC tracing, and the low-level
  * `invokeCommand` / `invokeRaw` wrappers everything else builds on.
  */
 
@@ -125,12 +125,12 @@ export class FlintError extends Error {
     }
 }
 
-/* IPC tracing — flip with `localStorage.flintIpcTrace = '1'` then reload, or
-   set window.__FLINT_IPC_TRACE = true at runtime. Default ON in dev. */
+/* IPC tracing — flip with `localStorage.ruinationIpcTrace = '1'` then reload, or
+   set window.__RUINATION_IPC_TRACE = true at runtime. Default ON in dev. */
 declare global {
     interface Window {
-        __FLINT_IPC_TRACE?: boolean;
-        __FLINT_IPC_STATS?: () => void;
+        __RUINATION_IPC_TRACE?: boolean;
+        __RUINATION_IPC_STATS?: () => void;
     }
 }
 
@@ -142,16 +142,16 @@ const stats = new Map<string, { count: number; totalMs: number; maxMs: number }>
 
 function ipcTraceEnabled(): boolean {
     if (typeof window === 'undefined') return false;
-    if (window.__FLINT_IPC_TRACE !== undefined) return window.__FLINT_IPC_TRACE;
+    if (window.__RUINATION_IPC_TRACE !== undefined) return window.__RUINATION_IPC_TRACE;
     try {
-        if (localStorage.getItem('flintIpcTrace') === '1') return true;
-        if (localStorage.getItem('flintIpcTrace') === '0') return false;
+        if (localStorage.getItem('ruinationIpcTrace') === '1') return true;
+        if (localStorage.getItem('ruinationIpcTrace') === '0') return false;
     } catch { /* ignore */ }
     return import.meta.env.DEV;
 }
 
 if (typeof window !== 'undefined') {
-    window.__FLINT_IPC_STATS = () => {
+    window.__RUINATION_IPC_STATS = () => {
         const rows = Array.from(stats.entries())
             .map(([cmd, s]) => ({
                 command: cmd,
@@ -215,7 +215,7 @@ export async function invokeCommand<T>(
             if (opts.silent) console.debug(trace); else console.warn(trace);
         }
         if (!opts.silent) {
-            console.error(`[Flint] Command "${command}" failed:`, error);
+            console.error(`[The Ruination] Command "${command}" failed:`, error);
         }
         throw new FlintError(command, error);
     }
@@ -270,7 +270,7 @@ export async function invokeRaw<T>(
             if (opts.silent) console.debug(trace); else console.warn(trace);
         }
         if (!opts.silent) {
-            console.error(`[Flint] Command "${command}" failed:`, error);
+            console.error(`[The Ruination] Command "${command}" failed:`, error);
         }
         throw new FlintError(command, error);
     }
