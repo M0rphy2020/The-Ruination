@@ -336,7 +336,7 @@ fn export_with_ltk_fantome(
 
     /* The Embedded Hashtables standard: name-only tables under META/hashes/,
        declared by a `Hashtables` array in info.json, so any compliant tool can
-       resolve this mod's invented paths without Flint's own files.txt. */
+       resolve this mod's invented paths without the application's own files.txt. */
     let tables = super::hashtables::fantome_tables(&super::hashtables::collect_project_tables(
         project_path,
     ));
