@@ -1,10 +1,10 @@
 [package]
-name = "flint-net"
+name = "ruination-net"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-flint-hash = { path = "../flint-hash" }
+ruination-hash = { path = "../ruination-hash" }
 
 tracing.workspace = true
 serde.workspace = true
