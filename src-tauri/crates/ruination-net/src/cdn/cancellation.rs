@@ -1,4 +1,4 @@
-use flint_hash::error::{Error, Result};
+use ruination_hash::error::{Error, Result};
 
 #[derive(Clone)]
 pub struct DownloadCancellation(tokio::sync::watch::Sender<bool>);
