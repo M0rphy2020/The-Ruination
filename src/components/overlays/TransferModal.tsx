@@ -82,8 +82,8 @@ export const TransferModal: React.FC = () => {
             showToast('success', `${op === 'copy' ? 'Copied' : 'Moved'} ${created.length} item${created.length === 1 ? '' : 's'} to ${pending.destProjectName}`);
             closeTransfer();
         } catch (err) {
-            const flintError = err as api.FlintError;
-            showToast('error', flintError.getUserMessage?.() || `Failed to ${op}`);
+            const ruinationError = err as api.RuinationError;
+            showToast('error', ruinationError.getUserMessage?.() || `Failed to ${op}`);
         } finally {
             setRunningOp(null);
         }
