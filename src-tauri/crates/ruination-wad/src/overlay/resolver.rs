@@ -2,7 +2,7 @@
 //! Game-file call sites construct a resolver with no project overlay; only
 //! project-aware call sites attach one.
 
-use flint_hash::hash::lmdb_cache::{get_wad_env, resolve_hashes_lmdb, resolve_hashes_lmdb_bulk, ResolvedHashes};
+use ruination_hash::hash::lmdb_cache::{get_wad_env, resolve_hashes_lmdb, resolve_hashes_lmdb_bulk, ResolvedHashes};
 use crate::overlay::overlay::ProjectHashOverlay;
 use crate::wad::extracted_overlay::wad_overlay;
 use std::collections::HashMap;
@@ -123,7 +123,7 @@ mod tests {
         let dir = tempfile::tempdir().unwrap();
         let hash_dir = dir.path().to_str().unwrap();
         let path = "custom mod/textures/body.dds";
-        let hash = flint_hash::hash::wad_chunk_hash(path);
+        let hash = ruination_hash::hash::wad_chunk_hash(path);
         assert!(HashResolver::global(hash_dir).resolve_wad_bulk(&[hash]).is_empty());
 
         std::fs::write(dir.path().join("hashes.extracted.txt"), format!("{hash:016x} {path}\n")).unwrap();
@@ -145,7 +145,7 @@ mod tests {
     fn extracted_paths_do_not_override_database_or_project_names() {
         let dir = tempfile::tempdir().unwrap();
         let path = "assets/project/body.dds";
-        let hash = flint_hash::hash::wad_chunk_hash(path);
+        let hash = ruination_hash::hash::wad_chunk_hash(path);
         let env = write_test_wad_env(dir.path(), hash, "assets/global/body.dds");
         let mut resolver = HashResolver {
             wad_env: Some(Arc::new(env)),
@@ -203,7 +203,7 @@ mod tests {
     #[test]
     fn overlay_hit_wins_over_hex_fallback() {
         let mut o = ProjectHashOverlay::new();
-        let hash = flint_hash::hash::wad_chunk_hash("assets/characters/test/x.dds");
+        let hash = ruination_hash::hash::wad_chunk_hash("assets/characters/test/x.dds");
         o.insert_wad(hash, "assets/characters/test/x.dds");
 
         let r = overlay_only(o);
@@ -254,7 +254,7 @@ mod tests {
     #[test]
     fn with_overlay_constructor_attaches_the_overlay() {
         let mut o = ProjectHashOverlay::new();
-        let hash = flint_hash::hash::wad_chunk_hash("assets/characters/test/x.dds");
+        let hash = ruination_hash::hash::wad_chunk_hash("assets/characters/test/x.dds");
         o.insert_wad(hash, "assets/characters/test/x.dds");
 
         let r = HashResolver::with_overlay(NO_HASH_DIR, Arc::new(o));
@@ -280,10 +280,10 @@ mod tests {
     fn resolve_wad_bulk_applies_overlay_and_omits_misses() {
         let mut o = ProjectHashOverlay::new();
         o.insert_wad(
-            flint_hash::hash::wad_chunk_hash("assets/mine/x.dds"),
+            ruination_hash::hash::wad_chunk_hash("assets/mine/x.dds"),
             "assets/mine/x.dds",
         );
-        let hit = flint_hash::hash::wad_chunk_hash("assets/mine/x.dds");
+        let hit = ruination_hash::hash::wad_chunk_hash("assets/mine/x.dds");
 
         let r = overlay_only(o);
         let out = r.resolve_wad_bulk(&[hit, 0xdead_beef]);
@@ -303,7 +303,7 @@ mod tests {
         // insert_wad's invariant. The global LMDB row is planted at that same
         // key but with a different value — proving the overlay genuinely wins
         // the collision rather than merely agreeing with the global value.
-        let hash = flint_hash::hash::wad_chunk_hash(overlay_path);
+        let hash = ruination_hash::hash::wad_chunk_hash(overlay_path);
         let env = write_test_wad_env(dir.path(), hash, "assets/riot/real.dds");
 
         let mut o = ProjectHashOverlay::new();
@@ -325,7 +325,7 @@ mod tests {
     #[test]
     fn without_an_overlay_the_global_lmdb_value_is_returned() {
         let dir = tempfile::tempdir().unwrap();
-        let hash = flint_hash::hash::wad_chunk_hash("assets/riot/real.dds");
+        let hash = ruination_hash::hash::wad_chunk_hash("assets/riot/real.dds");
         let env = write_test_wad_env(dir.path(), hash, "assets/riot/real.dds");
 
         let r = HashResolver {
@@ -345,7 +345,7 @@ mod tests {
     #[test]
     fn resolve_wad_preserves_order_across_mixed_hits_and_misses() {
         let mut o = ProjectHashOverlay::new();
-        let hit = flint_hash::hash::wad_chunk_hash("assets/b.dds");
+        let hit = ruination_hash::hash::wad_chunk_hash("assets/b.dds");
         o.insert_wad(hit, "assets/b.dds");
 
         let r = overlay_only(o);
