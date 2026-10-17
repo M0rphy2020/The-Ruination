@@ -237,14 +237,14 @@ pub fn save_settings(settings: RuinationSettings) -> Result<(), String> {
     write_settings_to_disk(&settings)
 }
 
-/// Migrate projects from old `%APPDATA%/RitoShark/Flint/Projects` to new `%APPDATA%/The Ruination/projects/`.
+/// Migrate projects from the legacy `%APPDATA%/RitoShark/Flint/Projects` location to `%APPDATA%/The Ruination/projects/`.
 /// Moves each project folder, then updates paths in settings.json (saved/recent projects, defaultProjectPath).
 /// Skips projects that already exist in the destination. Safe to call multiple times.
 #[tauri::command]
 pub fn migrate_projects() -> Result<MigrateProjectsResult, String> {
     let appdata = std::env::var("APPDATA")
         .map_err(|_| "APPDATA not found".to_string())?;
-    let old_dir = PathBuf::from(&appdata).join("RitoShark").join("The Ruination").join("Projects");
+    let old_dir = PathBuf::from(&appdata).join("RitoShark").join("Flint").join("Projects");
     let new_dir = get_ruination_home()?.join("projects");
 
     let mut moved = 0u32;
