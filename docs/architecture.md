@@ -1,8 +1,8 @@
-# How Flint works
+# How The Ruination works
 
 [Documentation index](README.md)
 
-Flint connects editable project files to League's binary formats. Its React frontend presents projects, trees, editors and previews. Tauri commands connect those controls to Rust code that reads archives, decodes formats, manages project files, and writes packages.
+The Ruination connects editable project files to League's binary formats. Its React frontend presents projects, trees, editors and previews. Tauri commands connect those controls to Rust code that reads archives, decodes formats, manages project files, and writes packages.
 
 ## Main data flow
 
@@ -45,11 +45,11 @@ A Rust command importing `flint_core::cdn` can therefore lead to an implementati
 
 ## Persistent files versus active state
 
-Project files are the working source of truth. `mod.config.json` stores shared mod metadata; `flint.json` stores Flint identity and provenance. The project-root index `projects.json` supports discovery. Checkpoints live with the project under `.flint`.
+Project files are the working source of truth. `mod.config.json` stores shared mod metadata; `flint.json` stores The Ruination identity and provenance. The project-root index `projects.json` supports discovery. Checkpoints live with the project under `.flint`.
 
 Open tabs and selected tree nodes are UI state. A CDN session ID identifies a parsed manifest held by the running backend; it is not a reusable project ID. Catalogs and downloaded manifests have their own disk cache, while selected downloads go to the user's chosen destination.
 
-Project file watching lets external edits reach the application. Flint suppresses echoes of its own writes to avoid rereading the same edit in a loop; editor save paths also trigger relevant rechecks. An audit finding is derived from files and references, not stored as a permanent property of an asset.
+Project file watching lets external edits reach the application. The Ruination suppresses echoes of its own writes to avoid rereading the same edit in a loop; editor save paths also trigger relevant rechecks. An audit finding is derived from files and references, not stored as a permanent property of an asset.
 
 ## Core operations
 
