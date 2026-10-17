@@ -16,8 +16,6 @@
       "nsis": {
         "installerHooks": "nsis/hooks.nsh",
         "installerIcon": "icons/icon.ico",
-        "headerImage": "installer-assets/installer-header.bmp",
-        "sidebarImage": "installer-assets/installer-sidebar.bmp",
         "installMode": "currentUser",
         "languages": [
           "English"
