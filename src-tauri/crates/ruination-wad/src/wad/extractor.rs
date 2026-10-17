@@ -1,5 +1,5 @@
-use flint_hash::error::{Error, Result};
-use flint_hash::hash::ResolvedHashes;
+use ruination_hash::error::{Error, Result};
+use ruination_hash::hash::ResolvedHashes;
 use ritoshark::bin::BinValue;
 use ritoshark::file::{detect, FileKind};
 use ritoshark::prelude::*;
@@ -550,7 +550,7 @@ fn collect_paths_and_hashes_from_value_into(
         BinValue::File(h) => {
             if *h != 0 {
                 out_hashes.push(*h);
-                let known = flint_hash::hash::get_cached_bin_hashes().read();
+                let known = ruination_hash::hash::get_cached_bin_hashes().read();
                 if let Some(v) = known.get(*h) {
                     if v.len() >= 5
                         && (v.len() >= 7 && v[..7].eq_ignore_ascii_case("assets/")
@@ -777,7 +777,7 @@ pub fn extract_skin_assets_selective(
             }
         }
         for h in hashes_found {
-            let known = flint_hash::hash::get_cached_bin_hashes().read();
+            let known = ruination_hash::hash::get_cached_bin_hashes().read();
             if let Some(p) = known.get(h) {
                 let p_norm = p.to_lowercase().replace('\\', "/");
                 if !audio.includes_path(&p_norm) {
@@ -1026,7 +1026,7 @@ mod tests {
         let texture = "assets/characters/audiotest/body.tex";
         let audio_only_texture = "assets/characters/audiotest/audio-only.tex";
         let hash = ritoshark::hash::xxh64;
-        flint_hash::hash::get_cached_bin_hashes().write().insert(hash(hashed_bank), hashed_bank);
+        ruination_hash::hash::get_cached_bin_hashes().write().insert(hash(hashed_bank), hashed_bank);
         let make_bin = |values: Vec<BinValue>, linked: Vec<String>| {
             let mut bin = Bin::new();
             bin.linked = linked;
