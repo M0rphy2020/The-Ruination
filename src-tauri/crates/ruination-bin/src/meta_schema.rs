@@ -2,7 +2,7 @@
 //! Unknown classes/properties are deliberately skipped: a partial dump is not proof
 //! that custom or newer content is invalid. No network or file I/O lives here.
 use crate::{checks::TypeFix, Bin, BinType, BinValue, CheckIssue, Severity};
-use flint_hash::hash::HashMapper;
+use ruination_hash::hash::HashMapper;
 use indexmap::IndexMap;
 use parking_lot::RwLock;
 use serde::Deserialize;
