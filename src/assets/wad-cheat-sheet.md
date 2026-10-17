@@ -1,6 +1,6 @@
-# Flint Asset Path Cheat Sheet
+# The Ruination Asset Path Cheat Sheet
 
-## Welcome to the Flint Asset Directory. You can use Flint's **WAD Explorer** search bar to quickly jump to any of these paths.
+## Welcome to the The Ruination Asset Directory. You can use The Ruination's **WAD Explorer** search bar to quickly jump to any of these paths.
 
 ---
 
@@ -73,7 +73,7 @@ All in-game text strings — item names, ability descriptions, UI labels, toolti
 * **Map-specific text (e.g. objectives, pings):** `Map11.en_US.wad.client` / `Map12.en_US.wad.client`
 * **Champion-specific text (VO subtitles, bios):** `CHAMPION.en_US.wad.client`
 
-> Text files inside these WADs are `.stringtable` format (binary, not plain text). Flint does not currently edit stringtables directly — use a dedicated tool such as [LoL StringTable Editor](https://github.com/LeagueToolkit/lol-string-table) to decode and re-encode them before replacing the file in your mod.
+> Text files inside these WADs are `.stringtable` format (binary, not plain text). The Ruination does not currently edit stringtables directly — use a dedicated tool such as [LoL StringTable Editor](https://github.com/LeagueToolkit/lol-string-table) to decode and re-encode them before replacing the file in your mod.
 
 ---
 
