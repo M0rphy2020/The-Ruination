@@ -381,7 +381,7 @@ export const App: React.FC = () => {
         useNavigationStore.getState().navigateToFileEditor({ filePath, kind });
     }, [setWorking, setReady, showToast]);
 
-    // Dispatches every way Explorer can launch Flint with a target: a plain
+    // Dispatches every way Explorer can launch The Ruination with a target: a plain
     // double-click open, or one of the four context-menu verbs. Each non-`open`
     // branch reuses the flow that already exists for that action rather than
     // duplicating it — see docs/superpowers/plans/2026-07-27-explorer-shell-verbs.md.
@@ -442,7 +442,7 @@ export const App: React.FC = () => {
                     }
                 } catch (err) {
                     console.error('Failed to open project folder:', err);
-                    showToast('error', 'Failed to open folder as a Flint project');
+                    showToast('error', 'Failed to open folder as a The Ruination project');
                 }
                 return;
             }
@@ -457,7 +457,7 @@ export const App: React.FC = () => {
         // fixed-delay `file-open-request`, so that event is lost. Now that the
         // listener is mounted, PULL any pending Explorer action from the
         // backend — race-free regardless of boot time. (This is why double-
-        // clicking a file used to just open Flint; you had to double-click again.)
+        // clicking a file used to just open The Ruination; you had to double-click again.)
         api.takePendingFileOpen()
             .then((pending) => { if (pending) void handleShellRequest(pending); })
             .catch((err) => console.error('takePendingFileOpen failed:', err));
