@@ -9,7 +9,7 @@ use walkdir::WalkDir;
 
 use crate::bin::BinValue;
 use crate::error::{Error, Result};
-// The texture API is ritoshark's (NOT flint_core::types). flint-core depends
+// The texture API is ritoshark's (NOT ruination_core::types). flint-core depends
 // on ritoshark directly (pinned rev b775b0c). Mirrors texture_convert.rs.
 use ritoshark::prelude::Serialize as _;
 use ritoshark::tex::{TexFormat, Texture};
@@ -165,7 +165,7 @@ fn rewrite_value_exts(value: &mut BinValue, wad_root: &Path, changed: &mut bool)
             }
         }
         BinValue::File(h) => {
-            let known = flint_hash::hash::get_cached_bin_hashes().read();
+            let known = ruination_hash::hash::get_cached_bin_hashes().read();
             if let Some(s) = known.get(*h) {
                 let mut path_str = s.to_string();
                 if crate::repath::refather::is_asset_path(&path_str) && rewrite_ext(&mut path_str, wad_root) {
