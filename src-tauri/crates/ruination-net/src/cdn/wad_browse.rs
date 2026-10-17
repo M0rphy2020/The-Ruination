@@ -5,7 +5,7 @@ use ritoshark::rman::ChunkRange;
 use ritoshark::wad::{Wad, WadChunk};
 
 use futures_util::StreamExt;
-use flint_hash::error::{Error, Result};
+use ruination_hash::error::{Error, Result};
 
 /// One inner file inside a WAD, from its TOC.
 #[derive(Clone, Debug, PartialEq, Eq)]
