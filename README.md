@@ -1,5 +1,6 @@
 <div align="center">
 
+<img src="public/ruination-mark.svg" alt="The Ruination sigil" width="132" />
 <h1 align="center">THE RUINATION</h1>
 <p align="center"><strong>LEAGUE OF LEGENDS CUSTOM SKIN EDITOR</strong></p>
 
