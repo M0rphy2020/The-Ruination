@@ -4,16 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="color-scheme" content="dark" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Flint Startup</title>
+    <title>The Ruination Startup</title>
     <style>
       :root {
         color-scheme: dark; font-family: "Segoe UI", system-ui, sans-serif; background: #0b0d10; color: #f4f4f6;
         /* Fallback only — the inline bootstrap below overwrites this with the user's
            saved accent. Keep in sync with --accent-primary in themes/default.css. */
-        --flint-accent: #DD8515;
+        --ruination-accent: #DD8515;
         /* The glow behind the logo only. Neutral rather than the accent: the
            orange wash tinted the whole panel and fought the logo's own colour.
-           Everything else here still uses --flint-accent. */
+           Everything else here still uses --ruination-accent. */
         --flint-glow: #8b93a1;
       }
       * { box-sizing: border-box; }
@@ -42,7 +42,7 @@
       }
       .brand__name { display: flex; align-items: baseline; justify-content: center; width: 100%; color: #f1f3f6; font-size: 30px; font-weight: 650; letter-spacing: .035em; }
       .brand__word { display: inline-block; max-width: 0; overflow: hidden; white-space: nowrap; animation: type-word .55s cubic-bezier(.65,0,.35,1) .55s both; }
-      .brand__dot { color: var(--flint-accent); opacity: 0; animation: dot-pulse 1.05s ease-in-out 1.1s infinite; }
+      .brand__dot { color: var(--ruination-accent); opacity: 0; animation: dot-pulse 1.05s ease-in-out 1.1s infinite; }
       .bottom { position: absolute; inset: auto 0 0; height: 142px; padding: 22px 40px 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
       .loading, .error-prompt { width: 100%; }
       .loading[hidden], .error-prompt[hidden] { display: none; }
@@ -57,10 +57,10 @@
       .prompt__actions { display: flex; gap: 8px; margin-top: 12px; }
       .action { min-width: 104px; height: 31px; padding: 0 15px; border: 1px solid #343036; border-radius: 6px; background: #171519; color: #b7b2b8; font-size: 11px; font-weight: 600; cursor: pointer; }
       .action:hover:not(:disabled) { border-color: #51474b; background: #211d20; color: #fff; }
-      .action--primary { border-color: color-mix(in oklab, var(--flint-accent) 70%, transparent); background: linear-gradient(180deg, var(--flint-accent), color-mix(in oklab, var(--flint-accent) 70%, #000)); color: #fff; box-shadow: 0 4px 14px color-mix(in oklab, var(--flint-accent) 30%, transparent); }
+      .action--primary { border-color: color-mix(in oklab, var(--ruination-accent) 70%, transparent); background: linear-gradient(180deg, var(--ruination-accent), color-mix(in oklab, var(--ruination-accent) 70%, #000)); color: #fff; box-shadow: 0 4px 14px color-mix(in oklab, var(--ruination-accent) 30%, transparent); }
       .action:disabled { opacity: .55; cursor: default; }
       @keyframes type-word { to { max-width: 120px; } }
-      @keyframes dot-pulse { 0%,100% { opacity: .22; text-shadow: 0 0 0 transparent; } 50% { opacity: 1; text-shadow: 0 0 12px color-mix(in oklab, var(--flint-accent) 90%, transparent); } }
+      @keyframes dot-pulse { 0%,100% { opacity: .22; text-shadow: 0 0 0 transparent; } 50% { opacity: 1; text-shadow: 0 0 12px color-mix(in oklab, var(--ruination-accent) 90%, transparent); } }
       @keyframes logo-pop { from { opacity: 0; transform: translateY(7px) scale(.84); } to { opacity: 1; transform: translateY(0) scale(1); } }
       @keyframes aura { 0%,100% { opacity: .62; transform: scale(.96); } 50% { opacity: 1; transform: scale(1.04); } }
       @keyframes slide { 0% { margin-left: -38%; } 55% { margin-left: 100%; } 100% { margin-left: 100%; } }
@@ -82,7 +82,7 @@
             // app boots, so it can't reuse that map and must stay in sync with it.
             var superseded = { '#ef4444': '#EF5244', '#ef5b44': '#EF5244' };
             accent = superseded[accent.toLowerCase()] || accent;
-            document.documentElement.style.setProperty('--flint-accent', accent);
+            document.documentElement.style.setProperty('--ruination-accent', accent);
           }
         } catch (e) { /* non-fatal — keep the fallback */ }
       })();
