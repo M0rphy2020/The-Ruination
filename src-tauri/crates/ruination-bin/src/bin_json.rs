@@ -15,7 +15,7 @@ use indexmap::IndexMap;
 use ritoshark::bin::{Bin, BinEntry, BinPatch, BinType, BinValue};
 use serde_json::{json, Map, Value};
 
-use flint_hash::error::{Error, Result};
+use ruination_hash::error::{Error, Result};
 
 fn err(message: impl Into<String>) -> Error {
     Error::BinConversion {
