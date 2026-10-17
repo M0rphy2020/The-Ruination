@@ -5,8 +5,8 @@ use std::process::Command;
 use tauri::{AppHandle, Emitter};
 
 // Tried in order; first successful 2xx wins.
-const GITHUB_OWNERS: &[&str] = &["RitoShark", "SirDexal"];
-const GITHUB_REPO: &str = "Flint";
+const GITHUB_OWNERS: &[&str] = &["M0rphy2020"];
+const GITHUB_REPO: &str = "The-Ruination";
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UpdateInfo {
@@ -58,7 +58,7 @@ pub async fn check_for_updates() -> Result<UpdateInfo, String> {
         );
         let response = match client
             .get(&url)
-            .header("User-Agent", format!("Flint/{}", current_version))
+            .header("User-Agent", format!("The-Ruination/{}", current_version))
             .header("Accept", "application/vnd.github.v3+json")
             .send()
             .await
