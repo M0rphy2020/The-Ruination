@@ -1105,7 +1105,7 @@ pub async fn open_map_preview_window(
     let _ = std::fs::create_dir_all(&data_dir);
 
     WebviewWindowBuilder::new(&app, LABEL, WebviewUrl::App(url.into()))
-        .title("Flint — Map Preview")
+        .title("The Ruination — Map Preview")
         .inner_size(1100.0, 720.0)
         .resizable(true)
         .additional_browser_args(MAIN_BROWSER_ARGS)
