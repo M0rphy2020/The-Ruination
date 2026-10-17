@@ -1544,7 +1544,7 @@ dependencies = [
  "ddsfile",
  "flate2",
  "ruination-core",
- "flint-shaderforge",
+ "ruination-shaderforge",
  "futures",
  "hematite-flint",
  "image",
@@ -1708,7 +1708,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "flint-shaderforge"
+name = "ruination-shaderforge"
 version = "0.1.0"
 dependencies = [
  "byteorder",
