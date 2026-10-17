@@ -71,12 +71,12 @@ const STAGES: { icon: IconName; title: string; body: string }[] = [
     {
         icon: 'folder',
         title: 'Your install',
-        body: 'The game keeps its assets in .wad.client archives. Flint reads them where they sit.',
+        body: 'The game keeps its assets in .wad.client archives. The Ruination reads them where they sit.',
     },
     {
         icon: 'download',
         title: 'Extract',
-        body: 'Flint pulls out the files for one skin, map or loading screen, and nothing else.',
+        body: 'The Ruination pulls out the files for one skin, map or loading screen, and nothing else.',
     },
     {
         icon: 'refresh',
@@ -86,7 +86,7 @@ const STAGES: { icon: IconName; title: string; body: string }[] = [
     {
         icon: 'texture',
         title: 'Edit',
-        body: 'Textures, models, BINs and audio open inside Flint. Jade and Quartz handle the rest if you have them.',
+        body: 'Textures, models, BINs and audio open inside The Ruination. Jade and Quartz handle the rest if you have them.',
     },
     {
         icon: 'package',
@@ -110,7 +110,7 @@ export const FlowPane: React.FC = () => (
         <p className="tour-callout">
             <Icon name="lockOpen" className="tour-callout__ico" />
             <span>
-                Flint only reads your League folder. Nothing in this chain writes back into the game,
+                The Ruination only reads your League folder. Nothing in this chain writes back into the game,
                 so a mod you break can never break your install.
             </span>
         </p>
@@ -121,7 +121,7 @@ export const FlowPane: React.FC = () => (
 
 export const ProjectsPane: React.FC = () => (
     <TourSplit
-        lead="A project is a folder Flint owns. It holds the extracted assets, your edits, and the info that goes into the finished mod."
+        lead="A project is a folder The Ruination owns. It holds the extracted assets, your edits, and the info that goes into the finished mod."
         mock={
             <MockWindow title="New Project">
                 <div className="tour-np">
@@ -148,7 +148,7 @@ export const ProjectsPane: React.FC = () => (
                 </div>
                 <Zone n={3} className="tour-np__foot">
                     <span className="tour-np__field">Ahri Base Rework</span>
-                    <span className="tour-np__path">%APPDATA%/Flint/Projects<b>/Ahri Base Rework</b></span>
+                    <span className="tour-np__path">%APPDATA%/The Ruination/Projects<b>/Ahri Base Rework</b></span>
                     <span className="tour-btn">Create</span>
                 </Zone>
             </MockWindow>
@@ -165,7 +165,7 @@ export const ProjectsPane: React.FC = () => (
         </Note>
         <Note n={3} title="Name and location">
             The project name doubles as the repath prefix, so pick it before you start editing. The
-            location is where the folder lands, and the default sits in Flint&rsquo;s own app data.
+            location is where the folder lands, and the default sits in The Ruination&rsquo;s own app data.
         </Note>
         <Note title="Ctrl+N">
             Opens this window from anywhere, with or without a project already loaded.
@@ -194,7 +194,7 @@ export const WorkspacePane: React.FC = () => (
     <TourSplit
         lead="Open a project and the window splits into four regions. What you click on the left opens in the middle."
         mock={
-            <MockWindow title="Flint">
+            <MockWindow title="The Ruination">
                 <Zone n={1} className="tour-ws__bar">
                     <span className="tour-chip"><Icon name="refresh" />Sync</span>
                     <span className="tour-chip"><Icon name="history" />Timeline</span>
@@ -227,7 +227,7 @@ export const WorkspacePane: React.FC = () => (
         <Note n={2} title="File tree">
             Everything the project owns. Your assets sit under <code>content/base/</code> in an
             unpacked copy of the WAD they came from, which is the shape a launcher expects.
-            <code>mod.config.json</code> is the mod info, <code>flint.json</code> is Flint&rsquo;s own
+            <code>mod.config.json</code> is the mod info, <code>flint.json</code> is The Ruination&rsquo;s own
             record of where the files came from. Right-click is where the per-file tools live.
         </Note>
         <Note n={3} title="Editor">
@@ -269,7 +269,7 @@ export const WadPane: React.FC = () => (
         lead={
             <>
                 A .wad.client file is Riot&rsquo;s archive format. One file holds thousands of assets, and
-                each is stored under a hash of its path instead of its name. Flint resolves those
+                each is stored under a hash of its path instead of its name. The Ruination resolves those
                 hashes against a hash database, so you get readable paths back.
             </>
         }
@@ -390,7 +390,7 @@ const FILE_MENU: { label: string; when: string; note: string }[] = [
     },
     {
         label: 'Compare with, Backup, Restore from Original', when: 'only under content/<name>.wad.client/',
-        note: 'These need a stock file to diff against, and Flint can only find one for assets that came out of a WAD. Files you added yourself do not get them.',
+        note: 'These need a stock file to diff against, and The Ruination can only find one for assets that came out of a WAD. Files you added yourself do not get them.',
     },
 ];
 
