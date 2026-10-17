@@ -46,11 +46,11 @@ ritoshark.workspace = true
 ltk_mod_project = "0.2"
 ltk_fantome = "0.2"
 ltk_modpkg = "0.6"
-ruination-formats = { path = "../ruination-formats" }
+ruination-formats = { path = "../flint-formats" }
 ruination-hash = { path = "../ruination-hash" }
-ruination-net = { path = "../ruination-net" }
-ruination-bin = { path = "../ruination-bin" }
-ruination-wad = { path = "../ruination-wad" }
+ruination-net = { path = "../flint-net" }
+ruination-bin = { path = "../flint-bin" }
+ruination-wad = { path = "../flint-wad" }
 # 0.4 matches image_dds's pin so only ONE copy of the ISPC kernels compiles.
 intel_tex_2 = "0.4"
 
