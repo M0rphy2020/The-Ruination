@@ -121,7 +121,7 @@ async fn install(app: &tauri::AppHandle) -> Result<PathBuf, String> {
     // Reuse a verified installation for this app version without an update request.
     // A new app version fetches a compatible release asset on first opt-in use.
     if let Some((manifest, path)) = &cached {
-        if manifest.flint_version == app_version {
+        if manifest.upstream_app_version == app_version {
             return Ok(path.clone());
         }
     }
@@ -143,7 +143,7 @@ async fn install(app: &tauri::AppHandle) -> Result<PathBuf, String> {
             .json()
             .await
             .map_err(|e| e.to_string())?;
-        if !valid_manifest(&m) || m.flint_version != flint_version {
+        if !valid_manifest(&m) || m.upstream_app_version != app_version {
             return Err("Invalid hash-disabled LSP manifest".to_string());
         }
         if let Some(path) = verified_binary(&dir, &m).await {
@@ -404,7 +404,7 @@ mod tests {
     fn rejects_untrusted_manifests() {
         let mut m = Manifest {
             version: "abc-123".into(),
-            flint_version: "2.9.7".into(),
+            upstream_app_version: "2.9.7".into(),
             asset: "ritobin-lsp-abc-123-windows-x86_64.exe".into(),
             sha256: "a".repeat(64),
             no_hashes: 1,
