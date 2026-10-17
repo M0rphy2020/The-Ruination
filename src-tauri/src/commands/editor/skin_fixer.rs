@@ -1,4 +1,4 @@
-//! Skin Fixer commands — drive Hematite's fix engine over Flint projects.
+//! Skin Fixer commands — drive Hematite's fix engine over The Ruination projects.
 //!
 //! `hematite_list_fixes` returns the fix catalog; `hematite_scan_projects` runs
 //! a detect-only pass (which fixes fire per project, writes nothing);
@@ -6,7 +6,7 @@
 //! `hematite-fix-progress` event. All heavy work runs on a blocking thread — the
 //! engine is sync + CPU/IO heavy.
 
-use hematite_flint::{FixEntry, ProjectFixReport};
+use ruination_hematite::{FixEntry, ProjectFixReport};
 use tauri::{AppHandle, Emitter};
 
 /// A `(project_dir, label)` pair. The label is what the report is keyed by in
@@ -26,7 +26,7 @@ fn pairs(project_paths: Vec<String>) -> Vec<(String, String)> {
 
 #[tauri::command]
 pub async fn hematite_list_fixes() -> Result<Vec<FixEntry>, String> {
-    tokio::task::spawn_blocking(hematite_flint::list_available_fixes)
+    tokio::task::spawn_blocking(ruination_hematite::list_available_fixes)
         .await
         .map_err(|e| format!("skin-fixer task failed: {e}"))
 }
@@ -37,7 +37,7 @@ pub async fn hematite_scan_projects(
     fix_ids: Vec<String>,
 ) -> Result<Vec<ProjectFixReport>, String> {
     let projects = pairs(project_paths);
-    tokio::task::spawn_blocking(move || hematite_flint::scan_projects(&projects, &fix_ids))
+    tokio::task::spawn_blocking(move || ruination_hematite::scan_projects(&projects, &fix_ids))
         .await
         .map_err(|e| format!("skin-fixer scan failed: {e}"))
 }
@@ -51,7 +51,7 @@ pub async fn hematite_run_fixes(
 ) -> Result<Vec<ProjectFixReport>, String> {
     let projects = pairs(project_paths);
     tokio::task::spawn_blocking(move || {
-        hematite_flint::run_projects(&projects, &fix_ids, use_live, |progress| {
+        ruination_hematite::run_projects(&projects, &fix_ids, use_live, |progress| {
             let _ = app.emit("hematite-fix-progress", progress);
         })
     })

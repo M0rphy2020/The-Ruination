@@ -1,5 +1,5 @@
-use flint_core::bin::{read_bin, text_to_bin, write_bin};
-use flint_core::mesh::ritobin::resolve_linked_bin_path;
+use ruination_core::bin::{read_bin, text_to_bin, write_bin};
+use ruination_core::mesh::ritobin::resolve_linked_bin_path;
 use rayon::prelude::*;
 use regex::{Regex, RegexBuilder};
 use serde::{Deserialize, Serialize};
@@ -152,7 +152,7 @@ fn replace_in_text(
 fn ritobin_text(bin_path: &Path) -> Option<String> {
     let bytes = std::fs::read(bin_path).ok()?;
     let tree = read_bin(&bytes).ok()?;
-    flint_core::bin::render_bin_text(&tree, bin_path).ok()
+    ruination_core::bin::render_bin_text(&tree, bin_path).ok()
 }
 
 fn is_bin(path: &Path) -> bool {
@@ -175,7 +175,7 @@ fn collect_project_bins(project: &Path) -> Vec<PathBuf> {
 fn out_of_tree_links(project: &Path, seed: &Path) -> Vec<PathBuf> {
     let Ok(bytes) = std::fs::read(seed) else { return Vec::new() };
     let Ok(tree) = read_bin(&bytes) else { return Vec::new() };
-    let project_root = flint_core::mesh::discovery::find_project_root(seed);
+    let project_root = ruination_core::mesh::discovery::find_project_root(seed);
 
     tree.linked
         .iter()

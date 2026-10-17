@@ -10,7 +10,7 @@ export type Completion = {
 const hashLabel = /^0x[\da-f]{8}$/i;
 const schemaName = (item: Completion) => (item.kind === 7 || item.kind === 10) && hashLabel.test(item.label);
 
-/** Resolve only class/property identifiers through Flint, never unhash document values. */
+/** Resolve only class/property identifiers through The Ruination, never unhash document values. */
 export async function resolveCompletionNames(
     items: Completion[],
     lookup: (hashes: number[]) => Promise<Record<string, string>>,

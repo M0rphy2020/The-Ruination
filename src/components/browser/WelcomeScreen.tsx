@@ -97,8 +97,8 @@ export const WelcomeScreen: React.FC = () => {
             setReady();
         } catch (error) {
             console.error('Failed to open project:', error);
-            const flintError = error as api.FlintError;
-            setError(flintError.getUserMessage?.() || 'Failed to open project');
+            const ruinationError = error as api.RuinationError;
+            setError(ruinationError.getUserMessage?.() || 'Failed to open project');
         }
     };
 
@@ -143,6 +143,12 @@ export const WelcomeScreen: React.FC = () => {
                         <span className="btn__label">
                             <span className="btn__title">{t('welcome.wadExplorer')}</span>
                             <span className="btn__sub">{t('welcome.wadExplorerSub')}</span>
+                        </span>
+                    </Button>
+                    <Button layout="tile" icon="file" data-action="creator-copilot" onClick={() => openModal('creatorCopilot')}>
+                        <span className="btn__label">
+                            <span className="btn__title">Creator Copilot</span>
+                            <span className="btn__sub">Learn animations, VFX, BINs and packaging</span>
                         </span>
                     </Button>
                     <Button layout="tile" icon="folderOpen2" data-action="open-mods" onClick={() => openModal('projectList')}>

@@ -7,7 +7,7 @@ import { Constants } from '@babylonjs/core/Engines/constants';
 import type { BaseTexture } from '@babylonjs/core/Materials/Textures/baseTexture';
 import { Color4 } from '@babylonjs/core/Maths/math.color';
 
-const SHADER_NAME = 'flintUvPaint';
+const SHADER_NAME = 'ruinationUvPaint';
 
 let shaderRegistered = false;
 function registerShader() {

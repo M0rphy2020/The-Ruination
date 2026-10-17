@@ -1,4 +1,4 @@
-//! Managed, opt-in stdio LSP. Only Flint's hash-disabled build is installed.
+//! Managed, opt-in stdio LSP using the upstream hash-disabled ritobin server.
 use parking_lot::Mutex;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
@@ -10,7 +10,7 @@ use tokio::{
     sync::{mpsc, oneshot},
 };
 
-const RELEASES: &str = "https://github.com/RitoShark/Flint/releases/download";
+const RELEASES: &str = "https://github.com/M0rphy2020/The-Ruination/releases/download";
 const MAX_MESSAGE: usize = 64 * 1024 * 1024;
 
 #[derive(Default)]
@@ -42,8 +42,8 @@ impl LspState {
 #[serde(rename_all = "camelCase")]
 struct Manifest {
     version: String,
-    #[serde(default)]
-    flint_version: String,
+    #[serde(default, rename = "appVersion")]
+    app_version: String,
     asset: String,
     sha256: String,
     no_hashes: u32,
@@ -72,7 +72,7 @@ async fn verified_binary(dir: &std::path::Path, m: &Manifest) -> Option<PathBuf>
 /// Local development never needs a published release. This lookup is excluded
 /// from release builds; only an explicitly staged, verified server is accepted.
 #[cfg(debug_assertions)]
-async fn development_binary(flint_version: &str) -> Result<Option<PathBuf>, String> {
+async fn development_binary(app_version: &str) -> Result<Option<PathBuf>, String> {
     let dir = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("binaries/ritobin-lsp");
     let data = match tokio::fs::read(dir.join("manifest.json")).await {
         Ok(data) => data,
@@ -81,8 +81,8 @@ async fn development_binary(flint_version: &str) -> Result<Option<PathBuf>, Stri
     };
     let manifest: Manifest = serde_json::from_slice(&data)
         .map_err(|error| format!("Invalid development LSP manifest: {error}"))?;
-    if manifest.flint_version != flint_version {
-        return Err("Development LSP was staged for another Flint version; run scripts/lsp/stage-dev.mjs again.".into());
+    if manifest.app_version != app_version {
+        return Err("Development LSP was staged for another app version; run scripts/lsp/stage-dev.mjs again.".into());
     }
     let binary = verified_binary(&dir, &manifest)
         .await
@@ -98,9 +98,9 @@ async fn install(app: &tauri::AppHandle) -> Result<PathBuf, String> {
     if !cfg!(all(target_os = "windows", target_arch = "x86_64")) {
         return Err("The managed ritobin LSP currently supports Windows x64.".into());
     }
-    let flint_version = app.package_info().version.to_string();
+    let app_version = app.package_info().version.to_string();
     #[cfg(debug_assertions)]
-    if let Some(binary) = development_binary(&flint_version).await? {
+    if let Some(binary) = development_binary(&app_version).await? {
         return Ok(binary);
     }
     let dir = app
@@ -118,17 +118,17 @@ async fn install(app: &tauri::AppHandle) -> Result<PathBuf, String> {
         Some((m, path))
     }
     .await;
-    // Reuse this Flint release's verified installation without an update request.
-    // A new Flint version fetches its own release asset on first opt-in use.
+    // Reuse a verified installation for this app version without an update request.
+    // A new app version fetches a compatible release asset on first opt-in use.
     if let Some((manifest, path)) = &cached {
-        if manifest.flint_version == flint_version {
+        if manifest.app_version == app_version {
             return Ok(path.clone());
         }
     }
-    let release = format!("{RELEASES}/v{flint_version}");
+    let release = format!("{RELEASES}/v{app_version}");
     let installation = async {
         let client = reqwest::Client::builder()
-            .user_agent("Flint-ritobin-lsp")
+            .user_agent("The-Ruination-ritobin-lsp")
             .timeout(Duration::from_secs(90))
             .build()
             .map_err(|e| e.to_string())?;
@@ -143,7 +143,7 @@ async fn install(app: &tauri::AppHandle) -> Result<PathBuf, String> {
             .json()
             .await
             .map_err(|e| e.to_string())?;
-        if !valid_manifest(&m) || m.flint_version != flint_version {
+        if !valid_manifest(&m) || m.app_version != app_version {
             return Err("Invalid hash-disabled LSP manifest".to_string());
         }
         if let Some(path) = verified_binary(&dir, &m).await {
@@ -190,7 +190,7 @@ async fn install(app: &tauri::AppHandle) -> Result<PathBuf, String> {
             tracing::warn!("ritobin LSP release installation unavailable: {error}");
             cached
                 .map(|(_, path)| path)
-                .ok_or_else(|| format!("Could not install Flint's hash-disabled LSP: {error}"))
+                .ok_or_else(|| format!("Could not install the upstream hash-disabled ritobin language server: {error}"))
         }
     }
 }
@@ -298,14 +298,14 @@ pub async fn ritobin_lsp_start(
                         // Closing stderr alone does not terminate a healthy protocol session.
                         return std::future::pending::<Result<(), String>>().await;
                     }
-                    messages.send(json!({"method":"flint/stderr", "params": {"message":String::from_utf8_lossy(&line).trim_end()}})).map_err(|e| e.to_string())?;
+                    messages.send(json!({"method":"ruination/stderr", "params": {"message":String::from_utf8_lossy(&line).trim_end()}})).map_err(|e| e.to_string())?;
                 }
             };
             let result = tokio::select! { r = reader => r, r = writer => r, r = server_logs => r, _ = cancelled => Ok(()) };
             let _ = child.kill().await;
             let _ = child.wait().await;
             handle.state::<LspState>().sessions.lock().remove(&id);
-            let _ = messages.send(json!({"method":"flint/exited", "params": {"message":result.err().unwrap_or_else(|| "Language server stopped".into())}}));
+            let _ = messages.send(json!({"method":"ruination/exited", "params": {"message":result.err().unwrap_or_else(|| "Language server stopped".into())}}));
         });
         Ok(())
     }.await;
@@ -360,7 +360,7 @@ pub fn ritobin_lsp_stop(state: State<'_, LspState>, session: String) {
     state.sessions.lock().remove(&session);
 }
 
-/// Reuse Flint's local LMDB-backed BIN dictionary, including its custom overlays.
+/// Reuse the local LMDB-backed BIN dictionary, including custom overlays.
 /// No Mimir discovery, downloads, document edits, or separate server hash cache.
 #[tauri::command]
 pub async fn ritobin_lsp_lookup_names(hashes: Vec<u32>) -> Result<HashMap<u32, String>, String> {
@@ -368,7 +368,7 @@ pub async fn ritobin_lsp_lookup_names(hashes: Vec<u32>) -> Result<HashMap<u32, S
         return Err("Too many completion hashes".into());
     }
     tauri::async_runtime::spawn_blocking(move || {
-        let cache = flint_core::hash::get_cached_bin_hashes().read();
+        let cache = ruination_core::hash::get_cached_bin_hashes().read();
         hashes.into_iter().filter_map(|hash| {
             cache.get(u64::from(hash)).map(|name| (hash, name.to_owned()))
         }).collect()
@@ -404,7 +404,7 @@ mod tests {
     fn rejects_untrusted_manifests() {
         let mut m = Manifest {
             version: "abc-123".into(),
-            flint_version: "2.9.7".into(),
+            app_version: "2.9.7".into(),
             asset: "ritobin-lsp-abc-123-windows-x86_64.exe".into(),
             sha256: "a".repeat(64),
             no_hashes: 1,

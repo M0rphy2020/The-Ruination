@@ -1,13 +1,11 @@
-/* Flint Default Theme - Gray/Red
-   This is the default theme with red accents.
-   The ramp sits at hue 5° — still clearly red, just warmed off the pure hue-0
-   red it used to be. Saturation and lightness are unchanged from the originals,
-   so only the hue shifts. */
+/* The Ruination Default Theme
+   This is the default theme with Ruination cyan accents.
+   Obsidian surfaces with silver text and Ruination cyan highlights. */
 
 :root {
-  --accent-primary: #EF5244;
-  --accent-hover: #DC3526;
-  --accent-secondary: #F87C71;
-  --accent-muted: #99251B;
-  --button-primary: #EF5244;
+  --accent-primary: #20DDE0;
+  --accent-hover: #12BFC7;
+  --accent-secondary: #70F4F0;
+  --accent-muted: #0B646B;
+  --button-primary: #20DDE0;
 }

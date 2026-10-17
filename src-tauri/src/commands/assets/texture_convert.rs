@@ -12,7 +12,7 @@
 //! Both commands return the absolute path of the new file and never delete
 //! the source.
 
-use flint_core::path_slash::to_slash;
+use ruination_core::path_slash::to_slash;
 use ritoshark::prelude::*;
 use ritoshark::prelude::Serialize as _;
 use ritoshark::tex::{TexFormat, Texture};
@@ -517,7 +517,7 @@ pub async fn fix_texture_alignment(path: String) -> Result<AlignmentFixResult, S
     }
 
     let resized = image::imageops::resize(&rgba, tw, th, image::imageops::FilterType::Lanczos3);
-    let mipmaps_dropped = flint_core::bin::texture_header::read_texture_header(&data)
+    let mipmaps_dropped = ruination_core::bin::texture_header::read_texture_header(&data)
         .map(|h| h.has_mipmaps)
         .unwrap_or(false);
 

@@ -219,8 +219,8 @@ export const LuaBin64Editor: React.FC<LuaBin64EditorProps> = ({ filePath, hideFi
             showToast('success', 'LuaBin64 file saved successfully');
         } catch (err) {
             console.error('[LuaBin64Editor] Save error:', err);
-            const flintError = err as api.FlintError;
-            showToast('error', flintError.getUserMessage?.() || 'Failed to save');
+            const ruinationError = err as api.RuinationError;
+            showToast('error', ruinationError.getUserMessage?.() || 'Failed to save');
         }
     }, [filePath, content, setWorking, setReady, showToast]);
 

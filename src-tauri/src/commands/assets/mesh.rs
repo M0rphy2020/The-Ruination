@@ -5,13 +5,13 @@ use std::collections::HashMap;
 use std::sync::Arc;
 
 use crate::core::ipc_trace;
-use flint_core::mesh::discovery::find_project_root;
-use flint_core::path_slash::{slash_str, to_slash};
-use flint_core::mesh::materials::{extract_texture_mapping, lookup_material_by_name, BinIndex};
-use flint_core::mesh::ritobin::mesh_bins;
-use flint_core::mesh::skn::{parse_skn_file, SknMeshData};
-use flint_core::mesh::scb::{parse_scb_file, ScbMeshData};
-use flint_core::mesh::texture::MaterialProperties;
+use ruination_core::mesh::discovery::find_project_root;
+use ruination_core::path_slash::{slash_str, to_slash};
+use ruination_core::mesh::materials::{extract_texture_mapping, lookup_material_by_name, BinIndex};
+use ruination_core::mesh::ritobin::mesh_bins;
+use ruination_core::mesh::skn::{parse_skn_file, SknMeshData};
+use ruination_core::mesh::scb::{parse_scb_file, ScbMeshData};
+use ruination_core::mesh::texture::MaterialProperties;
 use crate::commands::file::decode_texture_file_sync_with_alpha;
 
 /// Synchronous decode wrapper for use inside rayon `par_iter` blocks.
@@ -21,7 +21,7 @@ fn decode_texture_blocking(path: &Path) -> Result<(String, bool), String> {
 }
 
 /// Read and parse an SCB (Static Mesh Binary) file. Returns the mesh in a
-/// packed binary wire format (see `flint_core::mesh::wire`).
+/// packed binary wire format (see `ruination_core::mesh::wire`).
 #[tauri::command]
 pub async fn read_scb_mesh(path: String) -> Result<tauri::ipc::Response, String> {
     let mesh = read_scb_mesh_inner(path).await?;
@@ -36,7 +36,7 @@ pub async fn read_scb_mesh(path: String) -> Result<tauri::ipc::Response, String>
         mesh.material_data.keys().collect::<Vec<_>>(),
         mesh.bounding_box
     );
-    let buf = flint_core::mesh::wire::encode_scb_binary(&mesh)?;
+    let buf = ruination_core::mesh::wire::encode_scb_binary(&mesh)?;
     Ok(tauri::ipc::Response::new(buf))
 }
 
@@ -131,7 +131,7 @@ async fn read_scb_mesh_inner(path: String) -> Result<ScbMeshData, String> {
                     decoded_textures.insert(result.0, result.1);
                 }
 
-                use flint_core::mesh::skn::MaterialData;
+                use ruination_core::mesh::skn::MaterialData;
                 let mut material_data: HashMap<String, MaterialData> = HashMap::new();
 
                 for (material_name, props) in material_props_map {
@@ -169,7 +169,7 @@ async fn read_scb_mesh_inner(path: String) -> Result<ScbMeshData, String> {
 /// 1. Find the .bin file via find_skin_bin or find_scb_bin, then check for .ritobin cache
 /// 2. If cache doesn't exist, automatically create it from the BIN file
 /// 3. Search directly for .ritobin files in the data/characters/{champion}/skins/ tree
-/// packed binary wire format (see `flint_core::mesh::wire`).
+/// packed binary wire format (see `ruination_core::mesh::wire`).
 #[tauri::command]
 pub async fn read_skn_mesh(path: String) -> Result<tauri::ipc::Response, String> {
     let _guard = skn_lock(&path).await;
@@ -183,7 +183,7 @@ pub async fn read_skn_mesh(path: String) -> Result<tauri::ipc::Response, String>
         mesh.bone_weights.len(),
         mesh.bounding_box
     );
-    let buf = flint_core::mesh::wire::encode_skn_binary(&mesh)?;
+    let buf = ruination_core::mesh::wire::encode_skn_binary(&mesh)?;
     Ok(tauri::ipc::Response::new(buf))
 }
 
@@ -316,7 +316,7 @@ async fn read_skn_mesh_inner(path: String) -> Result<SknMeshData, String> {
                     decoded_textures.insert(result.0, result.1);
                 }
 
-                use flint_core::mesh::skn::MaterialData;
+                use ruination_core::mesh::skn::MaterialData;
                 let mut material_data: HashMap<String, MaterialData> = HashMap::new();
 
                 for (material_name, props) in material_props_map {
@@ -523,7 +523,7 @@ fn search_wad_folders(base_folder: &Path, stripped: &str) -> Option<String> {
     None
 }
 
-use flint_core::mesh::skl::{parse_skl_file, SklData};
+use ruination_core::mesh::skl::{parse_skl_file, SklData};
 
 /// Read and parse an SKL (Skeleton) file
 /// 
@@ -540,7 +540,7 @@ pub async fn read_skl_skeleton(path: String) -> Result<SklData, String> {
         })
 }
 
-use flint_core::mesh::animation::{
+use ruination_core::mesh::animation::{
     find_animation_bin, extract_animation_list,
     resolve_animation_path, resolve_skn_for_anm,
     AnimationList, BakedAnimation,
@@ -568,16 +568,16 @@ pub async fn read_animation_list(skn_path: String) -> Result<AnimationList, Stri
 
     // Attach the static submesh baseline + gear forms from the skin BIN (non-fatal if not
     // found) — one read/parse serves both.
-    if let Some(skin_bin) = flint_core::mesh::texture::find_skin_bin(skn_path) {
+    if let Some(skin_bin) = ruination_core::mesh::texture::find_skin_bin(skn_path) {
         if let Ok(data) = std::fs::read(&skin_bin) {
-            if let Ok(tree) = flint_core::bin::codec::read_bin(&data) {
-                let initial = flint_core::mesh::submesh_visibility::parse_initial_hidden(&tree);
+            if let Ok(tree) = ruination_core::bin::codec::read_bin(&data) {
+                let initial = ruination_core::mesh::submesh_visibility::parse_initial_hidden(&tree);
                 list.initial_hide = initial.hide;
                 list.initial_shadow_hide = initial.shadow_hide;
                 // Gears shared between skins get hoisted into a linked `<Champ>_Skins_*.bin`;
                 // the closure only runs when a gear link misses inside the skin BIN itself.
-                list.forms = flint_core::mesh::submesh_visibility::parse_skin_forms(&tree, || {
-                    flint_core::mesh::ritobin::read_linked_bin_trees(skn_path, &skin_bin, &tree)
+                list.forms = ruination_core::mesh::submesh_visibility::parse_skin_forms(&tree, || {
+                    ruination_core::mesh::ritobin::read_linked_bin_trees(skn_path, &skin_bin, &tree)
                 });
             }
         }
@@ -587,9 +587,9 @@ pub async fn read_animation_list(skn_path: String) -> Result<AnimationList, Stri
 }
 
 #[tauri::command]
-pub async fn read_model_idle_effects(skn_path: String) -> Result<flint_core::mesh::idle_effects::IdleEffects, String> {
+pub async fn read_model_idle_effects(skn_path: String) -> Result<ruination_core::mesh::idle_effects::IdleEffects, String> {
     tauri::async_runtime::spawn_blocking(move || {
-        flint_core::mesh::idle_effects::read_idle_effects(Path::new(&skn_path))
+        ruination_core::mesh::idle_effects::read_idle_effects(Path::new(&skn_path))
     }).await.map_err(|e| e.to_string())
 }
 
@@ -665,7 +665,7 @@ pub async fn read_animation(path: String, base_path: Option<String>) -> Result<B
         return Err(format!("Animation file not found: {}", anim_path.display()));
     }
     
-    flint_core::mesh::animation::bake_animation_file(&anim_path)
+    ruination_core::mesh::animation::bake_animation_file(&anim_path)
         .map_err(|e| {
             tracing::error!("Failed to bake animation {}: {}", anim_path.display(), e);
             format!("Failed to parse and bake animation: {}", e)
@@ -710,13 +710,13 @@ pub async fn list_skin_meshes(bin_path: String) -> Result<Vec<SkinMeshEntry>, St
         use ritoshark::prelude::Parse;
 
         let bin = Path::new(&bin_path);
-        let refs = flint_core::mesh::animation::skin_mesh_refs(bin).map_err(|e| e.to_string())?;
+        let refs = ruination_core::mesh::animation::skin_mesh_refs(bin).map_err(|e| e.to_string())?;
         let simple_skin = refs
             .simple_skin
             .ok_or_else(|| "This BIN has no simpleSkin field, so no mesh could be located.".to_string())?;
 
         let base_dir = bin.parent().unwrap_or(Path::new("."));
-        let skn_path = flint_core::mesh::animation::resolve_animation_path(base_dir, &simple_skin)
+        let skn_path = ruination_core::mesh::animation::resolve_animation_path(base_dir, &simple_skin)
             .filter(|p| p.exists())
             .ok_or_else(|| format!("Could not find the mesh at \"{simple_skin}\"."))?;
 

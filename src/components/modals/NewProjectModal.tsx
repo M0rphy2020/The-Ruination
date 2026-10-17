@@ -174,7 +174,12 @@ export const NewProjectModal: React.FC = () => {
     const [experimentalWarning, setExperimentalWarning] = useState<'map' | null>(null);
 
     const handleSelectExperimentalType = (type: 'map') => {
-        const key = `flint.seenExperimentalWarning.${type}`;
+        const key = `ruination.seenExperimentalWarning.${type}`;
+        const legacyKey = `flint.seenExperimentalWarning.${type}`;
+        if (localStorage.getItem(key) === null && localStorage.getItem(legacyKey) === 'true') {
+            localStorage.setItem(key, 'true');
+            localStorage.removeItem(legacyKey);
+        }
         if (localStorage.getItem(key) !== 'true') {
             setExperimentalWarning(type);
         } else {
@@ -184,7 +189,7 @@ export const NewProjectModal: React.FC = () => {
 
     const confirmExperimental = () => {
         if (!experimentalWarning) return;
-        localStorage.setItem(`flint.seenExperimentalWarning.${experimentalWarning}`, 'true');
+        localStorage.setItem(`ruination.seenExperimentalWarning.${experimentalWarning}`, 'true'); localStorage.removeItem(`flint.seenExperimentalWarning.${experimentalWarning}`);
         setProjectType(experimentalWarning);
         setExperimentalWarning(null);
     };
@@ -537,7 +542,7 @@ export const NewProjectModal: React.FC = () => {
             const home = await api.getAppHome();
             setProjectPath(`${home}/projects`);
         } catch {
-            setProjectPath('C:/Users/Projects/Flint');
+            setProjectPath('C:/Users/Projects/The Ruination');
         }
     };
 
@@ -784,8 +789,8 @@ export const NewProjectModal: React.FC = () => {
 
             await finishProjectCreation(project, selectedChampion.name, effectiveSkinNum);
         } catch (err) {
-            const flintError = err as api.FlintError;
-            const userMsg = flintError.getUserMessage?.() || 'Failed to create project';
+            const ruinationError = err as api.RuinationError;
+            const userMsg = ruinationError.getUserMessage?.() || 'Failed to create project';
             showToast('error', `${userMsg} — see log panel for full error`);
         } finally {
             setIsCreating(false);
@@ -849,8 +854,8 @@ export const NewProjectModal: React.FC = () => {
 
             await finishProjectCreation(project, 'Loading Screen', 0);
         } catch (err) {
-            const flintError = err as api.FlintError;
-            const userMsg = flintError.getUserMessage?.() || 'Failed to create loading screen project';
+            const ruinationError = err as api.RuinationError;
+            const userMsg = ruinationError.getUserMessage?.() || 'Failed to create loading screen project';
             showToast('error', `${userMsg} — see log panel for full error`);
         } finally {
             setIsCreating(false);
@@ -893,8 +898,8 @@ export const NewProjectModal: React.FC = () => {
             const mapEntry = availableMaps.find(m => m.id === selectedMapId);
             await finishProjectCreation(project, mapEntry?.displayName || selectedMapId, 0);
         } catch (err) {
-            const flintError = err as api.FlintError;
-            const userMsg = flintError.getUserMessage?.() || 'Failed to create map project';
+            const ruinationError = err as api.RuinationError;
+            const userMsg = ruinationError.getUserMessage?.() || 'Failed to create map project';
             showToast('error', `${userMsg} — see log panel for full error`);
         } finally {
             setIsCreating(false);

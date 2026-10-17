@@ -3,16 +3,16 @@
 //! Walks every WAD under the League installation's `DATA/FINAL/`, parses
 //! `.troybin` chunks, and writes an INI-like schema file.
 
-use flint_core::path_slash::to_slash;
+use ruination_core::path_slash::to_slash;
 use std::collections::BTreeMap;
 use serde::Serialize;
 use tauri::{AppHandle, Emitter};
 use walkdir::WalkDir;
 
 use crate::state::LmdbCacheState;
-use flint_core::hash::{get_hash_dir, resolve_hashes_lmdb_bulk, ResolvedHashes};
-use flint_core::troybin::parse_troybin;
-use flint_core::wad::adapter::WadHandle as WadReader;
+use ruination_core::hash::{get_hash_dir, resolve_hashes_lmdb_bulk, ResolvedHashes};
+use ruination_core::troybin::parse_troybin;
+use ruination_core::wad::adapter::WadHandle as WadReader;
 
 // =============================================================================
 // Progress / public stats

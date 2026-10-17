@@ -1,4 +1,4 @@
-use flint_core::path_slash::to_slash;
+use ruination_core::path_slash::to_slash;
 use std::collections::{HashMap, HashSet};
 
 use indexmap::IndexMap;
@@ -6,14 +6,14 @@ use serde::Serialize;
 use tauri::{AppHandle, Emitter};
 use walkdir::WalkDir;
 
-use flint_core::bin::codec::{read_bin, MAX_BIN_SIZE};
-use flint_core::bin::get_cached_bin_hashes;
-use flint_core::hash::{get_hash_dir, resolve_hashes_lmdb_bulk, ResolvedHashes};
-use flint_core::wad::adapter::WadHandle as WadReader;
+use ruination_core::bin::codec::{read_bin, MAX_BIN_SIZE};
+use ruination_core::bin::get_cached_bin_hashes;
+use ruination_core::hash::{get_hash_dir, resolve_hashes_lmdb_bulk, ResolvedHashes};
+use ruination_core::wad::adapter::WadHandle as WadReader;
 use crate::state::LmdbCacheState;
 
-use flint_core::bin::{BinType, BinValue};
-use flint_core::hash::HashMapper;
+use ruination_core::bin::{BinType, BinValue};
+use ruination_core::hash::HashMapper;
 
 const SAMPLE_LIMIT_COMPLEX: usize = 3;
 const SAMPLE_LIMIT_SCALAR: usize = 1;
@@ -768,7 +768,7 @@ pub async fn aggregate_bin_schema(
     let mut output = String::with_capacity(4 * 1024 * 1024);
 
     use std::fmt::Write;
-    let _ = writeln!(output, "# Whole-Game BIN Schema Reference — Flint");
+    let _ = writeln!(output, "# Whole-Game BIN Schema Reference — The Ruination");
     let _ = writeln!(output, "# Generated: {}", chrono::Utc::now().to_rfc3339());
     let _ = writeln!(
         output,

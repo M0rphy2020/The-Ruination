@@ -26,11 +26,11 @@ export interface LauncherSyncResult {
 }
 
 /**
- * Sync a Flint project to LTK Manager.
+ * Sync a Ruination project to LTK Manager.
  *
- * A project open in Flint is being authored, so it goes to LTK Manager's **workshop** — the
+ * A project open in The Ruination is being authored, so it goes to LTK Manager's **workshop** — the
  * authoring side, whose projects are the same `mod.config.json` + `content/<layer>/` folders
- * Flint already writes. The **library** (installed mods) is only the fallback, for a user who
+ * The Ruination already writes. The **library** (installed mods) is only the fallback, for a user who
  * has never set a workshop path.
  */
 export async function syncProjectToLauncher(
@@ -41,10 +41,10 @@ export async function syncProjectToLauncher(
 }
 
 /**
- * Sync a Flint project to the Celestial launcher.
+ * Sync a Ruination project to the Celestial launcher.
  *
- * Celestial reads the raw project folder directly (keyed on flint.json), so
- * this just hands it the project path via a `celestial://import-flint` deep
+ * Celestial reads the raw project folder directly (keyed on the legacy flint.json manifest), so
+ * this just hands it the project path via a `celestial://import-flint (legacy Celestial protocol)` deep
  * link — no packaging. Returns the absolute project path handed over.
  */
 export async function syncProjectToCelestial(projectPath: string): Promise<string> {
@@ -55,7 +55,7 @@ export async function syncProjectToCelestial(projectPath: string): Promise<strin
  * Start watching a project directory for changes (auto-sync).
  *
  * `launcherKind` selects the sync path on change: 'celestial' fires a
- * `celestial://import-flint` deep link; 'ltk' (default) mirrors the project into LTK
+ * `celestial://import-flint (legacy Celestial protocol)` deep link; 'ltk' (default) mirrors the project into LTK
  * Manager's workshop. `ltkStoragePath` is only used by the LTK library fallback.
  */
 export async function startProjectWatcher(

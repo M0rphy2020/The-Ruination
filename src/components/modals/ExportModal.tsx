@@ -208,8 +208,8 @@ export const ExportModal: React.FC = () => {
             closeModal();
         } catch (err) {
             console.error('Export failed:', err);
-            const flintError = err as api.FlintError;
-            showToast('error', flintError.getUserMessage?.() || 'Export failed');
+            const ruinationError = err as api.RuinationError;
+            showToast('error', ruinationError.getUserMessage?.() || 'Export failed');
         } finally {
             setIsExporting(false);
             setProgress('');

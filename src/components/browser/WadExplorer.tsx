@@ -334,12 +334,12 @@ export const WadExplorer: React.FC = () => {
     // user's preference survives reloads — the in-menu submenu can override
     // it per-extraction.
     const [wrapInWadFolder, setWrapInWadFolder] = useState<boolean>(() => {
-        try { return localStorage.getItem('flint.wadExplorer.wrapInWadFolder') !== 'false'; }
+        try { const key = 'ruination.wadExplorer.wrapInWadFolder'; const current = localStorage.getItem(key); if (current !== null) return current !== 'false'; const legacy = localStorage.getItem('flint.wadExplorer.wrapInWadFolder'); if (legacy !== null) { localStorage.setItem(key, legacy); localStorage.removeItem('flint.wadExplorer.wrapInWadFolder'); return legacy !== 'false'; } return true; }
         catch { return true; }
     });
     const setWrapPref = useCallback((v: boolean) => {
         setWrapInWadFolder(v);
-        try { localStorage.setItem('flint.wadExplorer.wrapInWadFolder', String(v)); } catch { /* ignore */ }
+        try { localStorage.setItem('ruination.wadExplorer.wrapInWadFolder', String(v)); localStorage.removeItem('flint.wadExplorer.wrapInWadFolder'); } catch { /* ignore */ }
     }, []);
 
     /** Join a base dest with a wad filename so the extract lands in

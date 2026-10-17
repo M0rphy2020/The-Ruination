@@ -12,7 +12,7 @@ use serde::Serialize;
 use uuid::Uuid;
 use zip::ZipArchive;
 
-use flint_core::export::{
+use ruination_core::export::{
     Modpkg, ModpkgAuthor, ModpkgBuilder, ModpkgChunkBuilder, ModpkgLayerBuilder, ModpkgMetadata,
 };
 
@@ -660,14 +660,14 @@ async fn save_modpkg_archive(
             u64,
             u64,
             ChunkKey,
-            flint_core::export::ModpkgCompression,
+            ruination_core::export::ModpkgCompression,
             Option<String>,
         )> = modpkg
             .chunks
             .iter()
             .filter_map(|((path_hash, layer_hash), chunk)| {
                 let path = modpkg.chunk_paths.get(path_hash)?;
-                if flint_core::export::REGENERATED_META.contains(&path.as_str()) {
+                if ruination_core::export::REGENERATED_META.contains(&path.as_str()) {
                     return None;
                 }
                 let layer = if path.starts_with("_meta_/") {
@@ -684,13 +684,13 @@ async fn save_modpkg_archive(
                     *layer_hash,
                     (path.clone(), layer),
                     chunk.compression,
-                    flint_core::export::chunk_wad_name(&modpkg, chunk.wad_index),
+                    ruination_core::export::chunk_wad_name(&modpkg, chunk.wad_index),
                 ))
             })
             .collect();
 
         let mut chunk_bytes: HashMap<ChunkKey, Vec<u8>> = HashMap::new();
-        let mut preserved_compression: HashMap<ChunkKey, flint_core::export::ModpkgCompression> =
+        let mut preserved_compression: HashMap<ChunkKey, ruination_core::export::ModpkgCompression> =
             HashMap::new();
         let mut preserved_wad: HashMap<ChunkKey, String> = HashMap::new();
         for (path_hash, layer_hash, key, compression, wad) in &entries {

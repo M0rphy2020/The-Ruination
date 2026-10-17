@@ -5,7 +5,7 @@ import { open } from '../../lib/api/dialog';
 import { openUrl } from '@tauri-apps/plugin-opener';
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import { Button, Input, Icon, Textarea, Checkbox, Spinner, type IconName } from '../ui';
-import { FlintFlameMark } from '../ui/FlintFlameMark';
+import { RuinationMark } from '../ui/RuinationMark';
 import { SettingsRow } from './settings/SettingsRow';
 import { PathSettingItem } from './settings/PathSettingItem';
 import { FlowPane, ProjectsPane, WorkspacePane, WadPane, MenusPane } from './setup/TourPanes';
@@ -28,7 +28,7 @@ const STEPS: Step[] = [
     { id: 'splash', short: '', hint: '', icon: 'info', title: '', subtitle: '' },
     {
         id: 'flow', group: 'Learn', short: 'How it works', hint: 'The five stages', icon: 'refresh',
-        title: 'How Flint works',
+        title: 'How The Ruination works',
         subtitle: 'From the files sitting in your League folder to a mod someone else can install.',
     },
     {
@@ -49,7 +49,7 @@ const STEPS: Step[] = [
     {
         id: 'menus', short: 'Right-click', hint: 'Where the tools live', icon: 'more',
         title: 'Right-click menus',
-        subtitle: 'Most of what Flint can do is one right-click away.',
+        subtitle: 'Most of what The Ruination can do is one right-click away.',
     },
     {
         id: 'identity', group: 'Set up', short: 'You', hint: 'Name and links', icon: 'user',
@@ -58,8 +58,8 @@ const STEPS: Step[] = [
     },
     {
         id: 'paths', short: 'Paths', hint: 'Game, launcher, editors', icon: 'folder',
-        title: 'Point Flint at your install',
-        subtitle: 'Flint needs the League folder for almost everything. The rest are optional.',
+        title: 'Point The Ruination at your install',
+        subtitle: 'The Ruination needs the League folder for almost everything. The rest are optional.',
     },
     { id: 'finish', short: 'Finish', hint: 'Two last switches', icon: 'success', title: '', subtitle: '' },
 ];
@@ -108,7 +108,7 @@ export const FirstTimeSetupModal: React.FC = () => {
     const [autoUpdate, setAutoUpdate] = useState<boolean>(autoUpdateStored);
     const [detectingAll, setDetectingAll] = useState<DetectingState>(false);
     const autoDetectRan = useRef(false);
-    const [flintHome, setFlintHome] = useState<string>('');
+    const [ruinationHome, setRuinationHome] = useState<string>('');
 
     const isVisible = activeModal === 'firstTimeSetup';
     const step = STEPS[stepIndex];
@@ -118,14 +118,14 @@ export const FirstTimeSetupModal: React.FC = () => {
     const back    = () => { setDirection(-1); setStepIndex((i) => Math.max(0, i - 1)); };
 
     useEffect(() => {
-        if (!isVisible || flintHome) return;
+        if (!isVisible || ruinationHome) return;
         api.getAppHome().then((home) => {
             const sep = home.includes('\\') ? '\\' : '/';
             const guess = `${home.replace(/[\\/]+$/, '')}${sep}projects`;
-            setFlintHome(guess);
+            setRuinationHome(guess);
             setDefaultProjectPath((prev) => prev || guess);
         }).catch(() => { /* non-fatal */ });
-    }, [isVisible, flintHome]);
+    }, [isVisible, ruinationHome]);
 
     useEffect(() => {
         if (!isVisible) return;
@@ -269,7 +269,7 @@ export const FirstTimeSetupModal: React.FC = () => {
         config.setAutoSyncToLauncher(autoSync);
         config.setAutoUpdateEnabled(autoUpdate);
 
-        // Opt-in "Open with" registration. Never block entering Flint on it.
+        // Opt-in "Open with" registration. Never block entering The Ruination on it.
         if (registerAssoc) {
             try {
                 const result = await api.registerFileAssociations();
@@ -282,7 +282,7 @@ export const FirstTimeSetupModal: React.FC = () => {
         }
 
         closeModal();
-        showToast('success', 'Setup complete. Welcome to Flint.');
+        showToast('success', 'Setup complete. Welcome to The Ruination.');
     };
 
     const onIdentityKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -363,7 +363,7 @@ export const FirstTimeSetupModal: React.FC = () => {
                                     ruby={rubyPath}
                                     autoSync={autoSync}
                                     editorsOpen={editorsOpen}
-                                    flintHome={flintHome}
+                                    ruinationHome={ruinationHome}
                                     detectingAll={detectingAll}
                                     onLeague={setLeaguePath}
                                     onPbe={setPbePath}
@@ -410,7 +410,7 @@ export const FirstTimeSetupModal: React.FC = () => {
                         </span>
                         {isLast ? (
                             <Button variant="success" size="lg" iconRight="chevronRight" onClick={handleFinish} className="fwiz__cta">
-                                Enter Flint
+                                Enter The Ruination
                             </Button>
                         ) : (
                             <Button
@@ -456,11 +456,11 @@ const SplashPane: React.FC<{ onStart: () => void }> = ({ onStart }) => {
         >
             <div className="fwiz-splash__logo" aria-hidden="true">
                 <span className="fwiz-splash__logo-glow" />
-                <FlintFlameMark size={118} />
+                <RuinationMark size={118} />
                 <span className="fwiz-splash__logo-ring" />
                 <span className="fwiz-splash__logo-ring fwiz-splash__logo-ring--two" />
             </div>
-            <h1 className="fwiz-splash__title" aria-label="Flint">
+            <h1 className="fwiz-splash__title" aria-label="The Ruination">
                 {word.split('').map((c, i) => (
                     <span key={i} style={{ animationDelay: `${i * 0.06}s` }}>{c}</span>
                 ))}
@@ -502,7 +502,7 @@ const WizBackdrop: React.FC = () => {
 };
 
 /* -------------------------------------------------------------------------- */
-/* Title bar — mirrors the app's main TitleBar (FlintLogo + "Flint") plus      */
+/* Title bar — mirrors the app's main TitleBar (The RuinationLogo + "The Ruination") plus      */
 /* the standard window controls. Drag region everywhere except the buttons.    */
 /* The flame mark glows to mark this as the onboarding context.                */
 /* -------------------------------------------------------------------------- */
@@ -515,10 +515,10 @@ const WizTitleBar: React.FC = () => {
             <div className="titlebar__left fwiz__titlebar-left" data-tauri-drag-region>
                 <div className="titlebar__logo fwiz__titlebar-logo" data-tauri-drag-region="false">
                     <span className="fwiz-mark" aria-hidden="true">
-                        <FlintFlameMark size={22} />
+                        <RuinationMark size={22} />
                         <span className="fwiz-mark__halo" />
                     </span>
-                    <span className="titlebar__app-name">Flint</span>
+                    <span className="titlebar__app-name">The Ruination</span>
                     <span className="fwiz__titlebar-mode">Setup</span>
                 </div>
             </div>
@@ -682,7 +682,7 @@ const PathsPane: React.FC<{
     jade: string; quartz: string; ruby: string;
     autoSync: boolean;
     editorsOpen: boolean;
-    flintHome: string;
+    ruinationHome: string;
     detectingAll: boolean;
     onLeague: (v: string) => void;
     onPbe: (v: string) => void;
@@ -731,7 +731,7 @@ const PathsPane: React.FC<{
                     iconName: 'folder',
                     label: 'Default project folder',
                     badge: 'Workspace',
-                    placeholder: p.flintHome || 'Where new mods will be created',
+                    placeholder: p.ruinationHome || 'Where new mods will be created',
                     value: p.project,
                     onChange: p.onProject,
                     browseTitle: 'Where should new projects be created?',
@@ -757,7 +757,7 @@ const PathsPane: React.FC<{
                     value: p.pbe,
                     onChange: p.onPbe,
                     browseTitle: 'Select PBE Folder',
-                    hint: 'Lets Flint pull pre-release champion BINs and assets.',
+                    hint: 'Lets The Ruination pull pre-release champion BINs and assets.',
                 }} />
             </div>
 
@@ -975,9 +975,9 @@ const FinishPane: React.FC<{
                 <p className="settings-subhead">One last thing</p>
                 <SettingsRow
                     icon={<Icon name="link" />}
-                    title="Open Flint from Explorer"
+                    title="Open The Ruination from Explorer"
                     sub={<span className="settings-row__sub" style={{ whiteSpace: 'normal' }}>
-                        Adds Flint to the “Open with” menu for .wad, .bin, .tex, .fantome and more. Your default apps stay as they are.
+                        Adds The Ruination to the “Open with” menu for .wad, .bin, .tex, .fantome and more. Your default apps stay as they are.
                     </span>}
                     onActivate={() => onRegisterAssoc(!registerAssoc)}
                     actions={<Checkbox toggle checked={registerAssoc} onChange={(e) => onRegisterAssoc(e.target.checked)} />}
@@ -986,7 +986,7 @@ const FinishPane: React.FC<{
                     icon={<Icon name="download" />}
                     title="Automatic updates"
                     sub={<span className="settings-row__sub" style={{ whiteSpace: 'normal' }}>
-                        Download and install updates before Flint opens.
+                        Download and install updates before The Ruination opens.
                     </span>}
                     onActivate={() => onAutoUpdate(!autoUpdate)}
                     actions={<Checkbox toggle checked={autoUpdate} onChange={(e) => onAutoUpdate(e.target.checked)} />}

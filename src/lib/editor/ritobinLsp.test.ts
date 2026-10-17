@@ -49,7 +49,7 @@ beforeEach(() => {
         if (command !== 'ritobin_lsp_send' || args.message.id === undefined || !args.message.method) return;
         const { id, method } = args.message;
         const result = method === 'initialize' ? { capabilities: {
-            experimental: { flintNoHashes: mock.noHashes }, completionProvider: { resolveProvider: true }, hoverProvider: true, documentFormattingProvider: true,
+            experimental: { ruinationNoHashes: mock.noHashes }, completionProvider: { resolveProvider: true }, hoverProvider: true, documentFormattingProvider: true,
         } } : method === 'textDocument/completion' ? mock.items ?? [{
             label: 'Example', kind: 15, insertText: 'Example { $0 }', insertTextFormat: 2,
             command: { command: 'ritobin-lsp/unhash', title: 'Unhash' },
@@ -124,7 +124,7 @@ describe('ritobin LSP lifecycle', () => {
         try {
             mock.channel.onmessage({ method: 'window/logMessage', params: { type: 1, message: 'First error' } });
             expect(useLspLogStore.getState().live?.output).toEqual({ level: 'error', message: 'First error' });
-            mock.channel.onmessage({ method: 'flint/stderr', params: { message: 'Next output' } });
+            mock.channel.onmessage({ method: 'ruination/stderr', params: { message: 'Next output' } });
             expect(useLspLogStore.getState().live?.output?.message).toBe('Next output');
             await vi.advanceTimersByTimeAsync(8000);
             expect(useLspLogStore.getState().live?.output).toBeNull();
@@ -152,7 +152,7 @@ describe('ritobin LSP lifecycle', () => {
         connection.dispose();
     });
 
-    it('uses Flint names for visible suggestions, insertion and property documentation resolution', async () => {
+    it('uses Ruination names for visible suggestions, insertion and property documentation resolution', async () => {
         mock.items = [{ label: '0x12345678', kind: 10, data: '0x87654321', insertText: '0x12345678: string = ' }];
         const f = fixture();
         const connection = attachRitobinLsp(f.editor, 'skin.bin', null, vi.fn());
@@ -205,7 +205,7 @@ describe('ritobin LSP lifecycle', () => {
         connection.dispose();
         expect(mock.disposeProvider).toHaveBeenCalledTimes(4);
         expect(mock.invoke).toHaveBeenCalledWith('ritobin_lsp_stop', expect.anything());
-        expect(mock.markers).toHaveBeenLastCalledWith(f.model, 'flint-ritobin-lsp', []);
+        expect(mock.markers).toHaveBeenLastCalledWith(f.model, 'ruination-ritobin-lsp', []);
     });
 
     it('does not apply formatting returned after another edit', async () => {

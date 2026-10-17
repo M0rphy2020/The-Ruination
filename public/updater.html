@@ -4,24 +4,24 @@
     <meta charset="UTF-8" />
     <meta name="color-scheme" content="dark" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Flint Startup</title>
+    <title>The Ruination Startup</title>
     <style>
       :root {
         color-scheme: dark; font-family: "Segoe UI", system-ui, sans-serif; background: #0b0d10; color: #f4f4f6;
         /* Fallback only — the inline bootstrap below overwrites this with the user's
            saved accent. Keep in sync with --accent-primary in themes/default.css. */
-        --flint-accent: #DD8515;
+        --ruination-accent: #DD8515;
         /* The glow behind the logo only. Neutral rather than the accent: the
            orange wash tinted the whole panel and fought the logo's own colour.
-           Everything else here still uses --flint-accent. */
-        --flint-glow: #8b93a1;
+           Everything else here still uses --ruination-accent. */
+        --ruination-glow: #8b93a1;
       }
       * { box-sizing: border-box; }
       html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #0b0d10; user-select: none; }
       button { font: inherit; }
       .startup {
         position: relative; width: 100%; height: 100%; overflow: hidden; border: 1px solid #2d2527;
-        background: radial-gradient(circle at 50% 30%, color-mix(in oklab, var(--flint-glow) 17%, transparent), transparent 34%), linear-gradient(180deg, #101014 0%, #0a0b0e 100%);
+        background: radial-gradient(circle at 50% 30%, color-mix(in oklab, var(--ruination-glow) 17%, transparent), transparent 34%), linear-gradient(180deg, #101014 0%, #0a0b0e 100%);
       }
       .startup::before {
         content: ""; position: absolute; inset: 0; opacity: .22; pointer-events: none;
@@ -31,18 +31,18 @@
       .visual { position: absolute; inset: 0 0 142px; display: grid; place-items: end center; padding-bottom: 44px; transform: translateY(52px); }
       .visual__aura {
         position: absolute; width: 320px; height: 260px; border-radius: 50%;
-        background: radial-gradient(circle, color-mix(in oklab, var(--flint-glow) 27%, transparent), color-mix(in oklab, var(--flint-glow) 5%, transparent) 46%, transparent 72%);
+        background: radial-gradient(circle, color-mix(in oklab, var(--ruination-glow) 27%, transparent), color-mix(in oklab, var(--ruination-glow) 5%, transparent) 46%, transparent 72%);
         filter: blur(10px); animation: aura 3.6s ease-in-out infinite;
       }
       .brand { position: relative; display: flex; flex-direction: column; align-items: center; gap: 13px; width: 100%; }
       .brand__logo {
         width: 166px; height: 166px; display: block; margin-inline: auto;
-        filter: drop-shadow(0 12px 24px rgba(0,0,0,.42)) drop-shadow(0 0 18px color-mix(in oklab, var(--flint-glow) 15%, transparent));
+        filter: drop-shadow(0 12px 24px rgba(0,0,0,.42)) drop-shadow(0 0 18px color-mix(in oklab, var(--ruination-glow) 15%, transparent));
         transform-origin: center; animation: logo-pop .6s cubic-bezier(.34,1.56,.64,1) both;
       }
       .brand__name { display: flex; align-items: baseline; justify-content: center; width: 100%; color: #f1f3f6; font-size: 30px; font-weight: 650; letter-spacing: .035em; }
       .brand__word { display: inline-block; max-width: 0; overflow: hidden; white-space: nowrap; animation: type-word .55s cubic-bezier(.65,0,.35,1) .55s both; }
-      .brand__dot { color: var(--flint-accent); opacity: 0; animation: dot-pulse 1.05s ease-in-out 1.1s infinite; }
+      .brand__dot { color: var(--ruination-accent); opacity: 0; animation: dot-pulse 1.05s ease-in-out 1.1s infinite; }
       .bottom { position: absolute; inset: auto 0 0; height: 142px; padding: 22px 40px 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
       .loading, .error-prompt { width: 100%; }
       .loading[hidden], .error-prompt[hidden] { display: none; }
@@ -57,10 +57,10 @@
       .prompt__actions { display: flex; gap: 8px; margin-top: 12px; }
       .action { min-width: 104px; height: 31px; padding: 0 15px; border: 1px solid #343036; border-radius: 6px; background: #171519; color: #b7b2b8; font-size: 11px; font-weight: 600; cursor: pointer; }
       .action:hover:not(:disabled) { border-color: #51474b; background: #211d20; color: #fff; }
-      .action--primary { border-color: color-mix(in oklab, var(--flint-accent) 70%, transparent); background: linear-gradient(180deg, var(--flint-accent), color-mix(in oklab, var(--flint-accent) 70%, #000)); color: #fff; box-shadow: 0 4px 14px color-mix(in oklab, var(--flint-accent) 30%, transparent); }
+      .action--primary { border-color: color-mix(in oklab, var(--ruination-accent) 70%, transparent); background: linear-gradient(180deg, var(--ruination-accent), color-mix(in oklab, var(--ruination-accent) 70%, #000)); color: #fff; box-shadow: 0 4px 14px color-mix(in oklab, var(--ruination-accent) 30%, transparent); }
       .action:disabled { opacity: .55; cursor: default; }
       @keyframes type-word { to { max-width: 120px; } }
-      @keyframes dot-pulse { 0%,100% { opacity: .22; text-shadow: 0 0 0 transparent; } 50% { opacity: 1; text-shadow: 0 0 12px color-mix(in oklab, var(--flint-accent) 90%, transparent); } }
+      @keyframes dot-pulse { 0%,100% { opacity: .22; text-shadow: 0 0 0 transparent; } 50% { opacity: 1; text-shadow: 0 0 12px color-mix(in oklab, var(--ruination-accent) 90%, transparent); } }
       @keyframes logo-pop { from { opacity: 0; transform: translateY(7px) scale(.84); } to { opacity: 1; transform: translateY(0) scale(1); } }
       @keyframes aura { 0%,100% { opacity: .62; transform: scale(.96); } 50% { opacity: 1; transform: scale(1.04); } }
       @keyframes slide { 0% { margin-left: -38%; } 55% { margin-left: 100%; } 100% { margin-left: 100%; } }
@@ -82,7 +82,7 @@
             // app boots, so it can't reuse that map and must stay in sync with it.
             var superseded = { '#ef4444': '#EF5244', '#ef5b44': '#EF5244' };
             accent = superseded[accent.toLowerCase()] || accent;
-            document.documentElement.style.setProperty('--flint-accent', accent);
+            document.documentElement.style.setProperty('--ruination-accent', accent);
           }
         } catch (e) { /* non-fatal — keep the fallback */ }
       })();
@@ -93,19 +93,19 @@
       <section class="visual">
         <div class="visual__aura"></div>
         <div class="brand">
-          <img class="brand__logo" src="/flint-logo.png" width="512" height="512" alt="Flint" />
-          <div class="brand__name"><span class="brand__word">Flint</span><span class="brand__dot">.</span></div>
+          <img class="brand__logo" src="/flint-logo.png" width="512" height="512" alt="The Ruination" />
+          <div class="brand__name"><span class="brand__word">The Ruination</span><span class="brand__dot">.</span></div>
         </div>
       </section>
       <section class="bottom">
         <div id="loading-view" class="loading">
           <div class="progress"><div id="progress-bar" class="progress__bar"></div></div>
-          <div id="status" class="status">Preparing Flint interface...</div>
+          <div id="status" class="status">Preparing The Ruination interface...</div>
           <div id="version" class="version"></div>
         </div>
         <div id="error-view" class="error-prompt" hidden>
           <div class="prompt">
-            <div class="prompt__title">Flint could not finish starting.</div>
+            <div class="prompt__title">The Ruination could not finish starting.</div>
             <div id="error-copy" class="prompt__copy">You can continue and check for updates later in Settings.</div>
             <div class="prompt__actions"><button id="continue-anyway" class="action action--primary" type="button">Continue</button></div>
           </div>

@@ -1,18 +1,18 @@
 name: Bug report
-description: Something in Flint is broken
+description: Something in The Ruination is broken
 labels: ["bug"]
 body:
   - type: markdown
     attributes:
       value: |
-        Before filing: make sure you are on the latest release, since Flint updates itself and the
+        Before filing: make sure you are on the latest release, since The Ruination updates itself and the
         bug may already be gone.
 
   - type: textarea
     id: what-happened
     attributes:
       label: What happened
-      description: What you did, and what Flint did instead of what you expected.
+      description: What you did, and what The Ruination did instead of what you expected.
       placeholder: |
         I opened a .fantome from 2024 and hit Import. The import finished but the
         skin BIN was empty.
@@ -33,7 +33,7 @@ body:
   - type: input
     id: version
     attributes:
-      label: Flint version
+      label: The Ruination version
       description: Settings, or the installer filename.
       placeholder: "2.9.7"
     validations:
@@ -42,7 +42,7 @@ body:
   - type: dropdown
     id: area
     attributes:
-      label: Where in Flint
+      label: Where in The Ruination
       options:
         - Project creation or import
         - WAD explorer or CDN
@@ -67,7 +67,7 @@ body:
     attributes:
       label: Log
       description: >
-        Logs are in %APPDATA%\Flint\logs\, one file per day. Paste the part from around when it
+        Logs are stored in the application's data directory, one file per day. Paste the part from around when it
         broke, or attach the file. Paths in it may include your username, so trim it if you care.
       render: text
 

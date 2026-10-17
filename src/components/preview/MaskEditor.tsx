@@ -311,8 +311,8 @@ export const MaskEditor: React.FC<MaskEditorProps> = ({ binPath, sklPath }) => {
                 };
             });
         } catch (err) {
-            const flintErr = err as api.FlintError;
-            const msg = flintErr?.getUserMessage?.() || (err as Error)?.message || String(err);
+            const ruinationErr = err as api.RuinationError;
+            const msg = ruinationErr?.getUserMessage?.() || (err as Error)?.message || String(err);
             // write_masks is all-or-nothing: a failed save wrote nothing at
             // all, not "everything except the bad mask" — say so explicitly
             // rather than leaving the user to guess what landed.

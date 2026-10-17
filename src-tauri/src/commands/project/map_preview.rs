@@ -12,8 +12,8 @@
 use std::collections::HashMap;
 use std::path::{Path, PathBuf};
 
-use flint_core::mesh::materials::BinIndex;
-use flint_core::project::FlintMetadata;
+use ruination_core::mesh::materials::BinIndex;
+use ruination_core::project::FlintMetadata;
 use indexmap::IndexMap;
 use ritoshark::bin::{Bin, BinValue};
 use ritoshark::mapgeo::{ElementName, MapGeometry, MapModel};
@@ -242,7 +242,7 @@ fn is_translucent(fields: &IndexMap<u32, BinValue>) -> bool {
 pub fn build_material_table(materials_bin: &Path) -> Result<MaterialTable, String> {
     let bin = Bin::from_path(materials_bin)
         .map_err(|e| format!("Failed to parse materials bin: {:?}", e))?;
-    let names = flint_core::bin::name_table(&bin, materials_bin);
+    let names = ruination_core::bin::name_table(&bin, materials_bin);
     let index = BinIndex::new([(&bin, names)]);
 
     let static_material_def = h("StaticMaterialDef");
@@ -1105,7 +1105,7 @@ pub async fn open_map_preview_window(
     let _ = std::fs::create_dir_all(&data_dir);
 
     WebviewWindowBuilder::new(&app, LABEL, WebviewUrl::App(url.into()))
-        .title("Flint — Map Preview")
+        .title("The Ruination — Map Preview")
         .inner_size(1100.0, 720.0)
         .resizable(true)
         .additional_browser_args(MAIN_BROWSER_ARGS)

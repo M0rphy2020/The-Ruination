@@ -5,7 +5,7 @@ import { isQuotedPosition, resolveCompletionNames, type Completion } from './rit
 import { useLspLogStore } from '../stores/lspLogStore';
 import { readableDiagnostic, suggestLspBracket, type BracketFix } from './ritobinLspDiagnostics';
 
-const OWNER = 'flint-ritobin-lsp';
+const OWNER = 'ruination-ritobin-lsp';
 type Rpc = { id?: number | string; method?: string; params?: any; result?: any; error?: { message: string } };
 
 export interface LspStatus { state: 'starting' | 'ready' | 'error'; message: string; diagnostics: number; checking?: boolean }
@@ -131,7 +131,7 @@ export function attachRitobinLsp(ed: monaco.editor.IStandaloneCodeEditor, filePa
     const channel = new Channel<Rpc>();
     channel.onmessage = message => {
         if (disposed || failed) return;
-        if (message.method === 'flint/exited') { fail(message.params?.message ?? 'Language server exited'); return; }
+        if (message.method === 'ruination/exited') { fail(message.params?.message ?? 'Language server exited'); return; }
         if (message.method && message.id !== undefined) {
             // Server edits/commands are never applied. Only harmless protocol bookkeeping.
             if (message.method === 'workspace/configuration') {
@@ -147,7 +147,7 @@ export function attachRitobinLsp(ed: monaco.editor.IStandaloneCodeEditor, filePa
         } else if (message.method === 'experimental/serverStatus') {
             serverMessage = message.params?.message || 'LSP connected';
             status('ready', serverMessage, diagnosticCount);
-        } else if (message.method === 'window/logMessage' || message.method === 'window/showMessage' || message.method === 'flint/stderr') {
+        } else if (message.method === 'window/logMessage' || message.method === 'window/showMessage' || message.method === 'ruination/stderr') {
             const level = message.params?.type === 1 ? 'error' : message.params?.type === 2 ? 'warning' : 'info';
             if (typeof message.params?.message === 'string') showOutput(message.params.message, level);
         } else if (message.method === 'textDocument/publishDiagnostics') {
@@ -185,7 +185,7 @@ export function attachRitobinLsp(ed: monaco.editor.IStandaloneCodeEditor, filePa
                 apply: () => {
                     if (!ready || disposed || dirty || model.isDisposed() || bracketFix !== candidate || model.getVersionId() !== candidate.version) return false;
                     ed.pushUndoStop();
-                    const applied = ed.executeEdits('flint-lsp-bracket-fix', [textEdit(candidate.fix.edit)]);
+                    const applied = ed.executeEdits('ruination-lsp-bracket-fix', [textEdit(candidate.fix.edit)]);
                     ed.pushUndoStop();
                     if (applied) {
                         ed.revealLineInCenter(candidate.fix.edit.range.start.line + 2);
@@ -213,8 +213,8 @@ export function attachRitobinLsp(ed: monaco.editor.IStandaloneCodeEditor, filePa
         await invoke('ritobin_lsp_start', { session, messages: channel });
         if (disposed) { await invoke('ritobin_lsp_stop', { session }); return; }
         const initialized = await request('initialize', {
-            processId: null, rootUri, workspaceFolders: rootUri ? [{ uri: rootUri, name: 'Flint project' }] : null,
-            clientInfo: { name: 'Flint' },
+            processId: null, rootUri, workspaceFolders: rootUri ? [{ uri: rootUri, name: 'The Ruination project' }] : null,
+            clientInfo: { name: 'The Ruination' },
             initializationOptions: { hashPath: '', metaDumpPath: '', diagnosticLimit: 500 },
             capabilities: { general: { positionEncodings: ['utf-16'] }, textDocument: {
                 completion: { completionItem: { snippetSupport: true, documentationFormat: ['markdown', 'plaintext'] } },
@@ -223,7 +223,7 @@ export function attachRitobinLsp(ed: monaco.editor.IStandaloneCodeEditor, filePa
         });
         if (disposed) return;
         const caps = initialized?.capabilities;
-        if (caps?.experimental?.flintNoHashes !== 1) throw new Error('Server does not confirm Flint hash isolation');
+        if (caps?.experimental?.ruinationNoHashes !== 1) throw new Error('Server does not confirm Ruination hash isolation');
         if (caps.positionEncoding && caps.positionEncoding !== 'utf-16') throw new Error('Unsupported LSP position encoding');
         notify('initialized', {});
         notify('textDocument/didOpen', { textDocument: { uri, languageId: 'ritobin', version, text: model.getValue() } });

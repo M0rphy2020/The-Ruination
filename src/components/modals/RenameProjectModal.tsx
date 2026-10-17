@@ -64,7 +64,7 @@ export const RenameProjectModal: React.FC = () => {
         } catch (err) {
             // Rename failed — restore the preview watcher stopped above.
             api.startPreviewWatcher(projectPath).catch(() => {});
-            const fe = err as api.FlintError;
+            const fe = err as api.RuinationError;
             showToast('error', fe.getUserMessage?.() || 'Failed to rename project');
         } finally {
             setBusy(false);

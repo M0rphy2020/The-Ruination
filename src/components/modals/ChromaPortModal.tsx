@@ -180,7 +180,7 @@ export const ChromaPortModal: React.FC = () => {
             );
             closeModal();
         } catch (err) {
-            const fe = err as api.FlintError;
+            const fe = err as api.RuinationError;
             showToast('error', fe.getUserMessage?.() || `Port failed: ${err}`);
         } finally {
             setBusy(false);

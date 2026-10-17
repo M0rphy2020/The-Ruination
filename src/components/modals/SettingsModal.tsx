@@ -665,7 +665,7 @@ export const SettingsModal: React.FC = () => {
         {
             id: 'celestial',
             name: 'Celestial',
-            tagline: "Divine Skins' all-in-one launcher. Detect or point Flint at its mod storage to sync from here.",
+            tagline: "Divine Skins' all-in-one launcher. Detect or point The Ruination at its mod storage to sync from here.",
             accent: '#A05CF6',
             path: celestialPath,
             setPath: setCelestialPath,

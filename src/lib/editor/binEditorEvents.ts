@@ -5,7 +5,7 @@ import { toPosix } from '../pathIdentity';
 
 /** Ask the BIN editor for `filePath` to run its unhash pass. Dispatched by the
  *  preview panel's info bar, which is a sibling of the editor. */
-export const UNHASH_REQUEST_EVENT = 'flint:bin-unhash-request';
+export const UNHASH_REQUEST_EVENT = 'ruination:bin-unhash-request';
 
 /** Ask the BIN editor to reveal a name in the text — the Paint panel's
  *  double-click-an-emitter gesture. */

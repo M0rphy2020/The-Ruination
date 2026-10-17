@@ -15,7 +15,7 @@
 //! importers there is no WAD to unpack and no hash table to resolve, so this
 //! never needs League installed.
 
-use flint_core::project::{
+use ruination_core::project::{
     register_in_index, save_project as core_save_project, Project,
 };
 use serde::Serialize;

@@ -1,7 +1,7 @@
-const __FLINT_JS_START = performance.now();
-const __FLINT_JS_START_WALL = new Date().toISOString();
+const __RUINATION_JS_START = performance.now();
+const __RUINATION_JS_START_WALL = new Date().toISOString();
 // eslint-disable-next-line no-console
-console.log(`[startup] JS entry hit at ${__FLINT_JS_START_WALL} (perf=${__FLINT_JS_START.toFixed(1)}ms since navigationStart)`);
+console.log(`[startup] JS entry hit at ${__RUINATION_JS_START_WALL} (perf=${__RUINATION_JS_START.toFixed(1)}ms since navigationStart)`);
 
 import React from 'react';
 import { createRoot } from 'react-dom/client';
@@ -57,7 +57,7 @@ function StartupReadySignal() {
 }
 
 // eslint-disable-next-line no-console
-console.log(`[startup] imports resolved in ${(performance.now() - __FLINT_JS_START).toFixed(1)}ms`);
+console.log(`[startup] imports resolved in ${(performance.now() - __RUINATION_JS_START).toFixed(1)}ms`);
 
 initializeLogger();
 // eslint-disable-next-line no-console
@@ -68,7 +68,7 @@ bootUxPrefs();
 
 const container = document.getElementById('app');
 if (!container) {
-    throw new Error('[Flint] Could not find #app element');
+    throw new Error('[The Ruination] Could not find #app element');
 }
 
 const loadingScreen = document.getElementById('loading-screen');
@@ -78,7 +78,7 @@ if (loadingScreen) {
 
 const root = createRoot(container);
 // eslint-disable-next-line no-console
-console.log(`[startup] root.render() at +${(performance.now() - __FLINT_JS_START).toFixed(1)}ms from JS entry`);
+console.log(`[startup] root.render() at +${(performance.now() - __RUINATION_JS_START).toFixed(1)}ms from JS entry`);
 root.render(
     React.createElement(React.Suspense, { fallback: React.createElement(LoadingView) },
         isThumbnail
@@ -104,4 +104,4 @@ if (!isDesignLab) {
     initBackendLogListener();
 }
 void getCurrentWindow();
-console.log(isDesignLab ? '[Flint] Design Lab mounted' : '[Flint] Main frontend mounted behind startup gate');
+console.log(isDesignLab ? '[The Ruination] Design Lab mounted' : '[The Ruination] Main frontend mounted behind startup gate');

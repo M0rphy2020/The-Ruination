@@ -34,7 +34,7 @@ where
         let metadata = event.metadata();
         let target_str = metadata.target();
 
-        if target_str == "flint::core::ipc_trace" {
+        if target_str == "the_ruination::core::ipc_trace" {
             return;
         }
 

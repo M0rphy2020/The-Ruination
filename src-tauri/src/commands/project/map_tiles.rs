@@ -1,7 +1,7 @@
 //! Ground-tile PSD stitcher: combine the open map project's ground textures
 //! into one layered PSD and apply an edited PSD back to the .tex files.
 
-use flint_core::path_slash::to_slash;
+use ruination_core::path_slash::to_slash;
 use std::path::{Path, PathBuf};
 
 fn col_index(c: char) -> Option<u32> {

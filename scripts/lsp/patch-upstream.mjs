@@ -21,7 +21,7 @@ function edit(path, transform) {
 edit('main_loop.rs', text => splice(text,
     '    let hashes = Hashes::new()',
     '    tokio::spawn({\n        let server = server.clone();\n        let meta_override',
-    `    // Flint owns all hash resolution. Never discover, load or update hash tables.
+    `    // The Ruination owns all hash resolution. Never discover, load or update hash tables.
     let server = Arc::new(Server::new(connection, config.clone(), None));
     server.update_status(|status| {
         status.hashes = TaskStatus::Ready; // Hash support intentionally disabled.
@@ -40,7 +40,7 @@ edit('server.rs', text => splice(text, 'impl Hashes {', '\npub struct Server {',
 `).replace('use ltk_mimir_cache::{HashStore, Table, UpdateOptions, UpdateOutcome};', 'use ltk_mimir_cache::{HashStore, Table};'));
 
 edit('lsp/capabilities.rs', text => replaceOnce(text, '    ServerCapabilities {',
-    '    ServerCapabilities {\n        experimental: Some(serde_json::json!({ "flintNoHashes": 1 })),')
+    '    ServerCapabilities {\n        experimental: Some(serde_json::json!({ "ruinationNoHashes": 1 })),')
 );
 
 // Upstream omits diagnostic versions. Include them so results for an older edit
@@ -63,4 +63,4 @@ for (const path of readdirSync(root, { recursive: true })) {
         if (source.includes(forbidden)) throw new Error(`Hash access remains in ${path}: ${forbidden}`);
     }
 }
-console.log('Flint no-hashes adapter applied and verified');
+console.log('Ruination no-hashes adapter applied and verified');

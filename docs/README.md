@@ -1,4 +1,4 @@
-# Flint documentation
+# The Ruination documentation
 
 Start here for the current project format, editing workflow, and CDN behavior. These guides describe the implementation in this checkout; dated design records below are historical context.
 
@@ -6,9 +6,9 @@ Start here for the current project format, editing workflow, and CDN behavior. T
 
 | Guide | What it explains |
 |---|---|
-| [How Flint works](architecture.md) | Data flow, frontend/backend responsibilities, persistent files, and core operations. |
+| [How The Ruination works](architecture.md) | Data flow, frontend/backend responsibilities, persistent files, and core operations. |
 | [Working with projects](projects.md) | Project folders, creation, repathing, layers, imports, checkpoints and export. |
-| [`flint.json` reference](flint-json.md) | Every schema 2 field, defaults, examples, legacy migration and the distinction from application settings. |
+| [`ruination.json` project metadata reference](ruination-json.md) | Every schema 2 field, defaults, examples, legacy migration and the distinction from application settings. |
 | [Getting files from the CDN](cdn.md) | Download individual assets without an install, unpack WADs, save raw archives, and understand manifests/caches. |
 | [Files, hashes and references](formats-and-references.md) | Common formats, dependencies, readable hash names and why paths must match. |
 
@@ -17,7 +17,7 @@ For your first project, read [Working with projects](projects.md). If you only n
 ## Reference
 
 - [ritobin-lsp.md](ritobin-lsp.md) — the optional ritobin language server: what it does, how it
-  is kept away from your hashes, and how it is built and shipped with a Flint release.
+  is kept away from your hashes, and how it is built and shipped with a Ruination release.
 
 ## superpowers/
 

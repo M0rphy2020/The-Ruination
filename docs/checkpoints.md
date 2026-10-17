@@ -27,4 +27,4 @@ Raw objects from existing projects remain readable for previews and restores.
 Existing history is not pruned or recompressed. Deleting a checkpoint removes
 its manifest; it does not currently reclaim unreferenced stored objects.
 
-Regression checks: `cargo test -p flint-core checkpoint --lib` from `src-tauri`.
+Regression checks: `cargo test -p ruination-core checkpoint --lib` from `src-tauri`.

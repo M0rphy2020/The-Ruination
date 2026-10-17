@@ -1,4 +1,4 @@
-; Flint Custom NSIS Installer — Dark Theme
+; The Ruination Custom NSIS Installer — Dark Theme
 ; Based on the official Tauri v2 NSIS template with dark theme modifications.
 ; Original: https://github.com/tauri-apps/tauri/blob/dev/crates/tauri-bundler/src/bundle/windows/nsis/installer.nsi
 

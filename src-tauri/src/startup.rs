@@ -46,7 +46,7 @@ fn emit_status(app: &AppHandle, text: impl Into<String>, percent: Option<f32>) {
 }
 
 fn pending_update_path() -> Option<std::path::PathBuf> {
-    crate::commands::settings::get_flint_home()
+    crate::commands::settings::get_ruination_home()
         .ok()
         .map(|home| home.join("pending-update"))
 }
@@ -79,7 +79,7 @@ fn try_reveal_main(app: &AppHandle) {
     }
 
     tracing::info!("startup gates resolved; revealing the fully initialized main window");
-    emit_status(app, "Flint is ready", Some(100.0));
+    emit_status(app, "The Ruination is ready", Some(100.0));
     if let Err(error) = main.show() {
         gate.resolved.store(false, Ordering::Release);
         tracing::error!("startup gate could not show the main window: {error}");
@@ -125,7 +125,7 @@ async fn install_checked_update(app: &AppHandle, update: Update) -> Result<Strin
     let finished_app = app.clone();
     let finished_version = version.clone();
 
-    emit_status(app, format!("Preparing Flint v{version}..."), Some(0.0));
+    emit_status(app, format!("Preparing The Ruination v{version}..."), Some(0.0));
     let download = update.download_and_install(
         move |chunk_length, content_length| {
             if let Some(length) = content_length {
@@ -135,7 +135,7 @@ async fn install_checked_update(app: &AppHandle, update: Update) -> Result<Strin
                 + chunk_length as u64;
             let length = callback_total.load(Ordering::Relaxed);
             let percent = (length > 0).then(|| (current as f32 / length as f32) * 100.0);
-            emit_status(&callback_app, format!("Downloading Flint v{callback_version}..."), percent);
+            emit_status(&callback_app, format!("Downloading The Ruination v{callback_version}..."), percent);
         },
         move || {
             emit_status(&finished_app, format!("Installing Flint v{finished_version}..."), Some(100.0));
@@ -175,7 +175,7 @@ async fn run_startup(app: AppHandle) {
             Ok(updater) => updater,
             Err(error) => {
                 tracing::warn!("startup updater unavailable: {error}");
-                finish_without_update(&app, "Starting Flint offline...", started).await;
+                finish_without_update(&app, "Starting The Ruination offline...", started).await;
                 return;
             }
         };
@@ -199,7 +199,7 @@ async fn run_startup(app: AppHandle) {
             Ok(Ok(None)) => finish_without_update(&app, "Flint is up to date", started).await,
             Ok(Err(error)) => {
                 tracing::warn!("startup update check failed: {error}");
-                finish_without_update(&app, "Starting Flint offline...", started).await;
+                finish_without_update(&app, "Starting The Ruination offline...", started).await;
             }
             Err(_) => {
                 tracing::warn!("startup update check timed out after {} seconds", UPDATE_CHECK_TIMEOUT.as_secs());

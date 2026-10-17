@@ -1,5 +1,5 @@
 /**
- * Flint API — Tauri command bridge layer.
+ * The Ruination API — Tauri command bridge layer.
  *
  * This barrel re-exports every domain module so consumers can keep using
  * `import * as api from '../lib/api'` exactly as before. New code can also
@@ -8,7 +8,7 @@
  *
  * Each module owns a single domain. If you're adding a new Tauri command,
  * pick the matching file (or create a new one and re-export it here).
- *   - core           — FlintError, invokeCommand/invokeRaw, IPC tracing
+ *   - core           — RuinationError, invokeCommand/invokeRaw, IPC tracing
  *   - logging        — log-level toggle
  *   - hash           — WAD path hash DB
  *   - league         — League install detection

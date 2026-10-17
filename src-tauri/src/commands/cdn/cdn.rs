@@ -1,16 +1,16 @@
 //! Tauri commands for the online CDN manifest browser. These wrap
-//! `flint_core::cdn` (sieve discovery, RMAN tree, remote-WAD TOC browse, extract)
+//! `ruination_core::cdn` (sieve discovery, RMAN tree, remote-WAD TOC browse, extract)
 //! and hold parsed manifests in `CdnSessionState`, one per open manifest tab.
 
 use std::collections::HashMap;
 use std::sync::{Mutex, OnceLock};
-use flint_core::cdn::cancellation::DownloadCancellation;
+use ruination_core::cdn::cancellation::DownloadCancellation;
 
 use serde::Serialize;
 use tauri::{Emitter, State};
 
-use flint_core::cdn::{catalog, downloader, manifest::TreeNode, sieve, wad_browse};
-use flint_core::hash::resolve_hashes_lmdb_bulk;
+use ruination_core::cdn::{catalog, downloader, manifest::TreeNode, sieve, wad_browse};
+use ruination_core::hash::resolve_hashes_lmdb_bulk;
 
 use crate::state::{CdnSessionState, LmdbCacheState};
 
@@ -51,13 +51,13 @@ fn http_client() -> reqwest::Client {
 /// Persistent on-disk cache dir for the manifest catalog (tree + resolved URLs).
 fn cdn_cache_dir() -> std::path::PathBuf {
     let base = std::env::var("APPDATA").unwrap_or_else(|_| ".".to_string());
-    std::path::PathBuf::from(base).join("Flint").join("cache").join("cdn")
+    crate::commands::settings::get_ruination_home().map(|home| home.join("cache").join("cdn")).unwrap_or_else(|_| std::path::PathBuf::from(base).join("The Ruination").join("cache").join("cdn"))
 }
 
 /// Where downloaded manifests are stored (keyed by URL basename).
 fn manifest_dir() -> std::path::PathBuf {
     let base = std::env::var("APPDATA").unwrap_or_else(|_| ".".to_string());
-    std::path::PathBuf::from(base).join("Flint").join("manifest")
+    crate::commands::settings::get_ruination_home().map(|home| home.join("manifest")).unwrap_or_else(|_| std::path::PathBuf::from(base).join("The Ruination").join("manifest"))
 }
 
 // ── manifest discovery ──────────────────────────────────────────────────────
@@ -205,7 +205,7 @@ async fn load_manifest_from_url(url: &str, state: &State<'_, CdnSessionState>) -
         b.to_vec()
     };
     let manifest =
-        flint_core::cdn::manifest::Manifest::from_bytes(&bytes).map_err(|e| e.to_string())?;
+        ruination_core::cdn::manifest::Manifest::from_bytes(&bytes).map_err(|e| e.to_string())?;
     let tree = tree_to_dto(&manifest.tree, "");
     let file_count = manifest.file_count();
     let session_id = state.insert(manifest);
@@ -243,7 +243,7 @@ pub async fn cdn_load_manifest_by_path(
 /// the same source the local WAD explorer uses (`get_hash_dir` + `get_env` +
 /// `resolve_hashes_lmdb_bulk`). Unresolved hashes are simply absent from the map.
 fn resolve_inner_names(hashes: &[u64], lmdb: &State<'_, LmdbCacheState>) -> HashMap<u64, String> {
-    let hash_dir = flint_core::hash::get_hash_dir()
+    let hash_dir = ruination_core::hash::get_hash_dir()
         .map(|p| p.to_string_lossy().into_owned())
         .unwrap_or_default();
     let Some(env) = lmdb.get_env(&hash_dir) else {

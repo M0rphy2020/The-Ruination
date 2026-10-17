@@ -63,6 +63,7 @@ const WadAuditModal = lazyWarm(() => import('../modals/WadAuditModal').then(modu
 const CreateProjectFromWadModal = lazyWarm(() => import('../modals/CreateProjectFromWadModal').then(module => ({ default: module.CreateProjectFromWadModal })));
 const LoadManifestModal = lazyWarm(() => import('../modals/LoadManifestModal').then(module => ({ default: module.LoadManifestModal })));
 const SendToRubyModal = lazyWarm(() => import('../modals/SendToRubyModal').then(module => ({ default: module.SendToRubyModal })));
+const CreatorCopilotModal = lazyWarm(() => import('../modals/CreatorCopilotModal').then(module => ({ default: module.CreatorCopilotModal })));
 
 function getActiveTab(state: { activeTabId: string | null; openTabs: Array<{ id: string; project: any; projectPath: string; selectedFile: string | null }> }) {
     if (!state.activeTabId) return null;
@@ -110,6 +111,7 @@ const ActiveModal: React.FC<{ activeModal: string | null }> = React.memo(({ acti
         case 'wadAudit':         return <WadAuditModal />;
         case 'createProjectFromWad': return <CreateProjectFromWadModal />;
         case 'sendToRuby':       return <SendToRubyModal />;
+        case 'creatorCopilot':   return <CreatorCopilotModal />;
         default:                 return null;
     }
 });
@@ -328,9 +330,9 @@ export const App: React.FC = () => {
                     status.loaded_count > 0,
                     status.loaded_count,
                 );
-                console.log(`[Flint] Hashes loaded: ${status.loaded_count.toLocaleString()}`);
+                console.log(`[The Ruination] Hashes loaded: ${status.loaded_count.toLocaleString()}`);
             } catch (err) {
-                console.error('[Flint] Failed to read hash status after ready event:', err);
+                console.error('[The Ruination] Failed to read hash status after ready event:', err);
             }
         });
 
@@ -379,7 +381,7 @@ export const App: React.FC = () => {
         useNavigationStore.getState().navigateToFileEditor({ filePath, kind });
     }, [setWorking, setReady, showToast]);
 
-    // Dispatches every way Explorer can launch Flint with a target: a plain
+    // Dispatches every way Explorer can launch The Ruination with a target: a plain
     // double-click open, or one of the four context-menu verbs. Each non-`open`
     // branch reuses the flow that already exists for that action rather than
     // duplicating it — see docs/superpowers/plans/2026-07-27-explorer-shell-verbs.md.
@@ -440,7 +442,7 @@ export const App: React.FC = () => {
                     }
                 } catch (err) {
                     console.error('Failed to open project folder:', err);
-                    showToast('error', 'Failed to open folder as a Flint project');
+                    showToast('error', 'Failed to open folder as a project in The Ruination');
                 }
                 return;
             }
@@ -455,7 +457,7 @@ export const App: React.FC = () => {
         // fixed-delay `file-open-request`, so that event is lost. Now that the
         // listener is mounted, PULL any pending Explorer action from the
         // backend — race-free regardless of boot time. (This is why double-
-        // clicking a file used to just open Flint; you had to double-click again.)
+        // clicking a file used to just open The Ruination; you had to double-click again.)
         api.takePendingFileOpen()
             .then((pending) => { if (pending) void handleShellRequest(pending); })
             .catch((err) => console.error('takePendingFileOpen failed:', err));
@@ -564,15 +566,15 @@ export const App: React.FC = () => {
                     const leagueResult = await api.detectLeague();
                     if (leagueResult.path) {
                         useConfigStore.getState().setLeaguePath(leagueResult.path);
-                        console.log('[Flint] Auto-detected League path:', leagueResult.path);
+                        console.log('[The Ruination] Auto-detected League path:', leagueResult.path);
                     }
                 } catch {
-                    console.log('[Flint] League auto-detection failed');
+                    console.log('[The Ruination] League auto-detection failed');
                 }
             }
 
         } catch (error) {
-            console.error('[Flint] Failed to load initial data:', error);
+            console.error('[The Ruination] Failed to load initial data:', error);
         }
     };
 
@@ -589,7 +591,7 @@ export const App: React.FC = () => {
                 useConfigStore.getState().setRecentProjects(validProjects);
             }
         } catch (error) {
-            console.error('[Flint] Failed to clean stale projects:', error);
+            console.error('[The Ruination] Failed to clean stale projects:', error);
         }
     };
 

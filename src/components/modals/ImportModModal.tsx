@@ -169,7 +169,7 @@ export const ImportModModal: React.FC = () => {
             } catch (err) {
                 console.error('Failed to analyze archive:', err);
                 setErrorMsg(
-                    (err as api.FlintError)?.getUserMessage?.() ?? 'Failed to analyze the archive.',
+                    (err as api.RuinationError)?.getUserMessage?.() ?? 'Failed to analyze the archive.',
                 );
                 setStep('error');
             }
@@ -254,7 +254,7 @@ export const ImportModModal: React.FC = () => {
         } catch (err) {
             console.error('Import failed:', err);
             setErrorMsg(
-                (err as api.FlintError)?.getUserMessage?.() ?? 'Import failed. See logs for details.',
+                (err as api.RuinationError)?.getUserMessage?.() ?? 'Import failed. See logs for details.',
             );
             setStep('error');
         } finally {
@@ -310,7 +310,7 @@ export const ImportModModal: React.FC = () => {
                         <div className="import-mod__dropzone-icon">📦</div>
                         <div className="import-mod__dropzone-title">Choose a mod package</div>
                         <div className="import-mod__dropzone-hint">
-                            Select a <code>.fantome</code> or <code>.modpkg</code> file to import into a Flint project
+                            Select a <code>.fantome</code> or <code>.modpkg</code> file to import into a project in The Ruination
                         </div>
                         <Button variant="primary">Browse…</Button>
                     </div>

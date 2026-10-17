@@ -25,7 +25,7 @@ pub async fn translate_material_shader(
     macros: HashMap<String, String>,
     real_textures: Vec<String>,
 ) -> Result<serde_json::Value, String> {
-    flint_shaderforge::translate_material_shader(
+    ruination_shaderforge::translate_material_shader(
         shader_cache_path,
         shader_link,
         shader_link_hash,
@@ -39,14 +39,14 @@ pub async fn translate_material_shader(
 
 #[tauri::command]
 pub async fn locate_shader_cache(hint_path: Option<String>) -> Result<Option<String>, String> {
-    flint_shaderforge::locate_shader_cache(hint_path).await
+    ruination_shaderforge::locate_shader_cache(hint_path).await
 }
 
 #[tauri::command]
 pub async fn read_skn_generic_materials_disk(
     skn_path: String,
 ) -> Result<serde_json::Value, String> {
-    flint_shaderforge::read_skn_generic_materials_disk(skn_path)
+    ruination_shaderforge::read_skn_generic_materials_disk(skn_path)
         .await
         .and_then(to_value)
 }
@@ -58,7 +58,7 @@ pub async fn wad_read_skn_generic_materials(
     chroma_id: Option<u32>,
     buffs_active: Option<bool>,
 ) -> Result<serde_json::Value, String> {
-    flint_shaderforge::wad_read_skn_generic_materials(id, skn_path_hash_hex, chroma_id, buffs_active)
+    ruination_shaderforge::wad_read_skn_generic_materials(id, skn_path_hash_hex, chroma_id, buffs_active)
         .await
         .and_then(to_value)
 }
@@ -68,7 +68,7 @@ pub async fn read_mapgeo_generic_materials_disk(
     mapgeo_path: String,
     material_names: Vec<String>,
 ) -> Result<serde_json::Value, String> {
-    flint_shaderforge::read_mapgeo_generic_materials_disk(mapgeo_path, material_names)
+    ruination_shaderforge::read_mapgeo_generic_materials_disk(mapgeo_path, material_names)
         .await
         .and_then(to_value)
 }
@@ -79,7 +79,7 @@ pub async fn wad_read_mapgeo_generic_materials(
     mapgeo_wad_path: String,
     material_names: Vec<String>,
 ) -> Result<serde_json::Value, String> {
-    flint_shaderforge::wad_read_mapgeo_generic_materials(id, mapgeo_wad_path, material_names)
+    ruination_shaderforge::wad_read_mapgeo_generic_materials(id, mapgeo_wad_path, material_names)
         .await
         .and_then(to_value)
 }
@@ -89,7 +89,7 @@ pub async fn read_mapgeo_water_materials_disk(
     mapgeo_path: String,
     material_names: Vec<String>,
 ) -> Result<serde_json::Value, String> {
-    flint_shaderforge::read_mapgeo_water_materials_disk(mapgeo_path, material_names)
+    ruination_shaderforge::read_mapgeo_water_materials_disk(mapgeo_path, material_names)
         .await
         .and_then(to_value)
 }
@@ -100,19 +100,19 @@ pub async fn wad_read_mapgeo_water_materials(
     mapgeo_wad_path: String,
     material_names: Vec<String>,
 ) -> Result<serde_json::Value, String> {
-    flint_shaderforge::wad_read_mapgeo_water_materials(id, mapgeo_wad_path, material_names)
+    ruination_shaderforge::wad_read_mapgeo_water_materials(id, mapgeo_wad_path, material_names)
         .await
         .and_then(to_value)
 }
 
 #[tauri::command]
 pub async fn map_env_disk(mapgeo_path: String) -> Result<serde_json::Value, String> {
-    flint_shaderforge::map_env_disk(mapgeo_path).await.and_then(to_value)
+    ruination_shaderforge::map_env_disk(mapgeo_path).await.and_then(to_value)
 }
 
 #[tauri::command]
 pub async fn wad_map_env(id: u64, mapgeo_wad_path: String) -> Result<serde_json::Value, String> {
-    flint_shaderforge::wad_map_env(id, mapgeo_wad_path)
+    ruination_shaderforge::wad_map_env(id, mapgeo_wad_path)
         .await
         .and_then(to_value)
 }
@@ -122,7 +122,7 @@ pub async fn resolve_map_assets_disk(
     mapgeo_path: String,
     asset_paths: Vec<String>,
 ) -> Result<Vec<Option<String>>, String> {
-    flint_shaderforge::resolve_map_assets_disk(mapgeo_path, asset_paths).await
+    ruination_shaderforge::resolve_map_assets_disk(mapgeo_path, asset_paths).await
 }
 
 #[tauri::command]
@@ -130,24 +130,24 @@ pub async fn wad_resolve_assets(
     id: u64,
     asset_paths: Vec<String>,
 ) -> Result<Vec<Option<String>>, String> {
-    flint_shaderforge::wad_resolve_assets(id, asset_paths).await
+    ruination_shaderforge::wad_resolve_assets(id, asset_paths).await
 }
 
 #[tauri::command]
 pub async fn read_skn_toon_materials_disk(
     skn_path: String,
 ) -> Result<serde_json::Value, String> {
-    flint_shaderforge::read_skn_toon_materials_disk(skn_path)
+    ruination_shaderforge::read_skn_toon_materials_disk(skn_path)
         .await
         .and_then(to_value)
 }
 
 #[tauri::command]
 pub async fn shaderforge_mount_wad(path: String) -> Result<u64, String> {
-    flint_shaderforge::shaderforge_mount_wad(path).await
+    ruination_shaderforge::shaderforge_mount_wad(path).await
 }
 
 #[tauri::command]
 pub async fn shaderforge_unmount_wad(id: u64) -> Result<bool, String> {
-    flint_shaderforge::shaderforge_unmount_wad(id).await
+    ruination_shaderforge::shaderforge_unmount_wad(id).await
 }

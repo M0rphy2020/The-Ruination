@@ -1,5 +1,5 @@
 /**
- * Flint — What's New Changelog Data
+ * The Ruination — What's New Changelog Data
  *
  * Static changelog entries for each release. The WhatsNewModal reads
  * the first entry whose `version` matches the running app version
@@ -47,7 +47,7 @@ export const CHANGELOG: VersionChangelog[] = [
     {
         version: '3.0.2',
         date: 'September 2026',
-        headline: 'Flint 3.0.2',
+        headline: 'The Ruination 3.0.2',
         entries: [
             {
                 icon: 'file-edit',
@@ -60,7 +60,7 @@ export const CHANGELOG: VersionChangelog[] = [
     {
         version: '2.9.4',
         date: 'August 2026 (Beta)',
-        headline: 'Flint 2.9.4 (Beta)',
+        headline: 'The Ruination 2.9.4 (Beta)',
         subtitle: 'Custom asset paths survive inside the bin, a smarter animation lookup, a rebuilt thumbnail model studio, and 6-language localization.',
         entries: [
             {
@@ -73,7 +73,7 @@ export const CHANGELOG: VersionChangelog[] = [
                 icon: 'animation',
                 tag: 'improvement',
                 title: 'Animations found even in repathed projects',
-                description: 'The animation lookup only ever matched the vanilla folder layout, so a repathed or renamed project offered no clips at all. Flint now falls back to searching the project for the bin that actually holds the clip data.',
+                description: 'The animation lookup only ever matched the vanilla folder layout, so a repathed or renamed project offered no clips at all. The Ruination now falls back to searching the project for the bin that actually holds the clip data.',
             },
             {
                 icon: 'layerModel',
@@ -91,7 +91,7 @@ export const CHANGELOG: VersionChangelog[] = [
                 icon: 'globe',
                 tag: 'feature',
                 title: 'Multi-Language Support (TR, DE, ES, PT, PL, EN)',
-                description: 'Flint now features full internationalization across the entire interface. Switch between Turkish, German, Spanish, Portuguese, Polish, and English in Settings → General. Every view, welcome screen, context menu, modal, and tool has been localized with automatic fallback.',
+                description: 'The Ruination now features full internationalization across the entire interface. Switch between Turkish, German, Spanish, Portuguese, Polish, and English in Settings → General. Every view, welcome screen, context menu, modal, and tool has been localized with automatic fallback.',
             },
             {
                 icon: 'settings',
@@ -110,7 +110,7 @@ export const CHANGELOG: VersionChangelog[] = [
     {
         version: '2.9.0',
         date: 'August 2026',
-        headline: 'Flint 2.9.0',
+        headline: 'The Ruination 2.9.0',
         subtitle: 'Project-wide BIN search, a BIN editor you can configure, and two new ways to port a skin.',
         entries: [
             {
@@ -123,7 +123,7 @@ export const CHANGELOG: VersionChangelog[] = [
                 icon: 'settings',
                 tag: 'feature',
                 title: 'Bin Editor settings',
-                description: 'A new Settings tab for the BIN editor: word wrap, font size, the minimap and its line limit, unhash-on-open, which tools-panel sections start expanded, and four syntax colour presets — Flint Dark, Ember, Slate and High Contrast. The theme applies everywhere ritobin is shown.',
+                description: 'A new Settings tab for the BIN editor: word wrap, font size, the minimap and its line limit, unhash-on-open, which tools-panel sections start expanded, and four syntax colour presets — The Ruination Dark, Ember, Slate and High Contrast. The theme applies everywhere ritobin is shown.',
             },
             {
                 icon: 'bin',
@@ -160,14 +160,14 @@ export const CHANGELOG: VersionChangelog[] = [
     {
         version: '2.8.1',
         date: 'August 2026',
-        headline: 'Flint 2.8.1',
+        headline: 'The Ruination 2.8.1',
         subtitle: 'League Classic skin projects, a working animated loadscreen banner, and a heads-up about TFT.',
         entries: [
             {
                 icon: 'picture',
                 tag: 'feature',
                 title: 'League Classic skin projects',
-                description: 'Flip the new Classic switch next to PBE in the New Project window to mod the League Classic roster. Pick a champion and Flint lands on their Classic skin straight away — the jade ports of live skins are still in the list if you want them. Classic content lives inside the normal champion WAD, so export, preview and everything downstream work exactly as they do for a live skin. Champions whose look never changed (Ashe) simply have no Classic skin.',
+                description: 'Flip the new Classic switch next to PBE in the New Project window to mod the League Classic roster. Pick a champion and The Ruination lands on their Classic skin straight away — the jade ports of live skins are still in the list if you want them. Classic content lives inside the normal champion WAD, so export, preview and everything downstream work exactly as they do for a live skin. Champions whose look never changed (Ashe) simply have no Classic skin.',
             },
             {
                 icon: 'wrench',
@@ -186,14 +186,14 @@ export const CHANGELOG: VersionChangelog[] = [
     {
         version: '2.4.0',
         date: 'July 2026',
-        headline: 'Flint 2.4.0',
+        headline: 'The Ruination 2.4.0',
         subtitle: 'The Thumbnail Creator, animated model previews, plus a batch of bug fixes and QoL changes.',
         entries: [
             {
                 icon: 'picture',
                 tag: 'feature',
                 title: 'Thumbnail Creator',
-                description: 'Design splash-style thumbnails for your mod right inside Flint. Right-click a skin model to open a full editor with a live 3D backdrop (a real Summoner\'s Rift chunk with swappable ground textures), your champion posed in 3D, and text that auto-fills from the project. Move models freely in 3D space, layer them with a separator disc between hero and body, and style everything with drop shadows, colored text glow, a hue-tinted corner bracket frame, and a corner glow. Two built-in styles — Riot and Divine — ship pre-tuned, and the mod name / champion name fill in automatically. Export a crisp 1920×1080 poster in one click.',
+                description: 'Design splash-style thumbnails for your mod right inside The Ruination. Right-click a skin model to open a full editor with a live 3D backdrop (a real Summoner\'s Rift chunk with swappable ground textures), your champion posed in 3D, and text that auto-fills from the project. Move models freely in 3D space, layer them with a separator disc between hero and body, and style everything with drop shadows, colored text glow, a hue-tinted corner bracket frame, and a corner glow. Two built-in styles — Riot and Divine — ship pre-tuned, and the mod name / champion name fill in automatically. Export a crisp 1920×1080 poster in one click.',
             },
             {
                 icon: 'code',
@@ -205,21 +205,21 @@ export const CHANGELOG: VersionChangelog[] = [
                 icon: 'wrench',
                 tag: 'improvement',
                 title: 'Thumbnail QoL',
-                description: 'Everything is a movable, reorderable layer — the disc sits exactly between your two models, each model renders on its own canvas for per-model shadows, and the whole composition themes off a single hue slider. Text auto-sizes to its box (and re-fits once the poster font finishes loading), and status messages use the standard Flint toast popup.',
+                description: 'Everything is a movable, reorderable layer — the disc sits exactly between your two models, each model renders on its own canvas for per-model shadows, and the whole composition themes off a single hue slider. Text auto-sizes to its box (and re-fits once the poster font finishes loading), and status messages use the standard The Ruination toast popup.',
             },
         ],
     },
     {
         version: '2.2.0',
         date: 'June 2026',
-        headline: 'Flint 2.2.0',
+        headline: 'The Ruination 2.2.0',
         subtitle: 'Map editing, new format editors, a faster workflow, and tighter launcher sync.',
         entries: [
             {
                 icon: 'picture',
                 tag: 'feature',
                 title: 'Animated Loadscreen Banner',
-                description: 'Turn a static loadscreen into an animated VFX banner in one click — Flint injects the shader material and opens a mask editor right over the loading screen. The whole banner animates by default; you paint over the champion (or anything that should stay clean) to mask it out, and Restore brings the effect back. Photoshop-style controls: Alt-drag to resize the brush, right-drag for hardness, plus sliders for shine, scroll, glow, and tint.',
+                description: 'Turn a static loadscreen into an animated VFX banner in one click — The Ruination injects the shader material and opens a mask editor right over the loading screen. The whole banner animates by default; you paint over the champion (or anything that should stay clean) to mask it out, and Restore brings the effect back. Photoshop-style controls: Alt-drag to resize the brush, right-drag for hardness, plus sliders for shine, scroll, glow, and tint.',
             },
             {
                 icon: 'code',
@@ -261,7 +261,7 @@ export const CHANGELOG: VersionChangelog[] = [
                 icon: 'link',
                 tag: 'feature',
                 title: 'Celestial Launcher Sync',
-                description: 'Sync straight to the Celestial launcher’s Creator Hub — Flint hands your project folder over via a deep link, no packaging required. Celestial is now the default launcher target, with LTK Manager still one click away.',
+                description: 'Sync straight to the Celestial launcher’s Creator Hub — The Ruination hands your project folder over via a deep link, no packaging required. Celestial is now the default launcher target, with LTK Manager still one click away.',
             },
             {
                 icon: 'picture',
@@ -298,26 +298,26 @@ export const CHANGELOG: VersionChangelog[] = [
     {
         version: '2.0.2',
         date: 'May 2026',
-        headline: 'Flint 2.0.2',
+        headline: 'The Ruination 2.0.2',
         subtitle: 'Major feature additions and QoL improvements.',
         entries: [
             {
                 icon: 'link',
                 tag: 'feature',
                 title: 'Auto File Registry',
-                description: 'Double-click to open supported files directly! Automatically associates Flint with .wad, .bin, .tex, .modpkg, and .fantome files via Windows registry.',
+                description: 'Double-click to open supported files directly! Automatically associates The Ruination with .wad, .bin, .tex, .modpkg, and .fantome files via Windows registry.',
             },
             {
                 icon: 'folder',
                 tag: 'feature',
                 title: 'TFT Support',
-                description: 'Teamfight Tactics support is finally here. You can now build and manage TFT mods natively within Flint.',
+                description: 'Teamfight Tactics support is finally here. You can now build and manage TFT mods natively within The Ruination.',
             },
             {
                 icon: 'picture',
                 tag: 'feature',
                 title: 'Map Support',
-                description: 'Flint now officially supports map mods. Start creating custom maps with full tooling integration.',
+                description: 'The Ruination now officially supports map mods. Start creating custom maps with full tooling integration.',
             },
         ],
     },

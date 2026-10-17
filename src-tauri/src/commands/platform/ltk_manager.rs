@@ -2,7 +2,7 @@
 //!
 //! These commands provide integration with LTK Manager for syncing projects to the launcher.
 
-use flint_core::path_slash::{slash_str, to_slash};
+use ruination_core::path_slash::{slash_str, to_slash};
 use chrono::Utc;
 use serde::{Deserialize, Serialize};
 use std::fs;
@@ -127,7 +127,7 @@ pub async fn get_celestial_mod_path(app: tauri::AppHandle) -> Result<Option<Stri
     Ok(None)
 }
 
-/// Sync a Flint project to the Celestial launcher by handing it the project
+/// Sync a Ruination project to the Celestial launcher by handing it the project
 /// path via a `celestial://import-flint?path=...` deep link (Celestial reads the
 /// raw project folder itself, so nothing is packaged).
 ///
@@ -138,7 +138,7 @@ pub async fn sync_project_to_celestial(project_path: String) -> Result<String, S
 
     if !project_buf.join("flint.json").is_file() {
         return Err(format!(
-            "Not a Flint project (no flint.json found at {})",
+            "Not a Ruination project (no flint.json found at {})",
             project_path
         ));
     }
@@ -236,15 +236,15 @@ pub struct LauncherSyncResult {
 }
 
 /**
-Hand a Flint project to LTK Manager.
+Hand a Ruination project to LTK Manager.
 
 The **workshop** is LTK Manager's authoring side — the projects a user is making — and the
-**library** is the other side, the mods they installed. A project open in Flint is being
+**library** is the other side, the mods they installed. A project open in The Ruination is being
 authored, so it belongs in the workshop; the library only gets it once it ships. So the
 workshop wins whenever `workshopPath` is set, and the old package-and-install path is the
 fallback for a user who has never configured one.
 
-A workshop project and a Flint project are the same thing on disk — `mod.config.json` beside
+A workshop project and a Ruination project are the same thing on disk — `mod.config.json` beside
 a `content/<layer>/` tree — so this mirrors the folder rather than packaging anything.
 */
 #[tauri::command]
@@ -255,7 +255,7 @@ pub async fn sync_project_to_launcher(
     let sync_start = Instant::now();
     let project_path_buf = PathBuf::from(&project_path);
 
-    let project = flint_core::project::open_project(&project_path_buf)
+    let project = ruination_core::project::open_project(&project_path_buf)
         .map_err(|e| format!("Failed to open project: {}", e))?;
 
     tracing::info!("Syncing project {} v{}", project.name, project.version);
@@ -323,7 +323,7 @@ fn is_wad_name(name: &str) -> bool {
 /**
 Every file to mirror, as `(source, destination-relative path)`.
 
-Older Flint projects put the WAD straight under `content/` with no layer directory. LTK
+Older Ruination projects put the WAD straight under `content/` with no layer directory. LTK
 Manager reads each child of `content/` AS a layer, so that shape would show up as a layer
 named `yone.wad.client` holding the game's own tree. Those are rehomed under `content/base/`,
 which is what `mod.config.json` already declares.
@@ -453,8 +453,8 @@ fn mirror_project_to_workshop(
 }
 
 fn package_project(project_path: &std::path::Path, output_path: &std::path::Path) -> Result<(), String> {
-    use flint_core::export::build_wad_from_directory;
-    use flint_core::project::{ModProject, ModProjectAuthor};
+    use ruination_core::export::build_wad_from_directory;
+    use ruination_core::project::{ModProject, ModProjectAuthor};
     use std::io::Write;
     use zip::write::SimpleFileOptions;
     use zip::ZipWriter;

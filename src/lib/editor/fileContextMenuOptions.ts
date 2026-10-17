@@ -128,7 +128,7 @@ export function buildFileContextMenuOptions(args: BuildOptionsArgs): ContextMenu
                                         maskExistedBefore,
                                     });
                                 } catch (e) {
-                                    const fe = e as api.FlintError;
+                                    const fe = e as api.RuinationError;
                                     showToast('error', fe.getUserMessage?.() || (e instanceof Error ? e.message : 'Failed to add loadscreen banner'));
                                 }
                             })();
@@ -149,7 +149,7 @@ export function buildFileContextMenuOptions(args: BuildOptionsArgs): ContextMenu
                                     await refreshFileTree();
                                     showToast('success', 'Animated loadscreen rebuilt successfully.');
                                 } catch (e) {
-                                    const fe = e as api.FlintError;
+                                    const fe = e as api.RuinationError;
                                     showToast('error', fe.getUserMessage?.() || (e instanceof Error ? e.message : 'Failed to rebuild loadscreen'));
                                 }
                             })();
@@ -208,8 +208,8 @@ export function buildFileContextMenuOptions(args: BuildOptionsArgs): ContextMenu
                     await api.createDirectory(projectPath, newDir);
                     await refreshFileTree();
                 } catch (err) {
-                    const flintError = err as api.FlintError;
-                    showToast('error', flintError.getUserMessage?.() || 'Failed to create folder');
+                    const ruinationError = err as api.RuinationError;
+                    showToast('error', ruinationError.getUserMessage?.() || 'Failed to create folder');
                 }
             },
         });
@@ -357,8 +357,8 @@ export function buildFileContextMenuOptions(args: BuildOptionsArgs): ContextMenu
                             await refreshFileTree();
                             showToast('success', 'Folder deleted');
                         } catch (err) {
-                            const flintError = err as api.FlintError;
-                            showToast('error', flintError.getUserMessage?.() || 'Failed to delete folder');
+                            const ruinationError = err as api.RuinationError;
+                            showToast('error', ruinationError.getUserMessage?.() || 'Failed to delete folder');
                         }
                     },
                 });
@@ -453,8 +453,8 @@ export function buildFileContextMenuOptions(args: BuildOptionsArgs): ContextMenu
                 await refreshFileTree();
                 showToast('success', 'File duplicated');
             } catch (err) {
-                const flintError = err as api.FlintError;
-                showToast('error', flintError.getUserMessage?.() || 'Failed to duplicate');
+                const ruinationError = err as api.RuinationError;
+                showToast('error', ruinationError.getUserMessage?.() || 'Failed to duplicate');
             }
         },
     });
@@ -492,8 +492,8 @@ export function buildFileContextMenuOptions(args: BuildOptionsArgs): ContextMenu
                         showToast('success', `Wrote ${result.format} — ${result.width}×${result.height}`);
                         await refreshFileTree();
                     } catch (err) {
-                        const flintError = err as api.FlintError;
-                        showToast('error', flintError.getUserMessage?.() || 'Conversion failed');
+                        const ruinationError = err as api.RuinationError;
+                        showToast('error', ruinationError.getUserMessage?.() || 'Conversion failed');
                     }
                 },
             });
@@ -508,8 +508,8 @@ export function buildFileContextMenuOptions(args: BuildOptionsArgs): ContextMenu
                         showToast('success', `Wrote ${result.format} — ${result.width}×${result.height}`);
                         await refreshFileTree();
                     } catch (err) {
-                        const flintError = err as api.FlintError;
-                        showToast('error', flintError.getUserMessage?.() || 'Conversion failed');
+                        const ruinationError = err as api.RuinationError;
+                        showToast('error', ruinationError.getUserMessage?.() || 'Conversion failed');
                     }
                 },
             });
@@ -530,8 +530,8 @@ export function buildFileContextMenuOptions(args: BuildOptionsArgs): ContextMenu
                         showToast('success', `Wrote ${result.format} — ${result.width}×${result.height}`);
                         await refreshFileTree();
                     } catch (err) {
-                        const flintError = err as api.FlintError;
-                        showToast('error', flintError.getUserMessage?.() || 'Conversion failed');
+                        const ruinationError = err as api.RuinationError;
+                        showToast('error', ruinationError.getUserMessage?.() || 'Conversion failed');
                     }
                 },
             });
@@ -549,8 +549,8 @@ export function buildFileContextMenuOptions(args: BuildOptionsArgs): ContextMenu
                     showToast('success', `Wrote PNG — ${result.width}×${result.height}`);
                     await refreshFileTree();
                 } catch (err) {
-                    const flintError = err as api.FlintError;
-                    showToast('error', flintError.getUserMessage?.() || 'PNG export failed');
+                    const ruinationError = err as api.RuinationError;
+                    showToast('error', ruinationError.getUserMessage?.() || 'PNG export failed');
                 }
             },
         });
@@ -625,8 +625,8 @@ export function buildFileContextMenuOptions(args: BuildOptionsArgs): ContextMenu
                             fileName,
                         });
                     } catch (err) {
-                        const flintError = err as api.FlintError;
-                        showToast('error', flintError.getUserMessage?.() || 'Failed to check backup');
+                        const ruinationError = err as api.RuinationError;
+                        showToast('error', ruinationError.getUserMessage?.() || 'Failed to check backup');
                     }
                 },
             },
@@ -641,8 +641,8 @@ export function buildFileContextMenuOptions(args: BuildOptionsArgs): ContextMenu
             try {
                 meta = await api.findOriginalFile(leaguePath, projectPath, node.path);
             } catch (err) {
-                const flintError = err as api.FlintError;
-                showToast('error', flintError.getUserMessage?.() || 'Failed to look up original');
+                const ruinationError = err as api.RuinationError;
+                showToast('error', ruinationError.getUserMessage?.() || 'Failed to look up original');
                 return;
             }
             if (!meta.found || !meta.wad_path || !meta.matched_hash) {
@@ -680,8 +680,8 @@ export function buildFileContextMenuOptions(args: BuildOptionsArgs): ContextMenu
                         await refreshFileTree();
                         showToast('success', `Restored ${fileName} from original (previous version backed up)`);
                     } catch (err) {
-                        const flintError = err as api.FlintError;
-                        showToast('error', flintError.getUserMessage?.() || 'Failed to restore from original');
+                        const ruinationError = err as api.RuinationError;
+                        showToast('error', ruinationError.getUserMessage?.() || 'Failed to restore from original');
                     }
                 },
             });
@@ -696,8 +696,8 @@ export function buildFileContextMenuOptions(args: BuildOptionsArgs): ContextMenu
                         await api.createFileBackup(projectPath, node.path);
                         showToast('success', `Backed up ${fileName}`);
                     } catch (err) {
-                        const flintError = err as api.FlintError;
-                        showToast('error', flintError.getUserMessage?.() || 'Failed to create backup');
+                        const ruinationError = err as api.RuinationError;
+                        showToast('error', ruinationError.getUserMessage?.() || 'Failed to create backup');
                     }
                 },
             },
@@ -723,14 +723,14 @@ export function buildFileContextMenuOptions(args: BuildOptionsArgs): ContextMenu
                                     await refreshFileTree();
                                     showToast('success', `Restored ${fileName} from backup`);
                                 } catch (err) {
-                                    const flintError = err as api.FlintError;
-                                    showToast('error', flintError.getUserMessage?.() || 'Failed to restore from backup');
+                                    const ruinationError = err as api.RuinationError;
+                                    showToast('error', ruinationError.getUserMessage?.() || 'Failed to restore from backup');
                                 }
                             },
                         });
                     } catch (err) {
-                        const flintError = err as api.FlintError;
-                        showToast('error', flintError.getUserMessage?.() || 'Failed to check backup');
+                        const ruinationError = err as api.RuinationError;
+                        showToast('error', ruinationError.getUserMessage?.() || 'Failed to check backup');
                     }
                 },
             },
@@ -756,14 +756,14 @@ export function buildFileContextMenuOptions(args: BuildOptionsArgs): ContextMenu
                                     await api.deleteFileBackup(projectPath, node.path);
                                     showToast('success', 'Backup deleted');
                                 } catch (err) {
-                                    const flintError = err as api.FlintError;
-                                    showToast('error', flintError.getUserMessage?.() || 'Failed to delete backup');
+                                    const ruinationError = err as api.RuinationError;
+                                    showToast('error', ruinationError.getUserMessage?.() || 'Failed to delete backup');
                                 }
                             },
                         });
                     } catch (err) {
-                        const flintError = err as api.FlintError;
-                        showToast('error', flintError.getUserMessage?.() || 'Failed to check backup');
+                        const ruinationError = err as api.RuinationError;
+                        showToast('error', ruinationError.getUserMessage?.() || 'Failed to check backup');
                     }
                 },
             },
@@ -867,8 +867,8 @@ export function buildFileContextMenuOptions(args: BuildOptionsArgs): ContextMenu
                         await refreshFileTree();
                         showToast('success', 'File deleted');
                     } catch (err) {
-                        const flintError = err as api.FlintError;
-                        showToast('error', flintError.getUserMessage?.() || 'Failed to delete file');
+                        const ruinationError = err as api.RuinationError;
+                        showToast('error', ruinationError.getUserMessage?.() || 'Failed to delete file');
                     }
                 },
             });

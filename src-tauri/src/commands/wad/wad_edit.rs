@@ -11,13 +11,13 @@
 //!      session open).
 //!   4. `close_wad_edit_session(session_id)` — frees memory.
 
-use flint_core::path_slash::to_slash;
+use ruination_core::path_slash::to_slash;
 use crate::core::ipc_trace;
 use crate::state::{WadEditBacking, WadEditDelta, WadEditSession, WadEditState};
-use flint_core::wad::format::{WadChunk, WadCompression};
-use flint_core::wad::read_chunk_decompressed_bytes;
-use flint_core::wad::reader::read_wad_toc;
-use flint_core::wad::writer::{write_wad, EntryToWrite};
+use ruination_core::wad::format::{WadChunk, WadCompression};
+use ruination_core::wad::read_chunk_decompressed_bytes;
+use ruination_core::wad::reader::read_wad_toc;
+use ruination_core::wad::writer::{write_wad, EntryToWrite};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::path::PathBuf;

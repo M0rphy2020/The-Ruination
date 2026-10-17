@@ -82,7 +82,7 @@ fn detect_aux_mime_from_magic(data: &[u8]) -> Option<&'static str> {
 
     // Shared high-confidence table first — one answer for png/jpg/svg/RIFF/
     // WGEO/fonts/archives, so this panel and WAD extraction cannot disagree.
-    if let Some(format) = flint_core::wad::sniff::sniff(data) {
+    if let Some(format) = ruination_core::wad::sniff::sniff(data) {
         return Some(format.mime);
     }
 
@@ -318,7 +318,7 @@ mod tests {
     #[test]
     fn aux_magic_discriminates_riff_family_via_shared_table() {
         // RIFF fronts WEBP, WAV, and Wwise's own WEM. Before this function
-        // delegated to the shared `flint_core::wad::sniff` table it had no
+        // delegated to the shared `ruination_core::wad::sniff` table it had no
         // RIFF handling at all, so every one of these fell straight through.
         assert_eq!(
             detect_aux_mime_from_magic(b"RIFF\x24\x00\x00\x00WEBPVP8 "),

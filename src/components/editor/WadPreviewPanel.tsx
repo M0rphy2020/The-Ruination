@@ -568,7 +568,7 @@ export const WadPreviewPanel: React.FC<{ style?: React.CSSProperties; sessionId?
             );
         } catch (err) {
             console.error('[WadPreviewPanel] Save chunk failed:', err);
-            const msg = err instanceof api.FlintError ? err.getUserMessage() : String(err);
+            const msg = err instanceof api.RuinationError ? err.getUserMessage() : String(err);
             showToast('error', `Failed to compile/save: ${msg}`);
         } finally {
             setIsSavingChunk(false);
@@ -601,7 +601,7 @@ export const WadPreviewPanel: React.FC<{ style?: React.CSSProperties; sessionId?
                     useWadExtractStore.getState().setPreview(sessionId, null);
                     showToast('success', `File removed. Save the ${container} to persist the deletion.`);
                 } catch (err) {
-                    const msg = err instanceof api.FlintError ? err.getUserMessage() : String(err);
+                    const msg = err instanceof api.RuinationError ? err.getUserMessage() : String(err);
                     showToast('error', `Failed to delete: ${msg}`);
                 }
             },

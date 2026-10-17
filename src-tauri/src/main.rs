@@ -8,8 +8,8 @@ mod startup;
 mod state;
 
 use commands::project_watcher::WatcherState;
-use commands::settings::{initialize_app_home, get_flint_home};
-use flint_core::hash::get_hash_dir;
+use commands::settings::{initialize_app_home, get_ruination_home};
+use ruination_core::hash::get_hash_dir;
 use core::frontend_log::{FrontendLogLayer, set_app_handle};
 use shell_args::PendingFileOpen;
 use state::{CdnSessionState, HashOverlayState, LmdbCacheState, PendingFileOpenState, WadCacheState, WadEditState};
@@ -20,14 +20,14 @@ fn main() {
     // reqwest uses `rustls-no-provider`; install the ring crypto provider as the
     // process default before any HTTPS request, or the first fetch panics with
     // "No provider set" (CDN manifest browse, updater, …).
-    flint_core::net::install_tls_provider();
+    ruination_core::net::install_tls_provider();
 
-    let log_dir = get_flint_home()
+    let log_dir = get_ruination_home()
         .map(|h| h.join("logs"))
         .unwrap_or_else(|_| std::path::PathBuf::from("./logs"));
     std::fs::create_dir_all(&log_dir).ok();
 
-    let file_appender = tracing_appender::rolling::daily(&log_dir, "flint.log");
+    let file_appender = tracing_appender::rolling::daily(&log_dir, "the-ruination.log");
     let (file_writer, _guard) = tracing_appender::non_blocking(file_appender);
 
     let filter = EnvFilter::try_from_default_env()
@@ -64,11 +64,11 @@ fn main() {
         .with(filter_layer)
         .init();
 
-    tracing::info!("Flint starting...");
+    tracing::info!("The Ruination starting...");
     tracing::info!(
         "IPC tracing active — frontend logs `[ipc#N ▶/✓]`, Rust logs `[rs-ipc#N ▶/✓]`. \
-         In DevTools, call `__FLINT_IPC_STATS()` to see per-command totals. \
-         Toggle JS-side trace via `localStorage.flintIpcTrace = '0'` then reload."
+         In DevTools, call `__RUINATION_IPC_STATS()` to see per-command totals. \
+         Toggle JS-side trace via `localStorage.ruinationIpcTrace = '0'` then reload."
     );
 
     let t_start = std::time::Instant::now();
@@ -174,7 +174,7 @@ fn main() {
             // Shader-preview module env: cache root + the shared hash dir.
             // No-op in stub builds.
             if let Ok(config_dir) = app.path().app_data_dir() {
-                flint_shaderforge::init_host_env(config_dir, Some(hash_dir.clone()));
+                ruination_shaderforge::init_host_env(config_dir, Some(hash_dir.clone()));
             }
 
             let hash_dir_str = hash_dir.to_string_lossy().into_owned();
@@ -182,7 +182,7 @@ fn main() {
             let app_handle = app.handle().clone();
             tauri::async_runtime::spawn(async move {
                 tracing::info!("Checking for hash updates...");
-                match flint_core::hash::download_hashes(&hash_dir, false).await {
+                match ruination_core::hash::download_hashes(&hash_dir, false).await {
                     Ok(stats) => {
                         tracing::info!(
                             "Hash sync: {} downloaded, {} up-to-date, {} errors",
@@ -212,7 +212,7 @@ fn main() {
                 the mesh itself cost 157ms. */
                 std::thread::spawn(|| {
                     let t = std::time::Instant::now();
-                    let n = flint_core::bin::get_cached_bin_hashes().read().len();
+                    let n = ruination_core::bin::get_cached_bin_hashes().read().len();
                     tracing::info!("[startup] name mapper warm: {n} entries in {:?}", t.elapsed());
                 });
             });
@@ -517,7 +517,7 @@ fn main() {
             commands::skin_fixer::hematite_list_fixes,
             commands::skin_fixer::hematite_scan_projects,
             commands::skin_fixer::hematite_run_fixes,
-            // Shader preview (flint-shaderforge boundary; stub answers when
+            // Shader preview (ruination-shaderforge boundary; stub answers when
             // the private overlay isn't compiled in)
             commands::shaderforge::translate_material_shader,
             commands::shaderforge::shader_preview_available,

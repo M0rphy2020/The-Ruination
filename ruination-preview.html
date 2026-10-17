@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Ruination - GitHub preview</title>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
+    integrity="sha384-ZZ1pncU3bQe8y31yfZdMFdSpttDoPmOZg2wguVK9almUodir1PghgT0eY7Mrty8H"
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <style>
+    /* The Ruination design tokens, aligned with src/styles/foundation/tokens.css. The card is
+       the dark obsidian palette is punctuated by the cyan sigil. */
+    :root {
+      --bg-primary: #05090B;
+      --bg-tertiary: #0B1518;
+      --bg-hover: #102328;
+      --border: #1B353A;
+      --text-primary: #C7D6D8;
+      --text-secondary: #91A9AD;
+      --text-muted: #668085;
+      --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      --font-mono: 'Cascadia Code', 'Fira Code', Consolas, 'Courier New', monospace;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      padding: 30px 20px;
+      background: #0b0b0b;
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+    }
+
+    /* Not part of the capture. */
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .toolbar .hint {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .shot-btn {
+      height: 28px;
+      padding: 0 12px;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .shot-btn:hover:not(:disabled) {
+      background: var(--bg-hover);
+    }
+
+    .shot-btn:disabled {
+      color: var(--text-muted);
+      cursor: default;
+    }
+
+    /* ── The card is The Ruination window: titlebar, body, status bar. ── */
+    .card {
+      width: 1280px;
+      height: 640px;
+      display: grid;
+      grid-template-rows: 40px minmax(0, 1fr) 30px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: var(--bg-primary);
+      overflow: hidden;
+    }
+
+    .titlebar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 14px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-tertiary);
+    }
+
+    .titlebar__mark {
+      width: 16px;
+      height: 16px;
+      display: block;
+    }
+
+    .titlebar__by {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .titlebar__by b {
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    /* Each control is an 11px box whose shape is drawn by pseudo-elements, so they share
+       one baseline and one stroke weight instead of being nudged into place. */
+    .wc {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-left: auto;
+    }
+
+    .wc span {
+      position: relative;
+      display: block;
+      width: 11px;
+      height: 11px;
+    }
+
+    .wc .min::before,
+    .wc .close::before,
+    .wc .close::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      height: 1px;
+      background: var(--text-muted);
+    }
+
+    .wc .max::before {
+      content: '';
+      position: absolute;
+      inset: 1px;
+      border: 1px solid var(--text-muted);
+    }
+
+    .wc .close::before {
+      transform: rotate(45deg);
+    }
+
+    .wc .close::after {
+      transform: rotate(-45deg);
+    }
+
+    .body {
+      display: grid;
+      align-content: center;
+      justify-items: start;
+      padding: 0 64px;
+    }
+
+    .lockup {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+    }
+
+    .logo {
+      width: 175px;
+      height: 175px;
+      display: block;
+    }
+
+    .wordmark {
+      font-family: var(--font-mono);
+      font-size: 108px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      line-height: 1;
+      color: #e8e8e8;
+    }
+
+    .rule {
+      width: 196px;
+      height: 1px;
+      margin: 34px 0 30px;
+      background: var(--border);
+    }
+
+    .lede {
+      max-width: 54ch;
+      font-size: 34px;
+      line-height: 1.45;
+      color: var(--text-muted);
+    }
+
+    .lede b {
+      display: block;
+      font-weight: 400;
+      color: var(--text-primary);
+    }
+
+    .does {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 40px;
+    }
+
+    .does span {
+      padding: 8px 13px;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      background: var(--bg-tertiary);
+      font-size: 16px;
+      color: var(--text-secondary);
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 0 16px;
+      border-top: 1px solid var(--border);
+      background: var(--bg-tertiary);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .status i {
+      width: 1px;
+      height: 11px;
+      background: var(--border);
+    }
+
+    .status .end {
+      margin-left: auto;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="toolbar" id="toolbar">
+    <span class="hint">1280x640, captured at 1.8x</span>
+    <button class="shot-btn" id="shotBtn">Download JPEG</button>
+  </div>
+
+  <div class="card" id="card">
+
+    <div class="titlebar">
+      <img class="titlebar__mark" src="./public/ruination-mark.svg" alt="" />
+      <span class="titlebar__by">By <b>SirDexal</b></span>
+      <span class="wc"><span class="min"></span><span class="max"></span><span class="close"></span></span>
+    </div>
+
+    <div class="body">
+      <div class="lockup">
+        <img class="logo" src="./public/ruination-mark.svg" alt="The Ruination" />
+        <div class="wordmark">THE RUINATION</div>
+      </div>
+
+      <div class="rule"></div>
+
+      <p class="lede">
+        <b>A desktop IDE for League of Legends skin mods.</b> Extract, preview, edit and package in one window.
+      </p>
+
+      <div class="does">
+        <span>Edit Files</span>
+        <span>Create Projects</span>
+        <span>Download Manifest</span>
+        <span>Package Mod</span>
+      </div>
+    </div>
+
+    <div class="status">
+      <span>Rust</span><i></i>
+      <span>Tauri 2</span><i></i>
+      <span>React 18</span>
+      <span class="end">AGPL-3.0-only</span>
+    </div>
+
+  </div>
+
+  <script>
+    const btn = document.getElementById('shotBtn');
+    const card = document.getElementById('card');
+
+    btn.addEventListener('click', async () => {
+      btn.disabled = true;
+      const original = btn.textContent;
+      btn.textContent = 'Capturing...';
+
+      try {
+        const canvas = await html2canvas(card, {
+          backgroundColor: '#05090B',
+          scale: 1.8,
+          useCORS: true,
+          logging: false,
+          width: 1280,
+          height: 640,
+          windowWidth: 1280,
+          windowHeight: 640,
+        });
+
+        canvas.toBlob((blob) => {
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'ruination-preview.jpg';
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          URL.revokeObjectURL(url);
+        }, 'image/jpeg', 0.95);
+
+        btn.textContent = 'Downloaded';
+        setTimeout(() => { btn.textContent = original; btn.disabled = false; }, 1400);
+      } catch (err) {
+        console.error(err);
+        btn.textContent = 'Capture failed, see the console';
+        setTimeout(() => { btn.textContent = original; btn.disabled = false; }, 1800);
+      }
+    });
+  </script>
+
+</body>
+
+</html>

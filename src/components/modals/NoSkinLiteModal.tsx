@@ -100,7 +100,7 @@ export const NoSkinLiteModal: React.FC = () => {
             }
             closeModal();
         } catch (err) {
-            const fe = err as api.FlintError;
+            const fe = err as api.RuinationError;
             showToast('error', fe.getUserMessage?.() || `NoSkinLite failed: ${err}`);
         } finally {
             setBusy(false);

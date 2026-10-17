@@ -6,8 +6,8 @@ use std::env;
 use std::fs;
 use std::path::Path;
 
-use flint_core::bin::Bin;
-use flint_core::hash::HashMapper;
+use ruination_core::bin::Bin;
+use ruination_core::hash::HashMapper;
 use ritoshark::bin::{from_text, to_text};
 use ritoshark::prelude::{Parse as _, Serialize as _};
 

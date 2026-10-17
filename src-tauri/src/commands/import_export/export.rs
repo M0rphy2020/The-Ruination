@@ -1,6 +1,6 @@
-use flint_core::path_slash::to_slash;
-use flint_core::repath::{organize_project, OrganizerConfig};
-use flint_core::project::{ModProject, ModProjectAuthor};
+use ruination_core::path_slash::to_slash;
+use ruination_core::repath::{organize_project, OrganizerConfig};
+use ruination_core::project::{ModProject, ModProjectAuthor};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::fs::File;
@@ -136,7 +136,7 @@ fn collect_project_files_txt(project_path: &Path) -> Result<String, String> {
     };
     let mut entries: BTreeMap<String, String> = BTreeMap::new();
 
-    for wad_dir in flint_core::export::project_wad_folders(project_path)? {
+    for wad_dir in ruination_core::export::project_wad_folders(project_path)? {
         // 1. A files.txt already written beside this WAD folder.
         if let Ok(text) = std::fs::read_to_string(wad_dir.join("files.txt")) {
             for line in text.lines() {
@@ -172,8 +172,8 @@ fn collect_project_files_txt(project_path: &Path) -> Result<String, String> {
                             continue;
                         }
                         let Ok(bytes) = std::fs::read(&path) else { continue };
-                        let Ok(bin) = flint_core::bin::read_bin(&bytes) else { continue };
-                        let trailer = flint_core::bin::embedded_names(&bin);
+                        let Ok(bin) = ruination_core::bin::read_bin(&bytes) else { continue };
+                        let trailer = ruination_core::bin::embedded_names(&bin);
                         for (hash, name) in &trailer.names {
                             entries.entry(name.clone()).or_insert_with(|| format!("{hash:08x}"));
                         }
@@ -233,7 +233,7 @@ pub async fn export_fantome(
             authors: vec![ModProjectAuthor::Name(metadata.author.clone())],
             license: None,
             transformers: vec![],
-            layers: flint_core::project::default_layers(),
+            layers: ruination_core::project::default_layers(),
             thumbnail: None,
         }
     };
@@ -293,7 +293,7 @@ fn export_with_ltk_fantome(
     let mut zip = ZipWriter::new(file);
     let mut total_files = 0;
 
-    for path in flint_core::export::project_wad_folders(project_path)? {
+    for path in ruination_core::export::project_wad_folders(project_path)? {
         let wad_name = path.file_name().unwrap().to_string_lossy().to_string();
 
         // Emitted as a FOLDER (`WAD/<name>.wad.client/<rel>`), not a packed WAD.
@@ -302,7 +302,7 @@ fn export_with_ltk_fantome(
         // chunk. The loose form carries the literal strings, so nothing is lost —
         // and both fantome readers (archive_edit + fantome_import) already detect
         // it by the trailing slash after `.wad.client`.
-        let wad_files = flint_core::export::wad_directory_files(&path)?;
+        let wad_files = ruination_core::export::wad_directory_files(&path)?;
         if wad_files.is_empty() {
             tracing::warn!("Skipping empty WAD folder {}", wad_name);
             continue;
@@ -336,7 +336,7 @@ fn export_with_ltk_fantome(
 
     /* The Embedded Hashtables standard: name-only tables under META/hashes/,
        declared by a `Hashtables` array in info.json, so any compliant tool can
-       resolve this mod's invented paths without Flint's own files.txt. */
+       resolve this mod's invented paths without the application's own files.txt. */
     let tables = super::hashtables::fantome_tables(&super::hashtables::collect_project_tables(
         project_path,
     ));
@@ -456,7 +456,7 @@ pub async fn get_export_preview(project_path: String) -> Result<Vec<String>, Str
     let files: Vec<String> = walkdir::WalkDir::new(&content_base)
         .into_iter()
         .filter_map(|e| e.ok())
-        .filter(|e| e.path().is_file() && flint_core::export::is_shippable(e.path()))
+        .filter(|e| e.path().is_file() && ruination_core::export::is_shippable(e.path()))
         .filter_map(|e| {
             e.path()
                 .strip_prefix(&content_base)
@@ -539,8 +539,8 @@ pub async fn export_modpkg(
     }
 }
 
-fn chunk_compression(file_path: &Path) -> flint_core::export::ModpkgCompression {
-    use flint_core::export::ModpkgCompression;
+fn chunk_compression(file_path: &Path) -> ruination_core::export::ModpkgCompression {
+    use ruination_core::export::ModpkgCompression;
     match file_path
         .extension()
         .and_then(|e| e.to_str())
@@ -557,8 +557,8 @@ fn export_with_ltk_modpkg(
     output_path: &Path,
     mod_project: &ModProject,
 ) -> Result<(usize, u64), String> {
-    use flint_core::export::{ModpkgBuilder, ModpkgChunkBuilder, ModpkgLayerBuilder};
-    use flint_core::export::{ModpkgAuthor, ModpkgLayerMetadata, ModpkgMetadata};
+    use ruination_core::export::{ModpkgBuilder, ModpkgChunkBuilder, ModpkgLayerBuilder};
+    use ruination_core::export::{ModpkgAuthor, ModpkgLayerMetadata, ModpkgMetadata};
     use std::io::Write;
 
     let content = project_path.join("content");
@@ -583,7 +583,7 @@ fn export_with_ltk_modpkg(
         for entry in walkdir::WalkDir::new(&layer_root)
             .into_iter()
             .filter_map(|e| e.ok())
-            .filter(|e| e.path().is_file() && flint_core::export::is_shippable(e.path()))
+            .filter(|e| e.path().is_file() && ruination_core::export::is_shippable(e.path()))
         {
             let file_path = entry.path();
             let relative_path = file_path
@@ -591,7 +591,7 @@ fn export_with_ltk_modpkg(
                 .map_err(|e| format!("Failed to get relative path: {}", e))?;
 
             let normalized_path = relative_path.to_string_lossy().replace('\\', "/").to_lowercase();
-            let (wad, chunk_path) = flint_core::export::split_wad_prefix(&normalized_path);
+            let (wad, chunk_path) = ruination_core::export::split_wad_prefix(&normalized_path);
 
             file_paths
                 .entry((chunk_path, layer_name.clone()))
@@ -615,8 +615,8 @@ fn export_with_ltk_modpkg(
         },
         authors: mod_project.authors.iter().map(|author| {
             match author {
-                flint_core::project::ModProjectAuthor::Name(name) => ModpkgAuthor::new(name.clone(), None),
-                flint_core::project::ModProjectAuthor::Role { name, role } => ModpkgAuthor::new(name.clone(), Some(role.clone())),
+                ruination_core::project::ModProjectAuthor::Name(name) => ModpkgAuthor::new(name.clone(), None),
+                ruination_core::project::ModProjectAuthor::Role { name, role } => ModpkgAuthor::new(name.clone(), Some(role.clone())),
             }
         }).collect(),
         layers: layers
@@ -728,7 +728,7 @@ fn slugify(name: &str) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use flint_core::export::Modpkg;
+    use ruination_core::export::Modpkg;
     use std::io::BufReader;
 
     fn seed(root: &Path, relative: &str, bytes: &[u8]) {
@@ -783,7 +783,7 @@ mod tests {
         assert_eq!(path, "data/characters/aatrox/skin6.bin");
 
         // The chunk hash must be the game's WAD chunk hash for that path.
-        let expected = flint_core::hash::wad_chunk_hash("data/characters/aatrox/skin6.bin");
+        let expected = ruination_core::hash::wad_chunk_hash("data/characters/aatrox/skin6.bin");
         assert!(pkg.chunks.keys().any(|(path_hash, _)| *path_hash == expected));
     }
 
@@ -808,7 +808,7 @@ mod tests {
         names.sort();
         assert_eq!(names, vec!["base", "chroma"]);
 
-        let hash = flint_core::hash::wad_chunk_hash("assets/t.tex");
+        let hash = ruination_core::hash::wad_chunk_hash("assets/t.tex");
         let mut seen: Vec<Vec<u8>> = pkg
             .chunks
             .keys()
@@ -841,7 +841,7 @@ mod tests {
 
     #[test]
     fn chunks_are_zstd_compressed_except_audio_banks() {
-        use flint_core::export::ModpkgCompression;
+        use ruination_core::export::ModpkgCompression;
         let dir = tempfile::tempdir().unwrap();
         let root = dir.path();
         seed(root, "content/base/Aatrox.wad.client/assets/t.tex", &vec![7u8; 4096]);
@@ -852,7 +852,7 @@ mod tests {
 
         let pkg = mount(&out);
         let compression = |path: &str| {
-            let hash = flint_core::hash::wad_chunk_hash(path);
+            let hash = ruination_core::hash::wad_chunk_hash(path);
             pkg.chunks
                 .iter()
                 .find(|((p, _), _)| *p == hash)

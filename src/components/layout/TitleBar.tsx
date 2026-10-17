@@ -14,7 +14,7 @@ import * as api from '../../lib/api';
 import { projectFilePath, rubyBinCandidates } from '../../lib/rubyTargets';
 import { sendToRuby } from '../../lib/sendToRuby';
 import { sanitizeChampionName } from '../../lib/util/utils';
-import { FlintFlameMark } from '../ui/FlintFlameMark';
+import { RuinationMark } from '../ui/RuinationMark';
 import { useTranslation } from '../../lib/i18n';
 import type { ProjectTab, ExtractSession, FileEditorKind } from '../../lib/types';
 
@@ -60,7 +60,7 @@ const SettingsIcon: React.FC = () => (
     </svg>
 );
 
-const FlintLogo: React.FC = () => <FlintFlameMark size={20} />;
+const RuinationLogo: React.FC = () => <RuinationMark size={20} />;
 
 
 interface TabProps {
@@ -416,8 +416,8 @@ export const TitleBar: React.FC = () => {
 
         } catch (err) {
             console.error('Sync to launcher failed:', err);
-            const flintError = err as api.FlintError;
-            showToast('error', flintError.getUserMessage?.() || `Failed to sync to ${launcherTarget.name}`);
+            const operationError = err as api.RuinationError;
+            showToast('error', operationError.getUserMessage?.() || `Failed to sync to ${launcherTarget.name}`);
         } finally {
             setIsSyncing(false);
         }
@@ -434,8 +434,8 @@ export const TitleBar: React.FC = () => {
             await api.rebuildLoadingScreenBin(currentProjectPath, leaguePath);
             showToast('success', 'Loadscreen rebuilt from the live game uibase.');
         } catch (err) {
-            const flintError = err as api.FlintError;
-            showToast('error', flintError.getUserMessage?.() || 'Failed to rebuild loadscreen');
+            const operationError = err as api.RuinationError;
+            showToast('error', operationError.getUserMessage?.() || 'Failed to rebuild loadscreen');
         } finally {
             setIsRebuildingLoadscreen(false);
         }
@@ -478,8 +478,8 @@ export const TitleBar: React.FC = () => {
 
         } catch (err) {
             console.error('Export failed:', err);
-            const flintError = err as api.FlintError;
-            showToast('error', flintError.getUserMessage?.() || 'Export failed');
+            const operationError = err as api.RuinationError;
+            showToast('error', operationError.getUserMessage?.() || 'Export failed');
         } finally {
             setIsExporting(false);
         }
@@ -598,8 +598,8 @@ export const TitleBar: React.FC = () => {
                     title="Go to Home"
                     data-tauri-drag-region="false"
                 >
-                    <FlintLogo />
-                    <span className="titlebar__app-name">Flint</span>
+                    <RuinationLogo />
+                    <span className="titlebar__app-name">The Ruination</span>
                 </div>
             </div>
 
