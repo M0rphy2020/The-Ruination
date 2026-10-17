@@ -32,7 +32,7 @@ parking_lot = "0.12"
 rustc-hash = "2"
 
 # league-toolkit format crates (tex/mesh/meta/ritobin/anim/file): FULLY REMOVED.
-# Flint's format handling is now 100% on ritoshark (tex/mesh/anim/file/rst/bin/wad).
+# The format handling is now based on ritoshark (tex/mesh/anim/file/rst/bin/wad).
 # The league-mod crates below are unrelated to the format migration.
 
 # RitoShark crates (owner's workspace — migrating off league-toolkit onto these).
@@ -41,7 +41,7 @@ ritoshark.workspace = true
 
 # Mod-package formats only (.fantome / .modpkg and their project model). These
 # stay because the formats are defined by these crates — there is no in-house
-# equivalent to migrate to. Everything else Flint does is its own or ritoshark's;
+# equivalent to migrate to. Everything else is implemented in this application or ritoshark;
 # League detection was moved into `league/detector.rs`.
 ltk_mod_project = "0.2"
 ltk_fantome = "0.2"
@@ -56,7 +56,7 @@ intel_tex_2 = "0.4"
 
 
 # Hematite fixer lives in crates/hematite-flint (re-integrated 2026-07-21). Its
-# rs_* pins must match Flint's ritoshark rev or two copies of each rs_* compile.
+# rs_* pins must match the application's ritoshark revision or two copies of each rs_* compile.
 
 # LMDB via heed — memory-mapped B-tree DB for fast hash lookups
 heed = "0.20"
