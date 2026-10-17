@@ -58,8 +58,8 @@ const STEPS: Step[] = [
     },
     {
         id: 'paths', short: 'Paths', hint: 'Game, launcher, editors', icon: 'folder',
-        title: 'Point Flint at your install',
-        subtitle: 'Flint needs the League folder for almost everything. The rest are optional.',
+        title: 'Point The Ruination at your install',
+        subtitle: 'The Ruination needs the League folder for almost everything. The rest are optional.',
     },
     { id: 'finish', short: 'Finish', hint: 'Two last switches', icon: 'success', title: '', subtitle: '' },
 ];
@@ -108,7 +108,7 @@ export const FirstTimeSetupModal: React.FC = () => {
     const [autoUpdate, setAutoUpdate] = useState<boolean>(autoUpdateStored);
     const [detectingAll, setDetectingAll] = useState<DetectingState>(false);
     const autoDetectRan = useRef(false);
-    const [flintHome, setFlintHome] = useState<string>('');
+    const [flintHome, setThe RuinationHome] = useState<string>('');
 
     const isVisible = activeModal === 'firstTimeSetup';
     const step = STEPS[stepIndex];
@@ -122,7 +122,7 @@ export const FirstTimeSetupModal: React.FC = () => {
         api.getAppHome().then((home) => {
             const sep = home.includes('\\') ? '\\' : '/';
             const guess = `${home.replace(/[\\/]+$/, '')}${sep}projects`;
-            setFlintHome(guess);
+            setThe RuinationHome(guess);
             setDefaultProjectPath((prev) => prev || guess);
         }).catch(() => { /* non-fatal */ });
     }, [isVisible, flintHome]);
@@ -269,7 +269,7 @@ export const FirstTimeSetupModal: React.FC = () => {
         config.setAutoSyncToLauncher(autoSync);
         config.setAutoUpdateEnabled(autoUpdate);
 
-        // Opt-in "Open with" registration. Never block entering Flint on it.
+        // Opt-in "Open with" registration. Never block entering The Ruination on it.
         if (registerAssoc) {
             try {
                 const result = await api.registerFileAssociations();
@@ -282,7 +282,7 @@ export const FirstTimeSetupModal: React.FC = () => {
         }
 
         closeModal();
-        showToast('success', 'Setup complete. Welcome to Flint.');
+        showToast('success', 'Setup complete. Welcome to The Ruination.');
     };
 
     const onIdentityKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -410,7 +410,7 @@ export const FirstTimeSetupModal: React.FC = () => {
                         </span>
                         {isLast ? (
                             <Button variant="success" size="lg" iconRight="chevronRight" onClick={handleFinish} className="fwiz__cta">
-                                Enter Flint
+                                Enter The Ruination
                             </Button>
                         ) : (
                             <Button
@@ -460,7 +460,7 @@ const SplashPane: React.FC<{ onStart: () => void }> = ({ onStart }) => {
                 <span className="fwiz-splash__logo-ring" />
                 <span className="fwiz-splash__logo-ring fwiz-splash__logo-ring--two" />
             </div>
-            <h1 className="fwiz-splash__title" aria-label="Flint">
+            <h1 className="fwiz-splash__title" aria-label="The Ruination">
                 {word.split('').map((c, i) => (
                     <span key={i} style={{ animationDelay: `${i * 0.06}s` }}>{c}</span>
                 ))}
@@ -502,7 +502,7 @@ const WizBackdrop: React.FC = () => {
 };
 
 /* -------------------------------------------------------------------------- */
-/* Title bar — mirrors the app's main TitleBar (FlintLogo + "Flint") plus      */
+/* Title bar — mirrors the app's main TitleBar (The RuinationLogo + "The Ruination") plus      */
 /* the standard window controls. Drag region everywhere except the buttons.    */
 /* The flame mark glows to mark this as the onboarding context.                */
 /* -------------------------------------------------------------------------- */
@@ -518,7 +518,7 @@ const WizTitleBar: React.FC = () => {
                         <RuinationMark size={22} />
                         <span className="fwiz-mark__halo" />
                     </span>
-                    <span className="titlebar__app-name">Flint</span>
+                    <span className="titlebar__app-name">The Ruination</span>
                     <span className="fwiz__titlebar-mode">Setup</span>
                 </div>
             </div>
@@ -757,7 +757,7 @@ const PathsPane: React.FC<{
                     value: p.pbe,
                     onChange: p.onPbe,
                     browseTitle: 'Select PBE Folder',
-                    hint: 'Lets Flint pull pre-release champion BINs and assets.',
+                    hint: 'Lets The Ruination pull pre-release champion BINs and assets.',
                 }} />
             </div>
 
@@ -975,9 +975,9 @@ const FinishPane: React.FC<{
                 <p className="settings-subhead">One last thing</p>
                 <SettingsRow
                     icon={<Icon name="link" />}
-                    title="Open Flint from Explorer"
+                    title="Open The Ruination from Explorer"
                     sub={<span className="settings-row__sub" style={{ whiteSpace: 'normal' }}>
-                        Adds Flint to the “Open with” menu for .wad, .bin, .tex, .fantome and more. Your default apps stay as they are.
+                        Adds The Ruination to the “Open with” menu for .wad, .bin, .tex, .fantome and more. Your default apps stay as they are.
                     </span>}
                     onActivate={() => onRegisterAssoc(!registerAssoc)}
                     actions={<Checkbox toggle checked={registerAssoc} onChange={(e) => onRegisterAssoc(e.target.checked)} />}
@@ -986,7 +986,7 @@ const FinishPane: React.FC<{
                     icon={<Icon name="download" />}
                     title="Automatic updates"
                     sub={<span className="settings-row__sub" style={{ whiteSpace: 'normal' }}>
-                        Download and install updates before Flint opens.
+                        Download and install updates before The Ruination opens.
                     </span>}
                     onActivate={() => onAutoUpdate(!autoUpdate)}
                     actions={<Checkbox toggle checked={autoUpdate} onChange={(e) => onAutoUpdate(e.target.checked)} />}
