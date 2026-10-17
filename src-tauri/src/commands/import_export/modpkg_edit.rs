@@ -20,7 +20,7 @@ use base64::{engine::general_purpose::STANDARD, Engine};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use flint_core::export::{
+use ruination_core::export::{
     Modpkg, ModpkgAuthor, ModpkgBuilder, ModpkgChunkBuilder, ModpkgCompression,
     ModpkgLayerBuilder, ModpkgMetadata, REGENERATED_META,
 };
@@ -528,7 +528,7 @@ fn save_modpkg(
                 *layer_hash,
                 ChunkKey { path: path.clone(), layer },
                 chunk.compression,
-                flint_core::export::chunk_wad_name(&modpkg, chunk.wad_index),
+                ruination_core::export::chunk_wad_name(&modpkg, chunk.wad_index),
             ))
         })
         .collect();
