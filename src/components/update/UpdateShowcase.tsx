@@ -22,7 +22,7 @@ interface ShowcaseRelease {
     author: { login: string; url: string } | null;
 }
 
-const REPOSITORY = 'RitoShark/Flint';
+const REPOSITORY = 'M0rphy2020/The-Ruination';
 const PENDING_KEY = 'flint_update_showcase_pending';
 const SEEN_KEY = 'flint_update_showcase_seen';
 
