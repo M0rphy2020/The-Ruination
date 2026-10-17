@@ -484,7 +484,7 @@ pub async fn create_project(
         }
     }
 
-    // flint.json is written before the repath runs, so the prefix and the
+    // legacy flint.json metadata is written before the repath runs, so the prefix and the
     // finished timestamps only land on this second save.
     if let Err(e) = core_save_project(&project) {
         tracing::warn!("Failed to record project provenance: {}", e);
@@ -533,7 +533,7 @@ pub async fn open_project(path: String) -> Result<Project, String> {
     Ok(project)
 }
 
-/// Walk a projects root directory, return every Flint project found there
+/// Walk a projects root directory, return every Ruination project found there
 /// merged with the on-disk `projects.json` index.
 #[tauri::command]
 pub async fn discover_projects(
@@ -585,7 +585,7 @@ pub struct HardRenameResult {
 
 /// Hard-rename a project everywhere: rewrite the asset prefix
 /// (`ASSETS/{creator}/{old}` → `…/{new}`) inside every BIN, rename the matching
-/// on-disk asset folders, update `mod.config.json` + `flint.json`, and finally
+/// on-disk asset folders, update `mod.config.json` + `legacy `flint.json`, and finally
 /// rename the project directory itself. Returns the new path + updated project.
 ///
 /// Irreversible — the frontend warns before calling.
