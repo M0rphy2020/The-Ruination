@@ -2,7 +2,7 @@
 
 ## Supported versions
 
-The latest release. Flint updates itself, so older builds do not get fixes.
+The latest release. The Ruination updates itself, so older builds do not get fixes.
 
 ## Reporting
 
@@ -21,5 +21,5 @@ Worth reporting:
 
 Not really security bugs, just file them as normal issues:
 
-- Flint crashing on a malformed file. Annoying, but it is a parser bug.
-- League crashing because of a mod Flint produced.
+- The Ruination crashing on a malformed file. Annoying, but it is a parser bug.
+- League crashing because of a mod The Ruination produced.
