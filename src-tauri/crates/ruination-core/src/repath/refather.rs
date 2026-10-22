@@ -387,7 +387,7 @@ pub fn repath_project(
     }
 
     let champion_lower = config.champion.to_lowercase();
-    let wad_folder_name = format!("{}.wad.client", flint_wad::wad::extractor::wad_champion_name(&champion_lower));
+    let wad_folder_name = format!("{}.wad.client", ritoshark::wad::extractor::wad_champion_name(&champion_lower));
     let wad_base = content_base.join(&wad_folder_name);
 
     let file_base = if wad_base.exists() {
@@ -698,7 +698,7 @@ fn repath_value(value: &mut BinValue, plan: &RepathPlan) -> usize {
             }
         }
         BinValue::File(h) => {
-            let known = flint_hash::hash::get_cached_bin_hashes().read();
+            let known = ruination_hash::hash::get_cached_bin_hashes().read();
             if let Some(s) = known.get(*h) {
                 if is_asset_path(s) {
                     if let Some(dest) = plan.get(&normalize_path(s)) {
