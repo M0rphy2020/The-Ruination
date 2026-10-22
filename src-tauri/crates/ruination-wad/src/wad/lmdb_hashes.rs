@@ -46,7 +46,7 @@ fn open_env(lmdb_dir: &Path) -> Option<Arc<heed::Env>> {
 /// Returns `true` when at least one env was loaded; `false` if neither
 /// layout is present (caller should trigger [`super::download_combined_hashes`]).
 pub fn preload_envs(hash_dir: &Path) -> bool {
-    let revision = flint_hash::hash::lmdb_cache::database_revision();
+    let revision = ruination_hash::hash::lmdb_cache::database_revision();
     let (wad, bin) = match detect_layout(hash_dir) {
         HashLayout::Split => {
             let wad = open_env(&hash_dir.join("hashes-wad.lmdb"));
@@ -87,7 +87,7 @@ fn ensure_loaded(hash_dir: &Path) -> bool {
     {
         let g = cache_slot().lock();
         if let Some(c) = g.as_ref() {
-            if c.layout_root == hash_dir && c.revision == flint_hash::hash::lmdb_cache::database_revision() {
+            if c.layout_root == hash_dir && c.revision == ruination_hash::hash::lmdb_cache::database_revision() {
                 return c.wad.is_some() || c.bin.is_some();
             }
         }
@@ -122,7 +122,7 @@ pub fn resolve_wad(hash: u64, hash_dir: &Path) -> String {
     let Some(env) = clone_wad_env(hash_dir) else {
         return format!("{:016x}", hash);
     };
-    let Some(db) = flint_hash::hash::lmdb_cache::cached_db(&env, "wad") else {
+    let Some(db) = ruination_hash::hash::lmdb_cache::cached_db(&env, "wad") else {
         return format!("{:016x}", hash);
     };
     let Ok(rtxn) = env.read_txn() else {
@@ -161,7 +161,7 @@ pub fn resolve_wad_bulk(hashes: &[u64], hash_dir: &Path) -> HashMap<u64, String>
         }
         return out;
     };
-    let db = match flint_hash::hash::lmdb_cache::cached_db(&env, "wad") {
+    let db = match ruination_hash::hash::lmdb_cache::cached_db(&env, "wad") {
         Some(db) => db,
         None => {
             for &h in hashes {
@@ -205,9 +205,9 @@ pub fn lookup_bin(hash: u32, hash_dir: &Path) -> Option<Arc<str>> {
     }
 
     let env = clone_bin_env(hash_dir)?;
-    let revision = flint_hash::hash::lmdb_cache::database_revision();
+    let revision = ruination_hash::hash::lmdb_cache::database_revision();
     let result: Option<Arc<str>> = (|| {
-        let db = flint_hash::hash::lmdb_cache::cached_db(&env, "bin")?;
+        let db = ruination_hash::hash::lmdb_cache::cached_db(&env, "bin")?;
         let rtxn = env.read_txn().ok()?;
         let bytes = db.get(&rtxn, &hash.to_be_bytes()[..]).ok().flatten()?;
         Some(Arc::from(bytes))
@@ -239,9 +239,9 @@ pub fn lookup_wad(hash: u64, hash_dir: &Path) -> Option<Arc<str>> {
     }
 
     let env = clone_wad_env(hash_dir)?;
-    let revision = flint_hash::hash::lmdb_cache::database_revision();
+    let revision = ruination_hash::hash::lmdb_cache::database_revision();
     let result: Option<Arc<str>> = (|| {
-        let db = flint_hash::hash::lmdb_cache::cached_db(&env, "wad")?;
+        let db = ruination_hash::hash::lmdb_cache::cached_db(&env, "wad")?;
         let rtxn = env.read_txn().ok()?;
         let bytes = db.get(&rtxn, &hash.to_be_bytes()[..]).ok().flatten()?;
         Some(Arc::from(bytes))
