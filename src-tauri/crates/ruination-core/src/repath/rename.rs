@@ -27,7 +27,7 @@ fn replace_in_value(value: &mut BinValue, re: &Regex, replacement: &str) -> usiz
             }
         }
         BinValue::File(h) => {
-            let known = flint_hash::hash::get_cached_bin_hashes().read();
+            let known = ruination_hash::hash::get_cached_bin_hashes().read();
             if let Some(s) = known.get(*h) {
                 if re.is_match(s) {
                     let new = re.replace_all(s, replacement).into_owned();
