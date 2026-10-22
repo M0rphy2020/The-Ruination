@@ -23,7 +23,7 @@
         "displayLanguageSelector": false
       }
     },
-    "createUpdaterArtifacts": "v1Compatible"
+    "createUpdaterArtifacts": false
   },
   "productName": "The Ruination",
   "version": "3.0.5",
