@@ -14,26 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          submodules: recursive
           fetch-depth: 0
-
-      # Mounts the shader-preview overlay at private/shaderforge, which the
-      # `shaderforge` cargo feature and the @shaderforge vite alias compile in
-      # place of the committed stub. Both the token (Contents:Read) and the repo
-      # path are secrets, so this public workflow names neither.
-      - name: Clone ShaderForge overlay
-        shell: bash
-        run: |
-          git clone --depth 1 \
-            "https://x-access-token:${{ secrets.SHADERFORGE_TOKEN }}@github.com/${{ secrets.SHADERFORGE_REPO }}.git" \
-            private/shaderforge
-
-      - name: Generate changelog
-        id: changelog
-        uses: orhun/git-cliff-action@v4
-        with:
-          config: cliff.toml
-          args: --latest --strip header
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -44,105 +25,16 @@ jobs:
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
 
-      - name: Resolve upstream ritobin LSP for this release
-        id: lsp
-        shell: pwsh
-        env:
-          GH_TOKEN: ${{ github.token }}
-          RUINATION_TAG: ${{ github.ref_name }}
-        run: |
-          $ruinationVersion = (Get-Content src-tauri/tauri.conf.json -Raw | ConvertFrom-Json).version
-          if ($env:RUINATION_TAG -ne "v$ruinationVersion") { throw 'Release tag must match The Ruination application version' }
-          $releases = gh api 'repos/alanpq/ritobin-lsp/releases?per_page=100' | ConvertFrom-Json
-          if ($LASTEXITCODE) { throw 'Upstream release lookup failed' }
-          $release = $releases | Where-Object { !$_.draft -and !$_.prerelease -and $_.tag_name -match '^ritobin-lsp-v\d' } | Select-Object -First 1
-          if (!$release) { throw 'No upstream server release found' }
-          git clone --depth 1 --branch $release.tag_name https://github.com/alanpq/ritobin-lsp.git upstream
-          if ($LASTEXITCODE) { throw 'Upstream checkout failed' }
-          $revision = git -C upstream rev-parse HEAD
-          if ($LASTEXITCODE) { throw 'Upstream revision lookup failed' }
-          $adapter = (Get-FileHash scripts/lsp/patch-upstream.mjs -Algorithm SHA256).Hash.ToLower().Substring(0,12)
-          "version=$revision-$adapter" >> $env:GITHUB_OUTPUT
-          "ruination_version=$ruinationVersion" >> $env:GITHUB_OUTPUT
-
-      - name: Rust Cache
-        uses: Swatinem/rust-cache@v2
-        with:
-          workspaces: |
-            src-tauri
-            upstream
-
-      - name: Build and validate hash-disabled ritobin LSP
-        shell: pwsh
-        env:
-          LSP_VERSION: ${{ steps.lsp.outputs.version }}
-          RUINATION_VERSION: ${{ steps.lsp.outputs.ruination_version }}
-        run: |
-          node scripts/lsp/patch-upstream.mjs upstream
-          if ($LASTEXITCODE) { throw 'Hash isolation patch failed' }
-          cargo build --manifest-path upstream/Cargo.toml --locked --release -p ritobin-lsp
-          if ($LASTEXITCODE) { throw 'LSP build failed' }
-          node scripts/lsp/smoke-test.mjs upstream/target/release/ritobin-lsp.exe
-          if ($LASTEXITCODE) { throw 'LSP smoke test failed' }
-          New-Item -ItemType Directory -Path lsp-artifacts -Force | Out-Null
-          $asset = "ritobin-lsp-$env:LSP_VERSION-windows-x86_64.exe"
-          Copy-Item upstream/target/release/ritobin-lsp.exe "lsp-artifacts/$asset"
-          $sha = (Get-FileHash "lsp-artifacts/$asset" -Algorithm SHA256).Hash.ToLower()
-          @{ version=$env:LSP_VERSION; ruinationVersion=$env:RUINATION_VERSION; asset=$asset; sha256=$sha; noHashes=1 } | ConvertTo-Json | Set-Content lsp-artifacts/ritobin-lsp-manifest.json -Encoding utf8NoBOM
-
-      - name: Install Dependencies
+      - name: Install dependencies
         run: npm ci
 
-      - name: Build and release
+      - name: Build Windows installer and publish release
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
-          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
-          # Builds the real shader preview in, not the stub.
-          args: --features shaderforge
           tagName: ${{ github.ref_name }}
           releaseName: 'The Ruination ${{ github.ref_name }}'
-          releaseBody: ${{ steps.changelog.outputs.content }}
+          releaseBody: 'Windows installer for The Ruination. The private ShaderForge preview overlay is excluded from this public build.'
           releaseDraft: false
           prerelease: false
-          updaterJsonPreferNsis: true
-
-      - name: Attach ritobin LSP to The Ruination release
-        shell: pwsh
-        env:
-          GH_TOKEN: ${{ github.token }}
-          RUINATION_TAG: ${{ github.ref_name }}
-        run: |
-          $assets = Get-ChildItem lsp-artifacts -File | ForEach-Object { $_.FullName }
-          gh release upload $env:RUINATION_TAG @assets --clobber
-          if ($LASTEXITCODE) { throw 'LSP release asset upload failed' }
-
-      - name: Patch latest.json notes and push to updater release
-        shell: bash
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          TAG="${{ github.ref_name }}"
-          NOTES="${{ steps.changelog.outputs.content }}"
-
-          # Download latest.json produced by tauri-action
-          gh release download "$TAG" --pattern "latest.json" --dir . --clobber
-
-          # Inject the git-cliff notes into latest.json
-          jq --arg notes "$NOTES" '.notes = $notes' latest.json > latest.patched.json
-          mv latest.patched.json latest.json
-
-          # Re-upload to the same versioned release
-          gh release upload "$TAG" latest.json --clobber
-
-          # Also keep a pinned "updater" release up-to-date
-          if gh release view updater &>/dev/null; then
-            gh release upload updater latest.json --clobber
-          else
-            gh release create updater latest.json \
-              --title "Updater" \
-              --notes "Auto-updated by CI. Contains the latest updater manifest for in-app updates." \
-              --latest=false
-          fi
